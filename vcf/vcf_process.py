@@ -11,7 +11,7 @@ class VCF:
         cnt = 1
         for rec in bcf_in.fetch():
             sample = ''
-            label = ()
+            label = []
             for key, value in rec.samples.items():
                 sample = key
                 label = value['GT']
