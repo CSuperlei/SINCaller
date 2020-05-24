@@ -1,8 +1,8 @@
 import sys
-from vcf.vcf_process import VariantFile
+from vcf.vcf_process import VCF
 
 def main(argv):
-    v = VariantFile(argv)
+    v = VCF(argv)
     v.readfile()
 
 if __name__ == '__main__':
