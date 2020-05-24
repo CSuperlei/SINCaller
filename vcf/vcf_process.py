@@ -8,9 +8,19 @@ class VCF:
 
     def readfile(self):
         bcf_in = VariantFile(self.filename, 'r')
+        cnt = 1
         for rec in bcf_in.fetch():
-            self.ls.append(rec.chrom, rec.pos, (rec.ref, rec.alt))
+            sample = ''
+            label = ()
+            for key, value in rec.sample.items():
+                sample = key
+                label = value['GT']
+                break
+            self.ls.append(sample, rec.chrom, rec.pos, (rec.ref, rec.alt), label)
             print(self.ls)
+            cnt += 1
+            if cnt == 10:
+                break
 
 
 
