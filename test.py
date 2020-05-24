@@ -10,6 +10,7 @@ def readfile(filename):
         for key, value in rec.samples.items():
             print(key, value['AD'])
         # print(rec.samples.iteritems())
+        print(rec.samples.get('AD'))
         cnt += 1
         if cnt == 10:
             break
