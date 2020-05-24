@@ -7,7 +7,8 @@ def readfile(filename):
     bcf_in = VariantFile(filename, 'r')
     cnt = 1
     for rec in bcf_in.fetch():
-        print(rec.samples)
+        for key, value in rec.samples.iteritems():
+            print(key, value['GT'])
         cnt += 1
         if cnt == 10:
             break
