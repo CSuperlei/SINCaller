@@ -1,7 +1,7 @@
 import sys
 import pysam
 from pysam import VariantFile
-
+import argparse
 
 def readfile(filename):
     bcf_in = VariantFile(filename, 'r')
@@ -13,9 +13,19 @@ def readfile(filename):
             break
 
 
-def main(argv):
-    readfile(argv)
+def test_vcf():
+    parser = argparse.ArgumentParser(description="VCF file")
+    parser.add_argument('--vcf', '-v', help='vcf filename', required=True)
+    args = parser.parse_args()
+    return args
+
+
+def main():
+    args = test_vcf()
+    print(args.vcf)
+    filename = args.vcf
+    readfile(filename)
 
 
 if __name__ == '__main__':
-    main(sys.argv[1:])
+    main()
