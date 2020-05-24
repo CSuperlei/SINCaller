@@ -16,7 +16,7 @@ class VCF:
                 sample = key
                 label = value['GT']
                 break
-            s_c_p = sample + '_' + rec.chrom + '_' + rec.pos
+            s_c_p = sample + '_' + rec.chrom + '_' + str(rec.pos)
             self.ls.append((s_c_p, (rec.ref, rec.alts[0]), label))
             print(self.ls)
             cnt += 1
