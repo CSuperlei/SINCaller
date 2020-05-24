@@ -8,7 +8,7 @@ def readfile(filename):
     cnt = 1
     for rec in bcf_in.fetch():
         for key, value in rec.samples.iteritems():
-            print(key, value)
+            print(key, value['AD'])
         # print(rec.samples.iteritems())
         cnt += 1
         if cnt == 10:
