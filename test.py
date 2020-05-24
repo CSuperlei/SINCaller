@@ -7,7 +7,7 @@ def readfile(filename):
     bcf_in = VariantFile(filename, 'r')
     cnt = 1
     for rec in bcf_in.fetch():
-        for key, value in rec.samples.iteritems():
+        for key, value in rec.samples.items():
             print(key, value['AD'])
         # print(rec.samples.iteritems())
         cnt += 1
