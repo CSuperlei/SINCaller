@@ -4,7 +4,7 @@ from pysam import VariantFile
 class VCF:
     def __init__(self, filename):
         self.filename = filename
-        self.ls = []
+        self.ls = ()
 
     def readfile(self):
         bcf_in = VariantFile(self.filename, 'r')
