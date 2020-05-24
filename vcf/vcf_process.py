@@ -12,7 +12,7 @@ class VCF:
         for rec in bcf_in.fetch():
             sample = ''
             label = ()
-            for key, value in rec.sample.items():
+            for key, value in rec.samples.items():
                 sample = key
                 label = value['GT']
                 break
