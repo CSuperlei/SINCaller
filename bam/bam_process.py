@@ -15,6 +15,8 @@ class BAM:
             print(rec.pos)
             print(rec.get_mapping_qualities())
             print(rec.get_query_sequences())
+            print(rec.get_query_positions())
+            print(rec.get_query_positions)
             cnt += 1
             if cnt == 10:
                 break
