@@ -14,9 +14,9 @@ class BAM:
         for rec in bam_file.pileup(chr_id, start, end):
             print(rec.pos)
             print(rec.get_mapping_qualities())
-            print(rec.get_query_sequences())
+            print(rec.get_query_sequences(start))
             print(rec.get_query_positions())
-            print(rec.get_query_positions)
+            print(rec.reference_pos)
             cnt += 1
             if cnt == 10:
                 break
