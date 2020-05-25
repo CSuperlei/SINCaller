@@ -11,9 +11,5 @@ class FASTA:
         return fasta_file
 
     def ref_atcg(self, fasta_file, chr_id, start, end):
-        cnt = 1
-        for rec in fasta_file.fetch(chr_id, start, end):
-            print(rec)
-            cnt += 1
-            if cnt == 10:
-                break
+        for rec in fasta_file.fetch(chr_id, start - 1, end - 1):
+            print(rec)  ## 参考基因组序列

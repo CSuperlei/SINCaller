@@ -2,6 +2,7 @@ import argparse
 from vcf.vcf_process import VCF
 from bam.bam_process import BAM
 from fasta.fasta_process import FASTA
+from fastq.fastq_process import FASTQ
 
 
 def args_func():
@@ -9,6 +10,7 @@ def args_func():
     parser.add_argument('--vcf', '-v', help='vcf filename')
     parser.add_argument('--bam', '-b', help='bam filename')
     parser.add_argument('--fasta', '-fa', help='fasta, filename')
+    parser.add_argument('--fastq', '--fq', help='fastq filename')
     args = parser.parse_args()
     return args
 
@@ -29,6 +31,11 @@ def main():
     a = FASTA()
     fasta_file = a.readfile(fasta_filename)
     a.ref_atcg(fasta_file, 'chr1', 2956917, 2957922)
+
+    # fastq_filename = args.fastq
+    # q = FASTQ()
+    # fastq_file = q.readfile(fastq_filename)
+    # q.seq_atcg(fastq_file)
 
 
 if __name__ == '__main__':
