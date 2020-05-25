@@ -3,11 +3,10 @@ from pysam import VariantFile
 
 class VCF:
     def __init__(self, filename):
-        self.filename = filename
         self.ls = []
 
-    def readfile(self):
-        bcf_in = VariantFile(self.filename, 'r')
+    def readfile(self, filename):
+        bcf_in = VariantFile(filename, 'r')
         cnt = 1
         for rec in bcf_in.fetch():
             sample = ''

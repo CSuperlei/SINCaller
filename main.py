@@ -1,20 +1,27 @@
 import argparse
 from vcf.vcf_process import VCF
+from bam.bam_process import BAM
 
 
-def args_vcf():
-    parser = argparse.ArgumentParser(description="VCF file")
-    parser.add_argument('--vcf', '-v', help='vcf filename', required=True)
+def args_func():
+    parser = argparse.ArgumentParser(description="scSNV software")
+    parser.add_argument('--vcf', '-v', help='vcf filename')
+    parser.add_argument('--bam', '-b', help='bam filename')
     args = parser.parse_args()
     return args
 
 
 def main():
-    args = args_vcf()
-    # print(args.vcf)
-    filename = args.vcf
-    v = VCF(filename)
-    v.readfile()
+    args = args_func()
+
+    # vcf_filename = args.vcf
+    # v = VCF()
+    # v.readfile(vcf_filename)
+
+    bam_filename = args.bam
+    b = BAM()
+    bam_file = b.readfile(bam_filename)
+    b.pileup_column(bam_file, 'chr1')
 
 
 if __name__ == '__main__':
