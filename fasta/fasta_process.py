@@ -4,7 +4,7 @@ from pysam import FastaFile
 
 class FASTA:
     def readfile(self, filename):
-        fasta_file = FastaFile(filename, 'rb')
+        fasta_file = FastaFile(filename, 'r')
         if None == fasta_file:
             print("fasta_file is empty")
 
