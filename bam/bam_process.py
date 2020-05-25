@@ -9,10 +9,12 @@ class BAM:
 
         return bam_file
 
-    def pileup_column(self, bam_file, chr_id):
+    def pileup_column(self, bam_file, chr_id, start, end):
         cnt = 1
-        for rec in bam_file.pileup(chr_id):
+        for rec in bam_file.pileup(chr_id, start, end):
             print(rec.pos)
+            print(rec.get_mapping_qualities())
+            print(rec.get_mapping_qualities())
             cnt += 1
             if cnt == 10:
                 break
