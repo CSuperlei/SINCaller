@@ -12,10 +12,10 @@ class BAM:
     def pileup_column(self, bam_file, chr_id, start, end):
         cnt = 1
         for rec in bam_file.pileup(chr_id, start, end):
-            print(rec.pos)
+            # print(rec.pos)
             if rec.pos == start:
                 print(rec.get_mapping_qualities())
-                print(rec.get_query_sequences(start))
+                print(rec.get_query_sequences())
                 print(rec.get_query_positions())
                 print(rec.reference_pos)
                 break
