@@ -30,7 +30,7 @@ def main():
     fasta_filename = args.fasta
     a = FASTA()
     fasta_file = a.readfile(fasta_filename)
-    a.ref_atcg(fasta_file, 'chr1', 2956917, 2957922)
+    a.ref_atcg(fasta_file, 'chr1', 2956920, 2957922)
 
     # fastq_filename = args.fastq
     # q = FASTQ()
