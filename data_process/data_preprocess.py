@@ -13,13 +13,13 @@ class DATAPROCESS:
         v = VCF()
         vcf_file = v.readfile(self.vcf_filename)
         ls_variant = v.varient_info(vcf_file)
-
+        print(ls_variant)
         b = BAM()
         bam_file = b.readfile(self.bam_filename)
 
         cnt = 1
         for rec in ls_variant:
-            print(rec)
+            # print(rec)
             sample = rec[0].split('_')[0]
             chr = rec[0].split('_')[1]
             pos = rec[0].split('_')[2]
