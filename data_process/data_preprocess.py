@@ -38,7 +38,7 @@ class DATAPROCESS:
             pos = int(pos) + 1
             while pos:
                 normal_seq = b.pileup_column(bam_file, chr, pos, pos + 1)
-                ref_base = fasta_file.ref_atcg(fasta_file, chr, pos, pos + 1)
+                ref_base = fa.ref_atcg(fasta_file, chr, pos, pos + 1)
                 norepeat = set(normal_seq)
                 if len(norepeat) == 1 and norepeat[0] == ref_base:
                     normal_s_c_p = sample + '_' + chr + '_' + str(pos)
