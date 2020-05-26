@@ -19,4 +19,5 @@ class BAM:
                 return rec.get_query_sequences()
 
             elif rec.pos == end - 1:
+                print('pos is not exist')
                 break

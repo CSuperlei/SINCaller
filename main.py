@@ -1,8 +1,4 @@
 import argparse
-from vcf.vcf_process import VCF
-from bam.bam_process import BAM
-from fasta.fasta_process import FASTA
-from fastq.fastq_process import FASTQ
 from data_process.data_preprocess import DATAPROCESS
 
 
@@ -42,7 +38,8 @@ def main():
     vcf_filename = args.vcf
     bam_filename = args.bam
     d = DATAPROCESS(vcf_filename, bam_filename)
-    d.dataproc()
+    samples_data = d.dataproc()
+    print(samples_data)
 
 
 if __name__ == '__main__':
