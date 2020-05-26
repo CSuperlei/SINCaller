@@ -4,7 +4,7 @@ from pysam import FastxFile
 
 class FASTQ:
     def readfile(self, filename):
-        fastq_file = FastxFile(filename)
+        fastq_file = FastxFile(filename)   ## 必须是.gz格式
         if None == fastq_file:
             print("fastq_file is empty")
 

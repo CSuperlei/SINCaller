@@ -12,5 +12,6 @@ class FASTA:
 
     def ref_atcg(self, fasta_file, chr_id, start, end):
         for rec in fasta_file.fetch(chr_id, start - 1, end - 1):
-            print(rec)  ## 返回某个位点参考基因
+            # print(rec)  ## 返回某个位点参考基因
+            return rec
             break

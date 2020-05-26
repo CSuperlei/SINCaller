@@ -3,6 +3,7 @@ from vcf.vcf_process import VCF
 from bam.bam_process import BAM
 from fasta.fasta_process import FASTA
 from fastq.fastq_process import FASTQ
+from data_process.data_preprocess import DATAPROCESS
 
 
 def args_func():
@@ -32,10 +33,16 @@ def main():
     # fasta_file = a.readfile(fasta_filename)
     # a.ref_atcg(fasta_file, 'chr1', 2956920, 2957922)
 
-    fastq_filename = args.fastq
-    q = FASTQ()
-    fastq_file = q.readfile(fastq_filename)
-    q.seq_atcg(fastq_file)
+    # fastq_filename = args.fastq
+    # q = FASTQ()
+    # fastq_file = q.readfile(fastq_filename)
+    # q.seq_atcg(fastq_file)
+
+
+    vcf_filename = args.vcf
+    bam_filename = args.bam
+    d = DATAPROCESS(vcf_filename, bam_filename)
+    d.dataproc()
 
 
 if __name__ == '__main__':
