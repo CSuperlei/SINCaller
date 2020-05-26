@@ -13,7 +13,7 @@ class DATAPROCESS:
         v = VCF()
         vcf_file = v.readfile(self.vcf_filename)
         ls_variant = v.varient_info(vcf_file)
-        print(ls_variant)
+        # print(ls_variant)
         b = BAM()
         bam_file = b.readfile(self.bam_filename)
 
