@@ -27,15 +27,15 @@ def main():
     #     # bam_file = b.readfile(bam_filename)
     #     # b.pileup_column(bam_file, 'chr1', 2956920, 2956921)
 
-    fasta_filename = args.fasta
-    a = FASTA()
-    fasta_file = a.readfile(fasta_filename)
-    a.ref_atcg(fasta_file, 'chr1', 2956920, 2957922)
+    # fasta_filename = args.fasta
+    # a = FASTA()
+    # fasta_file = a.readfile(fasta_filename)
+    # a.ref_atcg(fasta_file, 'chr1', 2956920, 2957922)
 
-    # fastq_filename = args.fastq
-    # q = FASTQ()
-    # fastq_file = q.readfile(fastq_filename)
-    # q.seq_atcg(fastq_file)
+    fastq_filename = args.fastq
+    q = FASTQ()
+    fastq_file = q.readfile(fastq_filename)
+    q.seq_atcg(fastq_file)
 
 
 if __name__ == '__main__':
