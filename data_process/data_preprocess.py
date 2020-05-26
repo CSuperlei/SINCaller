@@ -19,6 +19,7 @@ class DATAPROCESS:
 
         cnt = 1
         for rec in ls_variant:
+            print(rec)
             sample = rec[0].split('_')[0]
             chr = rec[0].split('_')[1]
             pos = rec[0].split('_')[2]
