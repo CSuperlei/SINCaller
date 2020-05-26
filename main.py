@@ -37,7 +37,8 @@ def main():
 
     vcf_filename = args.vcf
     bam_filename = args.bam
-    d = DATAPROCESS(vcf_filename, bam_filename)
+    fasta_filename = args.fasta
+    d = DATAPROCESS(vcf_filename, bam_filename, fasta_filename)
     samples_data = d.dataproc()
     print(samples_data)
 
