@@ -21,7 +21,8 @@ class VCF:
                 break
             s_c_p = sample + '_' + rec.chrom + '_' + str(rec.pos)
             ls.append((s_c_p, (rec.ref, rec.alts[0]), label))
-            return ls
+
+        return ls
 
 
 
