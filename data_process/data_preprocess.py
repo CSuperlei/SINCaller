@@ -28,8 +28,10 @@ class DATAPROCESS:
             chr = rec[0].split('_')[1]
             pos = rec[0].split('_')[2]
             ref = rec[1][0]
+            ref = ref.lower()
             label = rec[2]
             variant_seq = b.pileup_column(bam_file, chr, int(pos), int(pos) + 1)
+            variant_seq = [item.lower() for item in variant_seq]
             s_c_p = sample + '_' + chr + '_' + pos
             variant_sample = (s_c_p, (ref, tuple(variant_seq)), label)
             samples_data.append(variant_sample)
@@ -38,11 +40,13 @@ class DATAPROCESS:
             pos = int(pos) + 1
             while pos:
                 normal_seq = b.pileup_column(bam_file, chr, pos, pos + 1)
+                normal_seq = [item.lower() for item in normal_seq]
                 if normal_seq == None:
                     break
                 # print(normal_seq)
                 # print(set(normal_seq))
                 ref_base = fa.ref_atcg(fasta_file, chr, pos, pos + 1)
+                ref_base = ref_base.lower()
                 norepeat = set(normal_seq)
                 print(norepeat)
                 if len(norepeat) == 1 and list(norepeat)[0] == ref_base:
