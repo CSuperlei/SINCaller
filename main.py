@@ -10,7 +10,7 @@ def args_func():
     parser.add_argument('--vcf', '-v', help='vcf filename')
     parser.add_argument('--bam', '-b', help='bam filename')
     parser.add_argument('--fasta', '-fa', help='fasta, filename')
-    parser.add_argument('--fastq', '--fq', help='fastq filename')
+    parser.add_argument('--fastq', '-fq', help='fastq filename')
     args = parser.parse_args()
     return args
 
