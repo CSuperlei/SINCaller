@@ -25,7 +25,7 @@ class DATAPROCESS:
             pos = rec[0].split('_')[2]
             ref = rec[1][0]
             label = rec[2]
-            seq = b.pileup_column(bam_file, chr, str(pos), str(pos + 1))
+            seq = b.pileup_column(bam_file, chr, str(pos), str(int(pos) + 1))
             s_c_p = sample + '_' + chr + '_' + pos
             sample = (s_c_p, (ref, tuple(seq)), label)
             sample_data.append(sample)
