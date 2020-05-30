@@ -62,6 +62,6 @@ class DATAPROCESS:
                 pos += 1
 
         np.save(self.data_filename, samples_data)
-        # return samples_data
+        return samples_data
 
 
