@@ -61,7 +61,7 @@ def main():
         d = DATAPROCESS(vcf_filename, bam_filename, fasta_filename, data_filename)
         samples_data = d.dataproc()
 
-    print('samples_data shape', samples_data.shape)
+    # print('samples_data shape', samples_data.shape)
 
     if samples_data is not None:
         # print(samples_data)
