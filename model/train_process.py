@@ -1,4 +1,4 @@
-import keras
+from tensorflow import keras
 import time
 from .data_generator import DataGenerator
 from .scSNV_model import SCSNVMODEL
