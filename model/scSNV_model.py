@@ -3,9 +3,8 @@ from keras.optimizers import Adam
 from keras.layers import Input, Embedding, LSTM, Bidirectional, Dense
 from keras.layers import Dropout
 from keras.utils import multi_gpu_utils
-import os
 
-os.environ["CUDA_VISIBLE_DEVICES"] = "1, 2"
+
 class SCSNVMODEL:
     def __init__(self, input_shape=(78, ), n_labels=4, n_lstm_outdim=128, word_maxlen=78, em_inputdim=20, em_outdim=15, lstm_layers=2, dense_num=32, drop_out=0.1, lr=0.001, gpus=2):
         self.input_shape = input_shape
@@ -49,7 +48,7 @@ class SCSNVMODEL:
         outputs = Dense(self.n_labels, activation='softmax')(dense)
         model = Model(inputs, outputs)
         model.summary()
-        model = multi_gpu_utils(model, multi_gpu_utils=self.gpus)
+        # model = multi_gpu_utils(model, multi_gpu_utils=self.gpus)
         model.compile(optimizer=Adam(lr=self.init_lr), loss='categorical_crossentropy', metrics=['acc'])
         return model
 
