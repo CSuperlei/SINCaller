@@ -52,8 +52,8 @@ def main():
     vcf_filename = args.vcf
     bam_filename = args.bam
     fasta_filename = args.fasta
-    data_filename = args.data_filename
-    load_filename = args.load_filename
+    data_filename = args.data
+    load_filename = args.load
 
     if load_filename is not None:
         samples_data = np.load(load_filename)
