@@ -56,7 +56,7 @@ def main():
     load_filename = args.load
 
     if load_filename is not None:
-        samples_data = np.load(load_filename)
+        samples_data = np.load(load_filename, allow_pickle=True)
     elif data_filename is not None:
         d = DATAPROCESS(vcf_filename, bam_filename, fasta_filename, data_filename)
         samples_data = d.dataproc()
