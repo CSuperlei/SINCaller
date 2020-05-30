@@ -9,10 +9,12 @@ class DataGenerator(keras.utils.Sequence):
         self.samples_data = samples_data
         self.batch_size = batch_size
         self.shuffle = shuffle
-        self.indexes = None
         self.sendin = []
         self.vocab_size = vocab_size
         self.word_maxlen = word_maxlen
+        self.indexes = None
+        self.on_epoch_end()
+
 
     def __len__(self):
         ## 每一轮训练包含多少个batch
@@ -30,7 +32,7 @@ class DataGenerator(keras.utils.Sequence):
         # print('index', index)
         if (index + 1) * self.batch_size < len(self.samples_data):
             idx = self.indexes[index*self.batch_size : (index + 1)*self.batch_size]
-            print(idx)
+            print('idx', idx)
             ## 存放每个batch送入网络的索引值
             # self.sendin.append((idx))
 
