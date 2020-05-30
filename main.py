@@ -11,6 +11,7 @@ def args_func():
     parser.add_argument('--fasta', '-fa', help='fasta, filename')
     parser.add_argument('--fastq', '-fq', help='fastq filename')
     parser.add_argument('--gpus', '-g', help='gpu number')
+    parser.add_argument('--log', '-lo', help='log level')
     args = parser.parse_args()
     return args
 
@@ -40,6 +41,9 @@ def main():
     gpus = args.gpus
     gpus = ",".join(list(str(gpus)))
     os.environ["CUDA_VISIBLE_DEVICES"] = gpus
+
+    log_level = args.log
+    os.environ['TF_CPP_MIN_LOG_LEVEL'] = log_level
 
     vcf_filename = args.vcf
     bam_filename = args.bam
