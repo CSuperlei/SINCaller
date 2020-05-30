@@ -1,4 +1,4 @@
-from tensorflow import keras
+import keras
 import time
 from .data_generator import DataGenerator
 from .scSNV_model import SCSNVMODEL
@@ -21,13 +21,13 @@ def training(samples_train_data, samples_test_data, epochs=100, generator_params
     cb_1 = keras.callbacks.EarlyStopping(min_delta=0, patience=30, verbose=0, mode='auto')
     cb_2 = keras.callbacks.ModelCheckpoint(filepath=mcheckpoint_dir+'model_{epoch:02d}.hdf5', verbose=0,
                                            save_best_only=False, save_weights_only=False, mode='auto', period=1)
-    model_name = 'tensorboard_scSNV_{}'.format(int(time.time()))
-    cb_3 = keras.callbacks.TensorBoard(log_dir=mtensorboard_dir+'{}'.format(model_name))
+    # model_name = 'tensorboard_scSNV_{}'.format(int(time.time()))
+    # cb_3 = keras.callbacks.TensorBoard(log_dir=mtensorboard_dir+'{}'.format(model_name))
     results = model.fit_generator(generator=training_generator,
                                   validation_data=validation_generator,
                                   epochs=epochs,
                                   nb_worker=1,
-                                  callbacks=[cb_1, cb_2, cb_3])
+                                  callbacks=[cb_1, cb_2])
 
     return training_generator.get_sendin_content()
 
