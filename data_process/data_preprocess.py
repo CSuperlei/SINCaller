@@ -21,7 +21,6 @@ class DATAPROCESS:
         fa = FASTA()
         fasta_file = fa.readfile(self.fasta_filename)
 
-        cnt = 1
         for rec in ls_variant:
             # 变异数据
             sample = rec[0].split('_')[0]
@@ -31,6 +30,9 @@ class DATAPROCESS:
             ref = ref.lower()
             label = rec[2]
             variant_seq = b.pileup_column(bam_file, chr, int(pos), int(pos) + 1)
+            if variant_seq is None:
+                break
+
             variant_seq = [item.lower() for item in variant_seq]
             s_c_p = sample + '_' + chr + '_' + pos
             variant_sample = (s_c_p, (ref, tuple(variant_seq)), label)
@@ -40,26 +42,22 @@ class DATAPROCESS:
             pos = int(pos) + 1
             while pos:
                 normal_seq = b.pileup_column(bam_file, chr, pos, pos + 1)
-                normal_seq = [item.lower() for item in normal_seq]
-                if normal_seq == None:
-                    break
-                # print(normal_seq)
-                # print(set(normal_seq))
                 ref_base = fa.ref_atcg(fasta_file, chr, pos, pos + 1)
+                ## 如果正常序列不存在就跳出
+                if normal_seq == None or ref_base == None:
+                    break
+
+                normal_seq = [item.lower() for item in normal_seq]
                 ref_base = ref_base.lower()
-                norepeat = set(normal_seq)
-                print(norepeat)
+                norepeat = set(normal_seq)  ## 去重
+                # print(norepeat)
                 if len(norepeat) == 1 and list(norepeat)[0] == ref_base:
                     normal_s_c_p = sample + '_' + chr + '_' + str(pos)
                     normal_sample = (normal_s_c_p, (ref_base, tuple(normal_seq)), (0, 0))
-                    print(normal_sample)
+                    # print(normal_sample)
                     samples_data.append(normal_sample)
                     break
                 pos += 1
-
-            cnt += 1
-            if cnt == 10:
-                break
 
         return samples_data
 

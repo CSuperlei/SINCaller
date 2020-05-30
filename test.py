@@ -24,10 +24,11 @@ def test_vcf():
 
 
 def main():
-    args = test_vcf()
-    print(args.vcf)
-    filename = args.vcf
-    readfile(filename)
+    # args = test_vcf()
+    # print(args.vcf)
+    # filename = args.vcf
+    # readfile(filename)
+    for i in range(10):
 
 
 if __name__ == '__main__':
