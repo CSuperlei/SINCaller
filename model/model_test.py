@@ -8,31 +8,64 @@ from keras.utils.np_utils import to_categorical
 
 
 # define documents
-docs = ['a, t, t',
-		'a, a, a',
-		'g, t, t, t, t, t',
-		'c, c, c, c, c, c',
-		'a, g, g',
-		't, t, t',
-		't, c, c',
-		'c, c, c',
-		'g, c, c, c',
-		'a, a, a, a',
-		'g, g, g, t',
-		't, t, t, t',
-		'a, g, g, g, g, g, g, g, g, g, g, g, g, g, g',
-		'g, g, g, g, g, g, g, g, g, g, g, g, g, g, g',
-		'g a a a',
-		'c c c c',
-        'a g g g g g f f f g g g g g g f',
-        'g g g g g g a a a g g g g g g g g',
-        'a t c g',
-        't t t t t t t t t t c a',
-        'a a a a a t c',
-        'c c a t c c c',
-        'g a t c',
-        'a a c t'
+# docs = ['a, t, t',
+# 		'a, a, a',
+# 		'g, t, t, t, t, t',
+# 		'c, c, c, c, c, c',
+# 		'a, g, g',
+# 		't, t, t',
+# 		't, c, c',
+# 		'c, c, c',
+# 		'g, c, c, c',
+# 		'a, a, a, a',
+# 		'g, g, g, t',
+# 		't, t, t, t',
+# 		'a, g, g, g, g, g, g, g, g, g, g, g, g, g, g',
+# 		'g, g, g, g, g, g, g, g, g, g, g, g, g, g, g',
+# 		'g a a a',
+# 		'c c c c',
+#         'a g g g g g f f f g g g g g g f',
+#         'g g g g g g a a a g g g g g g g g',
+#         'a t c g',
+#         't t t t t t t t t t c a',
+#         'a a a a a t c',
+#         'c c a t c c c',
+#         'g a t c',
+#         'a a c t'
+#         ]
+docs = [['a, t, t'],
+        ['a, a, a'],
+        ['g, t, t, t, t, t'],
+        ['c, c, c, c, c, c'],
+        ['a, g, g'],
+        ['t, t, t'],
+        ['t, c, c'],
+        ['c, c, c'],
+        ['g, c, c, c'],
+        ['a, a, a, a'],
+        ['g, g, g, t'],
+        ['t, t, t, t'],
+        ['a, g, g, g, g, g, g, g, g, g, g, g, g, g, g'],
+        ['g, g, g, g, g, g, g, g, g, g, g, g, g, g, g'],
+        ['g a a a'],
+        ['c c c c'],
+        ['a g g g g g f f f g g g g g g f'],
+        ['g g g g g g a a a g g g g g g g g'],
+        ['a t c g'],
+        ['t t t t t t t t t t c a'],
+        ['a a a a a t c'],
+        ['c c a t c c c'],
+        ['g a t c'],
+        ['a a c t']
         ]
+
+re = []
+for i in docs:
+	tmp = ",".join(i)
+	re.append(tmp)
+
+print(re)
+
 # define class labels
 labels = [1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 2, 2, 2, 2, 2, 2, 2, 2]
 ohl=to_categorical(labels)
@@ -40,7 +73,7 @@ print(ohl)
 # integer encode the documents
 vocab_size = 20
 encoded_docs = [one_hot(d, vocab_size) for d in docs]
-print(encoded_docs)
+print('en', encoded_docs)
 # pad documents to a max length of 4 words
 max_length = 15
 padded_docs = pad_sequences(encoded_docs, maxlen=max_length, padding='post')
