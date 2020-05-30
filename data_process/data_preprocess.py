@@ -1,13 +1,15 @@
 from bam.bam_process import BAM
 from vcf.vcf_process import VCF
 from fasta.fasta_process import FASTA
+import numpy as np
 
 
 class DATAPROCESS:
-    def __init__(self, vcf_filename, bam_filename, fasta_filename):
+    def __init__(self, vcf_filename, bam_filename, fasta_filename, data_filename):
         self.vcf_filename = vcf_filename
         self.bam_filename = bam_filename
         self.fasta_filename = fasta_filename
+        self.data_filename = data_filename
 
     def dataproc(self):
         samples_data = []
@@ -59,6 +61,7 @@ class DATAPROCESS:
                     break
                 pos += 1
 
-        return samples_data
+        np.save(self.data_filename, samples_data)
+        # return samples_data
 
 
