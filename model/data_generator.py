@@ -33,7 +33,7 @@ class DataGenerator(keras.utils.Sequence):
         # print('index', index)
         if (index + 1) * self.batch_size < len(self.samples_data):
             idx = self.indexes[index*self.batch_size : (index + 1)*self.batch_size]
-            print('idx', idx)
+            # print('idx', idx)
             ## 存放每个batch送入网络的索引值
             # self.sendin.append((idx))
 
@@ -54,6 +54,7 @@ class DataGenerator(keras.utils.Sequence):
             data = ref + seq
             encoded_docs = [one_hot(d, self.vocab_size) for d in data]
             padded_docs = pad_sequences(encoded_docs, maxlen=self.word_maxlen, padding='post')
+            print('padded_docs shape', padded_docs.shape)
             label = sample[2]
             if label == (0, 0):
                 label = 0
