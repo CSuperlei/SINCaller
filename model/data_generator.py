@@ -28,8 +28,9 @@ class DataGenerator(keras.utils.Sequence):
 
     def __getitem__(self, index):
         # print('index', index)
-        if (index + 1) * self.batch_size <= len(self.samples_data):
+        if (index + 1) * self.batch_size < len(self.samples_data):
             idx = self.indexes[index*self.batch_size : (index + 1)*self.batch_size]
+            print(idx)
             ## 存放每个batch送入网络的索引值
             # self.sendin.append((idx))
 
