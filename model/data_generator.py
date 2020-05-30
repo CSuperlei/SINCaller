@@ -27,7 +27,8 @@ class DataGenerator(keras.utils.Sequence):
             np.random.shuffle(self.indexes)
 
     def __getitem__(self, index):
-        idx = self.indexes[index*self.batch_size: (index + 1)*self.batch_size]
+        print('index', index)
+        idx = self.indexes[index*self.batch_size : (index + 1)*self.batch_size]
         ## 存放每个batch送入网络的索引值
         # self.sendin.append((idx))
 
