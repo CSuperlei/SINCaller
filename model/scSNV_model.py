@@ -19,7 +19,7 @@ class SCSNVMODEL:
         self.init_lr = lr
         self.gpus = gpus
 
-    def model(self):
+    def model_construct(self):
         ## input_shape 代表句子的最大长度和input_length要对应
         inputs = Input(self.input_shape)
         '''
@@ -55,7 +55,7 @@ class SCSNVMODEL:
 
 if __name__ == '__main__':
     m = SCSNVMODEL()
-    m.model()
+    m.model_construct()
 
 
 

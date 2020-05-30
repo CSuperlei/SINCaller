@@ -10,10 +10,11 @@ def training(samples_train_data, samples_test_data, epochs=100, generator_params
         training_generator = DataGenerator(samples_train_data, **generator_params)
         validation_generator = DataGenerator(samples_test_data, **generator_params)
 
-    model = SCSNVMODEL()
+    m = SCSNVMODEL()
     if model_params:
-        model = SCSNVMODEL(**model_params)
+        m = SCSNVMODEL(**model_params)
 
+    model = m.model_construct()
     if hdf5_file and hdf5_fliename != None:
         model.load_weights(hdf5_fliename)
 
