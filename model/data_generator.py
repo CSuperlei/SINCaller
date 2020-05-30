@@ -52,7 +52,9 @@ class DataGenerator(keras.utils.Sequence):
             ref = list(sample[1][0])
             seq = list(sample[1][1])
             data = ref + seq
+            print('data', data)
             encoded_docs = [one_hot(d, self.vocab_size) for d in data]
+            print('en', encoded_docs)
             padded_docs = pad_sequences(encoded_docs, maxlen=self.word_maxlen, padding='post')
             print('padded_docs shape', padded_docs.shape)
             label = sample[2]
