@@ -114,10 +114,10 @@ def main():
         # pad documents to a max length of 4 words
         max_length = 78
         padded_docs = pad_sequences(encoded_docs, maxlen=max_length, padding='post')
-        print(padded_docs)
         print('padded_docs', padded_docs)
-        sample_test_data = [padded_docs, ohl]
-        print(sample_test_data)
+        print('padded_docs shape', padded_docs.shape)
+        # sample_test_data = [padded_docs, ohl]
+        # print(sample_test_data)
         testing(padded_docs, ohl)
 
 
