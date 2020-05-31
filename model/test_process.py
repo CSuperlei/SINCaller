@@ -1,7 +1,7 @@
 from .scSNV_model import SCSNVMODEL
 
 
-def testing(samples_test_data, model_params=None, hdf5_file=True, hdf5_fliename='/home/cailei/bio_project/nbCNV/train_log/model_checkpoint/model_07.hdf5'):
+def testing(samples_test_data, model_params=None, hdf5_file=True, hdf5_fliename='/home/cailei/bio_project/nbCNV/train_log/model_checkpoint/model_05.hdf5'):
     m = SCSNVMODEL()
     if model_params:
         m = SCSNVMODEL(**model_params)
