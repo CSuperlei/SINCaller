@@ -102,16 +102,8 @@ def main():
                 'g, g, g, g, g, g, g, g, g, g, g, g, g, g, g',
                 'g a a a',
                 'c c c c',
-                'a a a a a a a g g g g g g g g',
-                'g g g g g g a a a g g g g g g g g',
-                'a a c c',
-                't t t t t t t t t t c c',
-                'a a a a a c c',
-                'c c a a c c c',
-                'g a a g',
-                'a a c c'
                 ]
-        labels = [2, 0, 2, 0, 2, 0, 2, 0, 2, 0, 2, 0, 2, 0, 2, 0, 1, 1, 1, 1, 1, 1, 1, 1]
+        labels = [2, 0, 2, 0, 2, 0, 2, 0, 2, 0, 2, 0, 2, 0, 2, 0]
         ohl = to_categorical(labels, num_classes=4)
         # print(ohl)
         # integer encode the documents
