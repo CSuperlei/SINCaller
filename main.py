@@ -58,7 +58,8 @@ def main():
         os.environ['TF_CPP_MIN_LOG_LEVEL'] = log_level
 
     mode = args.mode
-    if mode == 1:
+
+    if int(mode) == 1:
         vcf_filename = args.vcf
         bam_filename = args.bam
         fasta_filename = args.fasta
@@ -83,7 +84,7 @@ def main():
         else:
             print('data is empty')
 
-    elif mode == 2:
+    elif int(mode) == 2:
 
         docs = ['a, t, t',
                 'a, a, a',
