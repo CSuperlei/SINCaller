@@ -103,8 +103,8 @@ def main():
                 'ga ga ga',
                 'cc cc cc',
                 ]
-        labels = [1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0]
-        # labels = [0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1]
+        # labels = [1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0]
+        labels = [0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1]
         ohl = to_categorical(labels, num_classes=2)
         # print(ohl)
         # integer encode the documents
@@ -114,8 +114,8 @@ def main():
         # pad documents to a max length of 4 words
         max_length = 78
         padded_docs = pad_sequences(encoded_docs, maxlen=max_length, padding='post')
-        # print(padded_docs)
-        # print('padded_docs shape', padded_docs.shape)
+        print(padded_docs)
+        print('padded_docs shape', padded_docs.shape)
         sample_test_data = [padded_docs, ohl]
         print(sample_test_data)
         testing(sample_test_data)
