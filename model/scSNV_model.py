@@ -1,6 +1,6 @@
 from keras.models import Model
 from keras.optimizers import Adam
-from keras.layers import Input, Embedding, LSTM, Bidirectional, Dense
+from keras.layers import Input, Embedding, LSTM, Bidirectional, Dense, BatchNormalization
 from keras.layers import Dropout
 from keras.utils import multi_gpu_utils
 
@@ -35,12 +35,14 @@ class SCSNVMODEL:
             if i == self.lstm_layers - 1:
                 ## 最后一层只需要最后一个时刻的输入, 所以return_sequences=False
                 bi_lstm = Bidirectional(LSTM(units=self.n_lstm_outdim*(i + 1), return_sequences=False))(bi_lstm)
+                bi_lstm = BatchNormalization()(bi_lstm)
                 # bi_lstm = LSTM(units=self.n_lstm_outdim*(i + 1), return_sequences=False)(bi_lstm)
                 break
 
             ## return_sequences = True 不到最后一层, LSTM的下一层要用到上一层每个时刻的输入, 所以return_sequences设置为True
             bi_lstm = Bidirectional(LSTM(units=self.n_lstm_outdim*(i + 1), return_sequences=True))(bi_lstm)
             # bi_lstm = LSTM(units=self.n_lstm_outdim*(i + 1), return_sequences=True)(bi_lstm)
+            bi_lstm = BatchNormalization()(bi_lstm)
             bi_lstm = Dropout(self.drop_out)(bi_lstm)
 
         dense = bi_lstm
