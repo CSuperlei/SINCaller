@@ -6,7 +6,7 @@ from keras.utils import multi_gpu_utils
 
 
 class SCSNVMODEL:
-    def __init__(self, input_shape=(78, ), n_labels=2, n_lstm_outdim=78, word_maxlen=78, em_inputdim=20, em_outdim=15, lstm_layers=2, dense_num=32, drop_out=0.1, lr=0.001, gpus=2):
+    def __init__(self, input_shape=(78, ), n_labels=2, n_lstm_outdim=78, word_maxlen=78, em_inputdim=20, em_outdim=15, lstm_layers=3, dense_layers=2, dense_num=64, drop_out=0.5, lr=0.001, gpus=2):
         self.input_shape = input_shape
         self.n_labels = n_labels
         self.word_maxlen = word_maxlen
@@ -14,6 +14,7 @@ class SCSNVMODEL:
         self.em_inputdim = em_inputdim
         self.em_outdim =em_outdim
         self.lstm_layers = lstm_layers
+        self.dense_layers = dense_layers
         self.dense_num = dense_num
         self.drop_out = drop_out
         self.init_lr = lr
@@ -42,8 +43,11 @@ class SCSNVMODEL:
             # bi_lstm = LSTM(units=self.n_lstm_outdim*(i + 1), return_sequences=True)(bi_lstm)
             bi_lstm = Dropout(self.drop_out)(bi_lstm)
 
+        dense = bi_lstm
+        for i in range(self.dense_layers - 1, -1, -1):
+            # print(i)
+            dense = Dense(self.dense_num * (i + 1))(dense)
 
-        dense = Dense(self.dense_num)(bi_lstm)
         outputs = Dense(self.n_labels, activation='softmax')(dense)
         model = Model(inputs, outputs)
         model.summary()

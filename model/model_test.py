@@ -65,7 +65,7 @@ model.compile(optimizer='adam', loss='binary_crossentropy', metrics=['acc'])
 # summarize the model
 print(model.summary())
 # fit the model
-model.fit(padded_docs, ohl, epochs=200, verbose=1)
+model.fit(padded_docs, ohl, epochs=20, verbose=1)
 # evaluate the model
 loss, accuracy = model.evaluate(padded_docs, ohl, verbose=1)
 print('Accuracy: %f' % (accuracy*100))
