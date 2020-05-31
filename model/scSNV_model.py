@@ -6,7 +6,7 @@ from keras.utils import multi_gpu_utils
 
 
 class SCSNVMODEL:
-    def __init__(self, input_shape=(78, ), n_labels=2, n_lstm_outdim=128, word_maxlen=78, em_inputdim=20, em_outdim=15, lstm_layers=1, dense_num=32, drop_out=0.1, lr=0.001, gpus=2):
+    def __init__(self, input_shape=(78, ), n_labels=2, n_lstm_outdim=78, word_maxlen=78, em_inputdim=20, em_outdim=15, lstm_layers=1, dense_num=32, drop_out=0.1, lr=0.001, gpus=2):
         self.input_shape = input_shape
         self.n_labels = n_labels
         self.word_maxlen = word_maxlen
@@ -31,23 +31,20 @@ class SCSNVMODEL:
         # print('em.shape', em.shape)
         bi_lstm = em
         for i in range(self.lstm_layers):
-            # print(i)
             if i == self.lstm_layers - 1:
-                # print('end')
                 ## 最后一层只需要最后一个时刻的输入, 所以return_sequences=False
-                # bi_lstm = Bidirectional(LSTM(units=self.n_lstm_outdim*(i + 1), return_sequences=False))(bi_lstm)
-                bi_lstm = LSTM(units=self.n_lstm_outdim*(i + 1), return_sequences=False)(bi_lstm)
+                bi_lstm = Bidirectional(LSTM(units=self.n_lstm_outdim*(i + 1), return_sequences=False))(bi_lstm)
+                # bi_lstm = LSTM(units=self.n_lstm_outdim*(i + 1), return_sequences=False)(bi_lstm)
                 break
 
             ## return_sequences = True 不到最后一层, LSTM的下一层要用到上一层每个时刻的输入, 所以return_sequences设置为True
-            # bi_lstm = Bidirectional(LSTM(units=self.n_lstm_outdim*(i + 1), return_sequences=True))(bi_lstm)
-            bi_lstm = LSTM(units=self.n_lstm_outdim*(i + 1), return_sequences=True)(bi_lstm)
-            # print('bi_lstm.shape', bi_lstm.shape)
+            bi_lstm = Bidirectional(LSTM(units=self.n_lstm_outdim*(i + 1), return_sequences=True))(bi_lstm)
+            # bi_lstm = LSTM(units=self.n_lstm_outdim*(i + 1), return_sequences=True)(bi_lstm)
             bi_lstm = Dropout(self.drop_out)(bi_lstm)
 
 
         dense = Dense(self.dense_num)(bi_lstm)
-        outputs = Dense(self.n_labels, activation='softmax')(dense)
+        outputs = Dense(self.n_labels, activation='sotfmax')(dense)
         model = Model(inputs, outputs)
         model.summary()
         # model = multi_gpu_utils(model, multi_gpu_utils=self.gpus)

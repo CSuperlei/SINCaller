@@ -58,6 +58,7 @@ class DataGenerator(keras.utils.Sequence):
             tmp = ",".join(data)
             # print(tmp)
             batch_data.append(tmp)
+            print('batch_data', batch_data)
             label = sample[2]
             if label == (0, 0):
                 label = 0

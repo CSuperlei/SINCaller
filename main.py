@@ -103,7 +103,8 @@ def main():
                 'g a a a',
                 'c c c c',
                 ]
-        labels = [1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0]
+        # labels = [1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0]
+        labels = [0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1]
         ohl = to_categorical(labels, num_classes=2)
         # print(ohl)
         # integer encode the documents
