@@ -5,7 +5,7 @@ from keras.preprocessing.sequence import pad_sequences
 from keras.utils.np_utils import to_categorical
 
 class DataGenerator(keras.utils.Sequence):
-    def __init__(self, samples_data, batch_size=64, shuffle=True, vocab_size=20, word_maxlen=78, label_len=4):
+    def __init__(self, samples_data, batch_size=64, shuffle=True, vocab_size=20, word_maxlen=78, label_len=3):
         self.samples_data = samples_data
         self.batch_size = batch_size
         self.shuffle = shuffle
@@ -64,8 +64,8 @@ class DataGenerator(keras.utils.Sequence):
                 label = 1
             elif label == (1, 1):
                 label = 2
-            elif label == (1, 2):
-                label = 3
+            # elif label == (1, 2):
+            #     label = 3
             label_data.append(label)
 
         encoded_docs = [one_hot(d, self.vocab_size) for d in batch_data]
