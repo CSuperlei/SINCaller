@@ -44,7 +44,7 @@ class SCSNVMODEL:
 
 
         dense = Dense(self.dense_num)(bi_lstm)
-        outputs = Dense(self.n_labels, activation='sotfmax')(dense)
+        outputs = Dense(self.n_labels, activation='softmax')(dense)
         model = Model(inputs, outputs)
         model.summary()
         # model = multi_gpu_utils(model, multi_gpu_utils=self.gpus)
