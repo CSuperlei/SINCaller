@@ -47,13 +47,15 @@ def main():
     # q.seq_atcg(fastq_file)
 
     gpus = args.gpus
-    gpus = ",".join(list(str(gpus)))
-    # print('gpus', gpus)
-    os.environ["CUDA_VISIBLE_DEVICES"] = gpus
+    if gpus is not None:
+        gpus = ",".join(list(str(gpus)))
+        # print('gpus', gpus)
+        os.environ["CUDA_VISIBLE_DEVICES"] = gpus
 
     log_level = args.log
-    # print('log_level', log_level)
-    os.environ['TF_CPP_MIN_LOG_LEVEL'] = log_level
+    if log_level is not None:
+        # print('log_level', log_level)
+        os.environ['TF_CPP_MIN_LOG_LEVEL'] = log_level
 
     mode = args.mode
     if mode == 1:
