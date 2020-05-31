@@ -70,6 +70,7 @@ class DataGenerator(keras.utils.Sequence):
             #     label = 3
             # print(label)
             label_data.append(label)
+            print(label_data)
 
         encoded_docs = [one_hot(d, self.vocab_size) for d in batch_data]
         # print('en_docs shape', encoded_docs.shape)
