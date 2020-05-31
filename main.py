@@ -123,6 +123,7 @@ def main():
         # print(padded_docs)
         # print('padded_docs shape', padded_docs.shape)
         sample_test_data = [padded_docs, ohl]
+        print(sample_test_data)
         testing(sample_test_data)
 
 
