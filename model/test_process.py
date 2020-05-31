@@ -11,6 +11,6 @@ def testing(samples_test_data, samples_test_label, model_params=None, hdf5_file=
         model.load_weights(hdf5_fliename)
 
     loss, accuracy = model.evaluate(samples_test_data, samples_test_label, verbose=1)
-    result = model.predict(samples_test_data[0])
+    result = model.predict(samples_test_data)
     print('Accuracy: %f' % (accuracy * 100))
     print(result)
