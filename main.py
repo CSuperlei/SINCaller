@@ -106,7 +106,7 @@ def main():
         labels = [1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0]
         # labels = [0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1]
         ohl = to_categorical(labels, num_classes=2)
-        # print(ohl)
+        print('ohl', ohl)
         # integer encode the documents
         vocab_size = 17
         encoded_docs = [one_hot(d, vocab_size) for d in docs]
