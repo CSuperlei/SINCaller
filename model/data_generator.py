@@ -69,11 +69,11 @@ class DataGenerator(keras.utils.Sequence):
             label_data.append(label)
 
         encoded_docs = [one_hot(d, self.vocab_size) for d in batch_data]
-        print('en_docs shape', encoded_docs.shape)
+        # print('en_docs shape', encoded_docs.shape)
         padded_docs = pad_sequences(encoded_docs, maxlen=self.word_maxlen, padding='post')
-        print('padded_docs shape', padded_docs.shape)
+        # print('padded_docs shape', padded_docs.shape)
         label_data = to_categorical(label_data, num_classes=self.label_len)
-        X = np.array(batch_data)
+        X = np.array(padded_docs)
         y = np.array(label_data)
         return X, y
 

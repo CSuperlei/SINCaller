@@ -29,6 +29,7 @@ def main():
     # filename = args.vcf
     # readfile(filename)
     for i in range(10):
+        pass
 
 
 if __name__ == '__main__':

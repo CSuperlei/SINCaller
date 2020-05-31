@@ -69,7 +69,7 @@ def main():
         samples_train_data = samples_data[:sep]
         samples_test_data = samples_data[sep:]
         sendin = training(samples_train_data, samples_test_data)
-        print(sendin)
+        # print(sendin)
     else:
         print('data is empty')
 
