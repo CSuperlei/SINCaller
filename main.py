@@ -104,7 +104,7 @@ def main():
                 'c c c c',
                 ]
         labels = [2, 0, 2, 0, 2, 0, 2, 0, 2, 0, 2, 0, 2, 0, 2, 0]
-        ohl = to_categorical(labels, num_classes=3)
+        ohl = to_categorical(labels, num_classes=2)
         # print(ohl)
         # integer encode the documents
         vocab_size = 20

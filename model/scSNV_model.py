@@ -6,7 +6,7 @@ from keras.utils import multi_gpu_utils
 
 
 class SCSNVMODEL:
-    def __init__(self, input_shape=(78, ), n_labels=3, n_lstm_outdim=128, word_maxlen=78, em_inputdim=20, em_outdim=15, lstm_layers=2, dense_num=32, drop_out=0.1, lr=0.001, gpus=2):
+    def __init__(self, input_shape=(78, ), n_labels=2, n_lstm_outdim=128, word_maxlen=78, em_inputdim=20, em_outdim=15, lstm_layers=1, dense_num=32, drop_out=0.1, lr=0.001, gpus=2):
         self.input_shape = input_shape
         self.n_labels = n_labels
         self.word_maxlen = word_maxlen
