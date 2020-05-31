@@ -3,12 +3,13 @@ import time
 from .data_generator import DataGenerator
 from .scSNV_model import SCSNVMODEL
 
-def training(samples_train_data, samples_test_data, epochs=100, generator_params=None, model_params=None, hdf5_file = False, hdf5_fliename=None, mcheckpoint_dir='/home/cailei/bio_project/nbCNV/train_log/model_checkpoint_attention/', mtensorboard_dir='./tensorboard_logs/'):
+
+def training(samples_train_data, samples_val_data, epochs=10, generator_params=None, model_params=None, hdf5_file = False, hdf5_fliename=None, mcheckpoint_dir='/home/cailei/bio_project/nbCNV/train_log/model_checkpoint/', mtensorboard_dir='./tensorboard_logs/'):
     training_generator = DataGenerator(samples_train_data)
-    validation_generator = DataGenerator(samples_test_data)
+    validation_generator = DataGenerator(samples_val_data)
     if generator_params:
         training_generator = DataGenerator(samples_train_data, **generator_params)
-        validation_generator = DataGenerator(samples_test_data, **generator_params)
+        validation_generator = DataGenerator(samples_val_data, **generator_params)
 
     m = SCSNVMODEL()
     if model_params:

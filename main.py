@@ -3,6 +3,11 @@ import argparse
 import numpy as np
 from data_process.data_preprocess import DATAPROCESS
 from model.train_process import training
+from model.test_process import testing
+from keras.preprocessing.text import one_hot
+from keras.preprocessing.sequence import pad_sequences
+from keras.utils.np_utils import to_categorical
+
 
 def args_func():
     parser = argparse.ArgumentParser(description="scSNV software")
@@ -14,6 +19,7 @@ def args_func():
     parser.add_argument('--log', '-lo', help='log level')
     parser.add_argument('--data', '-d', help='data filename')
     parser.add_argument('--load', '-ld', help='load filename')
+    parser.add_argument('--model', '-m', help='mode 1 is training; mode 2 is tesing', required=True)
     args = parser.parse_args()
     return args
 
@@ -49,29 +55,73 @@ def main():
     # print('log_level', log_level)
     os.environ['TF_CPP_MIN_LOG_LEVEL'] = log_level
 
-    vcf_filename = args.vcf
-    bam_filename = args.bam
-    fasta_filename = args.fasta
-    data_filename = args.data
-    load_filename = args.load
+    mode = args.mode
+    if mode == 1:
+        vcf_filename = args.vcf
+        bam_filename = args.bam
+        fasta_filename = args.fasta
+        data_filename = args.data
+        load_filename = args.load
 
-    if load_filename is not None:
-        samples_data = np.load(load_filename, allow_pickle=True)
-    elif data_filename is not None:
-        d = DATAPROCESS(vcf_filename, bam_filename, fasta_filename, data_filename)
-        samples_data = d.dataproc()
+        if load_filename is not None:
+            samples_data = np.load(load_filename, allow_pickle=True)
+        elif data_filename is not None:
+            d = DATAPROCESS(vcf_filename, bam_filename, fasta_filename, data_filename)
+            samples_data = d.dataproc()
 
-    # print('samples_data shape', samples_data.shape)
+        # print('samples_data shape', samples_data.shape)
 
-    if samples_data is not None:
-        # print(samples_data)
-        sep = int(np.floor(len(samples_data) * 0.8))
-        samples_train_data = samples_data[:sep]
-        samples_test_data = samples_data[sep:]
-        sendin = training(samples_train_data, samples_test_data)
-        # print(sendin)
-    else:
-        print('data is empty')
+        if samples_data is not None:
+            # print(samples_data)
+            sep = int(np.floor(len(samples_data) * 0.8))
+            samples_train_data = samples_data[:sep]
+            samples_val_data = samples_data[sep:]
+            sendin = training(samples_train_data, samples_val_data)
+            # print(sendin)
+        else:
+            print('data is empty')
+
+    elif mode == 2:
+
+        docs = ['a, t, t',
+                'a, a, a',
+                'g, t, t, t, t, t',
+                'c, c, c, c, c, c',
+                'a, g, g',
+                't, t, t',
+                't, c, c',
+                'c, c, c',
+                'g, c, c, c',
+                'a, a, a, a',
+                'g, g, g, t',
+                't, t, t, t',
+                'a, g, g, g, g, g, g, g, g, g, g, g, g, g, g',
+                'g, g, g, g, g, g, g, g, g, g, g, g, g, g, g',
+                'g a a a',
+                'c c c c',
+                'a a a a a a a g g g g g g g g',
+                'g g g g g g a a a g g g g g g g g',
+                'a a c c',
+                't t t t t t t t t t c c',
+                'a a a a a c c',
+                'c c a a c c c',
+                'g a a g',
+                'a a c c'
+                ]
+        labels = [2, 0, 2, 0, 2, 0, 2, 0, 2, 0, 2, 0, 2, 0, 2, 0, 1, 1, 1, 1, 1, 1, 1, 1]
+        ohl = to_categorical(labels, num_classes=4)
+        # print(ohl)
+        # integer encode the documents
+        vocab_size = 20
+        encoded_docs = [one_hot(d, vocab_size) for d in docs]
+        # print('en', encoded_docs)
+        # pad documents to a max length of 4 words
+        max_length = 78
+        padded_docs = pad_sequences(encoded_docs, maxlen=max_length, padding='post')
+        # print(padded_docs)
+        # print('padded_docs shape', padded_docs.shape)
+        sample_test_data = [padded_docs, ohl]
+        testing(sample_test_data)
 
 
 if __name__ == '__main__':
