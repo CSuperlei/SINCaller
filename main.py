@@ -118,7 +118,7 @@ def main():
         print('padded_docs', padded_docs)
         sample_test_data = [padded_docs, ohl]
         print(sample_test_data)
-        testing(sample_test_data)
+        testing(padded_docs, ohl)
 
 
 if __name__ == '__main__':
