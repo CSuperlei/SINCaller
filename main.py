@@ -19,7 +19,7 @@ def args_func():
     parser.add_argument('--log', '-lo', help='log level')
     parser.add_argument('--data', '-d', help='data filename')
     parser.add_argument('--load', '-ld', help='load filename')
-    parser.add_argument('--model', '-m', help='mode 1 is training; mode 2 is tesing', required=True)
+    parser.add_argument('--mode', '-m', help='mode 1 is training; mode 2 is tesing', required=True)
     args = parser.parse_args()
     return args
 
