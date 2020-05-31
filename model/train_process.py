@@ -4,7 +4,7 @@ from .data_generator import DataGenerator
 from .scSNV_model import SCSNVMODEL
 
 
-def training(samples_train_data, samples_val_data, epochs=10, generator_params=None, model_params=None, hdf5_file = False, hdf5_fliename=None, mcheckpoint_dir='/home/cailei/bio_project/nbCNV/train_log/model_checkpoint/', mtensorboard_dir='./tensorboard_logs/'):
+def training(samples_train_data, samples_val_data, epochs=20, generator_params=None, model_params=None, hdf5_file = False, hdf5_fliename=None, mcheckpoint_dir='/home/cailei/bio_project/nbCNV/train_log/model_checkpoint/', mtensorboard_dir='./tensorboard_logs/'):
     training_generator = DataGenerator(samples_train_data)
     validation_generator = DataGenerator(samples_val_data)
     if generator_params:
