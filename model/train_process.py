@@ -5,6 +5,8 @@ from .scSNV_model import SCSNVMODEL
 
 
 def training(samples_train_data, samples_val_data, epochs=20, generator_params=None, model_params=None, hdf5_file = False, hdf5_fliename=None, mcheckpoint_dir='/home/cailei/bio_project/nbCNV/train_log/model_checkpoint/', mtensorboard_dir='./tensorboard_logs/'):
+    print('sample_train_data', len(samples_train_data))
+    print('sample_val_data', len(samples_val_data))
     training_generator = DataGenerator(samples_train_data)
     validation_generator = DataGenerator(samples_val_data)
     if generator_params:
