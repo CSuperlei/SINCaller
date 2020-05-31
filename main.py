@@ -86,29 +86,29 @@ def main():
 
     elif int(mode) == 2:
 
-        docs = ['a, t, t',
-                'a, a, a',
-                'g, t, t, t, t, t',
-                'c, c, c, c, c, c',
-                'a, g, g',
-                't, t, t',
-                't, c, c',
-                'c, c, c',
-                'g, c, c, c',
-                'a, a, a, a',
-                'g, g, g, t',
-                't, t, t, t',
-                'a, g, g, g, g, g, g, g, g, g, g, g, g, g, g',
-                'g, g, g, g, g, g, g, g, g, g, g, g, g, g, g',
-                'g a a a',
-                'c c c c',
+        docs = ['at at',
+                'aa aa',
+                'gt gt gt gt gt',
+                'cc cc cc cc cc',
+                'ag ag',
+                'tt tt',
+                'tc tc',
+                'cc cc',
+                'gc gc gc',
+                'aa aa aa',
+                'gg gg gt',
+                'tt tt tt',
+                'ag ag ag ag ag ag ag ag ag ag ag ag ag ag',
+                'gg gg gg gg gg gg gg gg gg gg gg gg gg gg',
+                'ga ga ga',
+                'cc cc cc',
                 ]
-        # labels = [1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0]
-        labels = [0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1]
+        labels = [1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0]
+        # labels = [0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1]
         ohl = to_categorical(labels, num_classes=2)
         # print(ohl)
         # integer encode the documents
-        vocab_size = 20
+        vocab_size = 17
         encoded_docs = [one_hot(d, vocab_size) for d in docs]
         # print('en', encoded_docs)
         # pad documents to a max length of 4 words

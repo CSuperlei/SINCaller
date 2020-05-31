@@ -5,7 +5,7 @@ from keras.preprocessing.sequence import pad_sequences
 from keras.utils.np_utils import to_categorical
 
 class DataGenerator(keras.utils.Sequence):
-    def __init__(self, samples_data, batch_size=64, shuffle=True, vocab_size=20, word_maxlen=78, label_len=2):
+    def __init__(self, samples_data, batch_size=64, shuffle=True, vocab_size=17, word_maxlen=78, label_len=2):
         self.samples_data = samples_data
         self.batch_size = batch_size
         self.shuffle = shuffle
@@ -51,11 +51,11 @@ class DataGenerator(keras.utils.Sequence):
             sample = self.samples_data[item]
             info = sample[0]
             self.sendin.append(info)
-            ref = list(sample[1][0])
+            ref = sample[1][0]
             seq = list(sample[1][1])
-            data = ref + seq
+            data = [ref + i for i in seq]
             # print('data', data)
-            tmp = ",".join(data)
+            tmp = " ".join(data)
             # print(tmp)
             batch_data.append(tmp)
             # print('batch_data', batch_data)

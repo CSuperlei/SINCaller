@@ -6,12 +6,12 @@ from keras.utils import multi_gpu_utils
 
 
 class SCSNVMODEL:
-    def __init__(self, input_shape=(78, ), n_labels=2, n_lstm_outdim=78, word_maxlen=78, em_inputdim=15, em_outdim=15, lstm_layers=1, dense_layers=1, dense_num=64, drop_out=0.2, lr=0.001, gpus=2):
+    def __init__(self, input_shape=(78, ), n_labels=2, n_lstm_outdim=78, word_maxlen=78, em_inputdim=17, em_outdim=17, lstm_layers=1, dense_layers=1, dense_num=64, drop_out=0.2, lr=0.001, gpus=2):
         self.input_shape = input_shape
         self.n_labels = n_labels
         self.word_maxlen = word_maxlen
         self.n_lstm_outdim = n_lstm_outdim
-        self.em_inputdim = em_inputdim
+        self.em_inputdim = em_inputdim  ## 和one-hot的vocab_size可以相同
         self.em_outdim =em_outdim
         self.lstm_layers = lstm_layers
         self.dense_layers = dense_layers
