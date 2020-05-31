@@ -42,11 +42,11 @@ def main():
 
     gpus = args.gpus
     gpus = ",".join(list(str(gpus)))
-    print('gpus', gpus)
+    # print('gpus', gpus)
     os.environ["CUDA_VISIBLE_DEVICES"] = gpus
 
     log_level = args.log
-    print('log_level', log_level)
+    # print('log_level', log_level)
     os.environ['TF_CPP_MIN_LOG_LEVEL'] = log_level
 
     vcf_filename = args.vcf

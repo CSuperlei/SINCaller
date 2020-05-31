@@ -54,7 +54,7 @@ class DataGenerator(keras.utils.Sequence):
             ref = list(sample[1][0])
             seq = list(sample[1][1])
             data = ref + seq
-            print('data', data)
+            # print('data', data)
             tmp = ",".join(data)
             batch_data.append(tmp)
             label = sample[2]

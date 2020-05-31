@@ -48,7 +48,7 @@ class SCSNVMODEL:
         outputs = Dense(self.n_labels, activation='softmax')(dense)
         model = Model(inputs, outputs)
         model.summary()
-        # model = multi_gpu_utils(model, multi_gpu_utils=self.gpus)
+        model = multi_gpu_utils(model, multi_gpu_utils=self.gpus)
         model.compile(optimizer=Adam(lr=self.init_lr), loss='categorical_crossentropy', metrics=['acc'])
         return model
 
