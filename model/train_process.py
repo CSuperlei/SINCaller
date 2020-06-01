@@ -1,10 +1,19 @@
 import keras
+import keras.backend as K
 import time
 from .data_generator import DataGenerator
 from .scSNV_model import SCSNVMODEL
 
+def schedule(model, epoch):
+    if epoch % 5 == 0 and epoch != 0:
+        lr = K.get_value(model.optimizer.lr)
+        print('current lr', lr)
+        K.set_value(model.optimizer.lr, lr / 2)
 
-def training(samples_train_data, samples_val_data, epochs=20, generator_params=None, model_params=None, hdf5_file = False, hdf5_fliename=None, mcheckpoint_dir='/home/cailei/bio_project/nbCNV/train_log/model_checkpoint/', mtensorboard_dir='./tensorboard_logs/'):
+    return K.get_value(model.optimizer.lr)
+
+
+def training(samples_train_data, samples_val_data, epochs=30, generator_params=None, model_params=None, hdf5_file = False, hdf5_fliename=None, mcheckpoint_dir='/home/cailei/bio_project/nbCNV/train_log/model_checkpoint/', mtensorboard_dir='./tensorboard_logs/'):
     print('sample_train_data', len(samples_train_data))
     print('sample_val_data', len(samples_val_data))
     training_generator = DataGenerator(samples_train_data)
@@ -26,11 +35,14 @@ def training(samples_train_data, samples_val_data, epochs=20, generator_params=N
                                            save_best_only=False, save_weights_only=False, mode='auto', period=1)
     # model_name = 'tensorboard_scSNV_{}'.format(int(time.time()))
     # cb_3 = keras.callbacks.TensorBoard(log_dir=mtensorboard_dir+'{}'.format(model_name))
+
+    change_lr = schedule(model, epochs)
+    cb_4 = keras.callbacks.LearningRateScheduler(change_lr)
     results = model.fit_generator(generator=training_generator,
                                   validation_data=validation_generator,
                                   epochs=epochs,
                                   nb_worker=1,
-                                  callbacks=[cb_1, cb_2 ])
+                                  callbacks=[cb_1, cb_2, cb_4])
 
     return training_generator.get_sendin_content()
 
