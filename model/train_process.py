@@ -36,8 +36,7 @@ def training(samples_train_data, samples_val_data, epochs=30, generator_params=N
     # model_name = 'tensorboard_scSNV_{}'.format(int(time.time()))
     # cb_3 = keras.callbacks.TensorBoard(log_dir=mtensorboard_dir+'{}'.format(model_name))
 
-    change_lr = schedule(model, epochs)
-    cb_4 = keras.callbacks.LearningRateScheduler(change_lr)
+    cb_4 = keras.callbacks.LearningRateScheduler(schedule)
     results = model.fit_generator(generator=training_generator,
                                   validation_data=validation_generator,
                                   epochs=epochs,
