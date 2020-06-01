@@ -5,10 +5,10 @@ from .data_generator import DataGenerator
 from .scSNV_model import SCSNVMODEL
 
 def schedule(model, epoch):
-    if epoch % 5 == 0 and epoch != 0:
+    if epoch % 10 == 0 and epoch != 0:
         lr = K.get_value(model.optimizer.lr)
         print('current lr', lr)
-        K.set_value(model.optimizer.lr, lr / 2)
+        K.set_value(model.optimizer.lr, lr * 0.1)
 
     return K.get_value(model.optimizer.lr)
 
