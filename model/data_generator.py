@@ -15,6 +15,10 @@ class DataGenerator(keras.utils.Sequence):
         self.label_len = label_len
         self.indexes = None
         self.on_epoch_end()
+        self.d = {'aa': 1, 'at': 2, 'ac': 3, 'ag':4,
+             'tt': 5, 'ta': 6, 'tc': 7, 'tg':8,
+             'cc': 9, 'ca':10, 'ct': 11, 'cg':12,
+             'gg':13, 'ga':14, 'gc': 15, 'gt':16}
 
 
     def __len__(self):
@@ -41,6 +45,10 @@ class DataGenerator(keras.utils.Sequence):
 
             return X, y
 
+    def __str_to_int(self, s):
+        r = self.d[s]
+        return str(r)
+
     def __data_generation(self, idx):
         ## 处理数据
         # X = np.empty((self.batch_size, self.word_maxlen))
@@ -54,9 +62,10 @@ class DataGenerator(keras.utils.Sequence):
             ref = sample[1][0]
             seq = list(sample[1][1])
             data = [ref + i for i in seq]
+            i_data = [self.__str_to_int(i) for i in data]
             # print('data', data)
-            tmp = " ".join(data)
-            # print(tmp)
+            tmp = " ".join(i_data)
+            print('tmp', tmp)
             batch_data.append(tmp)
             # print('batch_data', batch_data)
             label = sample[2]
@@ -76,9 +85,9 @@ class DataGenerator(keras.utils.Sequence):
             # print(label)
             # print('label_data', label_data)
 
-        encoded_docs = [one_hot(d, self.vocab_size) for d in batch_data]
+        # encoded_docs = [one_hot(d, self.vocab_size) for d in batch_data]
         # print('en_docs shape', encoded_docs.shape)
-        padded_docs = pad_sequences(encoded_docs, maxlen=self.word_maxlen, padding='post')
+        padded_docs = pad_sequences(batch_data, maxlen=self.word_maxlen, padding='post')
         # print('padded_docs shape', padded_docs.shape)
         label_data = to_categorical(label_data, num_classes=self.label_len)
         # print('padded_docs', padded_docs)
