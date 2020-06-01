@@ -47,7 +47,7 @@ class DataGenerator(keras.utils.Sequence):
 
     def __str_to_int(self, s):
         r = self.d[s]
-        return str(r)
+        return r
 
     def __data_generation(self, idx):
         ## 处理数据
