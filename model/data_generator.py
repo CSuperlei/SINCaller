@@ -62,14 +62,18 @@ class DataGenerator(keras.utils.Sequence):
             label = sample[2]
             if label == (0, 0):
                 label = 0
+                label_data.append(label)
             elif label == (0, 1):
                 label = 1
+                label_data.append(label)
             elif label == (1, 1):
                 label = 1
-            # elif label == (1, 2):
-            #     label = 3
+                label_data.append(label)
+            elif label == (1, 2):
+                label = 1
+                label_data.append(label)
+
             # print(label)
-            label_data.append(label)
             # print('label_data', label_data)
 
         encoded_docs = [one_hot(d, self.vocab_size) for d in batch_data]
