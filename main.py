@@ -85,7 +85,10 @@ def main():
             print('data is empty')
 
     elif int(mode) == 2:
-
+        d = {'aa': 1, 'at': 2, 'ac': 3, 'ag': 4,
+                  'tt': 5, 'ta': 6, 'tc': 7, 'tg': 8,
+                  'cc': 9, 'ca': 10, 'ct': 11, 'cg': 12,
+                  'gg': 13, 'ga': 14, 'gc': 15, 'gt': 16}
         docs = ['at at',
                 'aa aa',
                 'gt gt gt gt gt',
@@ -103,17 +106,26 @@ def main():
                 'ga ga ga',
                 'cc cc cc',
                 ]
+
+        for i, item in enumerate(docs):
+            t = []
+            for tmp in item.split(' '):
+                r = d[tmp]
+                t.append(r)
+            docs[i] = t
+            t = []
+
         labels = [1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0]
         # labels = [0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1]
         ohl = to_categorical(labels, num_classes=2)
         print('ohl', ohl)
         # integer encode the documents
-        vocab_size = 17
-        encoded_docs = [one_hot(d, vocab_size) for d in docs]
+        # vocab_size = 17
+        # encoded_docs = [one_hot(d, vocab_size) for d in docs]
         # print('en', encoded_docs)
         # pad documents to a max length of 4 words
         max_length = 20
-        padded_docs = pad_sequences(encoded_docs, maxlen=max_length, padding='post')
+        padded_docs = pad_sequences(docs, maxlen=max_length, padding='post')
         print('padded_docs', padded_docs)
         print('padded_docs shape', padded_docs.shape)
         # sample_test_data = [padded_docs, ohl]

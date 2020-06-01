@@ -63,11 +63,12 @@ class DataGenerator(keras.utils.Sequence):
             seq = list(sample[1][1])
             data = [ref + i for i in seq]
             i_data = [self.__str_to_int(i) for i in data]
+            print('i_data', i_data)
             # print('data', data)
-            tmp = " ".join(i_data)
-            print('tmp', tmp)
-            batch_data.append(tmp)
-            # print('batch_data', batch_data)
+            # tmp = ", ".join(i_data)
+            # print('tmp', tmp)
+            batch_data.append(i_data)
+            print('batch_data', batch_data)
             label = sample[2]
             if label == (0, 0):
                 label = 0
@@ -90,7 +91,7 @@ class DataGenerator(keras.utils.Sequence):
         padded_docs = pad_sequences(batch_data, maxlen=self.word_maxlen, padding='post')
         # print('padded_docs shape', padded_docs.shape)
         label_data = to_categorical(label_data, num_classes=self.label_len)
-        # print('padded_docs', padded_docs)
+        print('padded_docs', padded_docs)
         # print('label_data', label_data)
         X = np.array(padded_docs)
         y = np.array(label_data)
