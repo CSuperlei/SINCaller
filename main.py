@@ -112,7 +112,7 @@ def main():
         encoded_docs = [one_hot(d, vocab_size) for d in docs]
         # print('en', encoded_docs)
         # pad documents to a max length of 4 words
-        max_length = 78
+        max_length = 20
         padded_docs = pad_sequences(encoded_docs, maxlen=max_length, padding='post')
         print('padded_docs', padded_docs)
         print('padded_docs shape', padded_docs.shape)
