@@ -16,9 +16,10 @@ class DataGenerator(keras.utils.Sequence):
         self.indexes = None
         self.on_epoch_end()
         self.d = {'aa': 1, 'at': 2, 'ac': 3, 'ag':4,
-             'tt': 5, 'ta': 6, 'tc': 7, 'tg':8,
-             'cc': 9, 'ca':10, 'ct': 11, 'cg':12,
-             'gg':13, 'ga':14, 'gc': 15, 'gt':16}
+                  'tt': 5, 'ta': 6, 'tc': 7, 'tg':8,
+                  'cc': 9, 'ca':10, 'ct': 11, 'cg':12,
+                  'gg':13, 'ga':14, 'gc': 15, 'gt':16,
+                  'a': 1, 't': 2, 'c':3, 'g': 4}
 
 
     def __len__(self):
