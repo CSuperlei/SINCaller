@@ -77,11 +77,11 @@ def main():
     elif int(mode) == 2:  ## 测试
         load_filename = args.load
         if load_filename is not None:
-            samples_data = np.load(load_filename, allow_pickle=True)
-       
-        if samples_data is not None and int(args.test) == 1:
+            test_data = np.load(load_filename, allow_pickle=True)
+
+        if test_data is not None and int(args.test) == 1:
             generator_params = { 'shuffle': False }
-            sendin = testing(samples_data, test_model=1, generator_params=generator_params)
+            sendin = testing(test_data, test_model=1, generator_params=generator_params)
 
         elif int(args.test) == 2:
             d = {'aa': 1, 'at': 2, 'ac': 3, 'ag': 4,
