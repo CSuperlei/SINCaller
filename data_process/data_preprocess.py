@@ -35,6 +35,7 @@ class DATAPROCESS:
             if variant_seq is None:
                 break
 
+            variant_seq = ['d' if item == '' else item for item in variant_seq]
             variant_seq = [item.lower() for item in variant_seq]
             s_c_p = sample + '_' + chr + '_' + pos
             variant_sample = (s_c_p, (ref, tuple(variant_seq)), label)

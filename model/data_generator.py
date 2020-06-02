@@ -5,7 +5,7 @@ from keras.preprocessing.sequence import pad_sequences
 from keras.utils.np_utils import to_categorical
 
 class DataGenerator(keras.utils.Sequence):
-    def __init__(self, samples_data, batch_size=64, shuffle=True, vocab_size=17, word_maxlen=20, label_len=2):
+    def __init__(self, samples_data, batch_size=64, shuffle=True, vocab_size=17, word_maxlen=78, label_len=2):
         self.samples_data = samples_data
         self.batch_size = batch_size
         self.shuffle = shuffle
@@ -15,11 +15,11 @@ class DataGenerator(keras.utils.Sequence):
         self.label_len = label_len
         self.indexes = None
         self.on_epoch_end()
-        self.d = {'aa': 1, 'at': 2, 'ac': 3, 'ag':4,
-                  'tt': 5, 'ta': 6, 'tc': 7, 'tg':8,
-                  'cc': 9, 'ca':10, 'ct': 11, 'cg':12,
-                  'gg':13, 'ga':14, 'gc': 15, 'gt':16,
-                  'a': 1, 't': 2, 'c': 3, 'g': 4}
+        self.d = {'aa': 1, 'at': 2, 'ac': 3, 'ag': 4, 'ad': -1,
+                  'tt': 5, 'ta': 6, 'tc': 7, 'tg': 8, 'td': -1,
+                  'cc': 9, 'ca': 10, 'ct': 11, 'cg': 12, 'cd': -1,
+                  'gg': 13, 'ga': 14, 'gc': 15, 'gt': 16, 'gd': -1,
+                  }
 
 
     def __len__(self):
@@ -64,12 +64,12 @@ class DataGenerator(keras.utils.Sequence):
             seq = list(sample[1][1])
             data = [ref + i for i in seq]
             i_data = [self.__str_to_int(i) for i in data]
-            print('i_data', i_data)
+            # print('i_data', i_data)
             # print('data', data)
             # tmp = ", ".join(i_data)
             # print('tmp', tmp)
             batch_data.append(i_data)
-            print('batch_data', batch_data)
+            # print('batch_data', batch_data)
             label = sample[2]
             if label == (0, 0):
                 label = 0

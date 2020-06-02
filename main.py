@@ -87,10 +87,12 @@ def main():
                 sendin = testing(samples_data, test_model=1, generator_params=generator_params)
 
         elif int(args.test) == 2:
-            d = {'aa': 1, 'at': 2, 'ac': 3, 'ag': 4,
-                 'tt': 5, 'ta': 6, 'tc': 7, 'tg': 8,
-                 'cc': 9, 'ca': 10, 'ct': 11, 'cg': 12,
-                 'gg': 13, 'ga': 14, 'gc': 15, 'gt': 16}
+            d = {
+                'aa': 1, 'at': 2, 'ac': 3, 'ag': 4, 'ad': -1,
+                'tt': 5, 'ta': 6, 'tc': 7, 'tg': 8, 'td': -1,
+                'cc': 9, 'ca': 10, 'ct': 11, 'cg': 12, 'cd': -1,
+                'gg': 13, 'ga': 14, 'gc': 15, 'gt': 16, 'gd': -1,
+            }
             docs = ['at at',
                     'aa aa',
                     'gt gt gt gt gt',
@@ -121,7 +123,7 @@ def main():
             # labels = [0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1]
             ohl = to_categorical(labels, num_classes=2)
             print('ohl', ohl)
-            max_length = 20
+            max_length = 78
             padded_docs = pad_sequences(docs, maxlen=max_length, padding='post')
             print('padded_docs', padded_docs)
             print('padded_docs shape', padded_docs.shape)
