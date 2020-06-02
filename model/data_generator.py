@@ -92,7 +92,7 @@ class DataGenerator(keras.utils.Sequence):
         padded_docs = pad_sequences(batch_data, maxlen=self.word_maxlen, padding='post')
         # print('padded_docs shape', padded_docs.shape)
         label_data = to_categorical(label_data, num_classes=self.label_len)
-        print('padded_docs', padded_docs)
+        # print('padded_docs', padded_docs)
         # print('label_data', label_data)
         X = np.array(padded_docs)
         y = np.array(label_data)
