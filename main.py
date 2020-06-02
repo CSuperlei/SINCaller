@@ -78,14 +78,12 @@ def main():
         load_filename = args.load
         if load_filename is not None:
             samples_data = np.load(load_filename, allow_pickle=True)
-        else:
-            print('load filename is empyt')
-            return
+       
         if samples_data is not None and int(args.test) == 1:
             generator_params = { 'shuffle': False }
             sendin = testing(samples_data, test_model=1, generator_params=generator_params)
 
-        elif samples_data is not None and int(args.test) == 2:
+        elif int(args.test) == 2:
             d = {'aa': 1, 'at': 2, 'ac': 3, 'ag': 4,
                  'tt': 5, 'ta': 6, 'tc': 7, 'tg': 8,
                  'cc': 9, 'ca': 10, 'ct': 11, 'cg': 12,
