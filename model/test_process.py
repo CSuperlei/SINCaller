@@ -27,9 +27,8 @@ def testing(samples_test_data, test_model=1, model_params=None,  generator_param
     ## 直接送数据
     elif test_model == 2:
         testing_generator = TEST(samples_test_data, test_type=1)
-        test_data = testing_generator.data_generator()
-        print(test_data)
-        loss, accuracy = model.evaluate(test_data, batch_size=64)
+        X, y = testing_generator.data_generator()
+        loss, accuracy = model.evaluate(X, y, batch_size=64)
         print('Accuracy: %f'%(accuracy * 100))
         # print(testing_generator.get_sendin())
 
