@@ -1,6 +1,7 @@
 from .scSNV_model import SCSNVMODEL
 from .train_data_generator import DataGenerator
 from .test_data_generator import TEST
+import numpy as np
 
 def testing(samples_test_data, test_model=1, model_params=None,  generator_params=None, hdf5_file=True, hdf5_fliename='/home/cailei/bio_project/nbCNV/train_log/model_checkpoint/model_12.hdf5'):
     print('samples test data', len(samples_test_data))
@@ -31,7 +32,8 @@ def testing(samples_test_data, test_model=1, model_params=None,  generator_param
         loss, accuracy = model.evaluate(X, y, batch_size=64)
         print('Accuracy: %f'%(accuracy * 100))
         result = model.predict(X, batch_size=64)
-        print(result)
+        re = np.array(result)
+        print(re.argmax())
         print(testing_generator.get_sendin())
 
     ## 随机生成数据送入网络
@@ -40,6 +42,7 @@ def testing(samples_test_data, test_model=1, model_params=None,  generator_param
         test_data = testing_generator.data_generator()
         result = model.predict(test_data, batch_size=64)
         print(result)
+
         print(testing_generator.get_sendin())
 
 
