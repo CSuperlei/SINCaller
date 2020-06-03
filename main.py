@@ -173,7 +173,7 @@ def main():
             print(samples_data)
         ## 生成未知label数据
         elif data_filename is not None and region_filename is not None:
-            d = DATAPROCESS(bam_filename=bam_filename, fasta_filename=fasta_filename, data_filename=data_filename, region_filename=region_filename)
+            d = DATAPROCESS(vcf_filename=None, bam_filename=bam_filename, fasta_filename=fasta_filename, data_filename=data_filename, region_filename=region_filename)
             samples_data = d.test_pos()
             print(samples_data)
 
