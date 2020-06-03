@@ -30,7 +30,9 @@ def testing(samples_test_data, test_model=1, model_params=None,  generator_param
         X, y = testing_generator.data_generator()
         loss, accuracy = model.evaluate(X, y, batch_size=64)
         print('Accuracy: %f'%(accuracy * 100))
-        # print(testing_generator.get_sendin())
+        result = model.predict(X, batch_size=64)
+        print(result)
+        print(testing_generator.get_sendin())
 
     ## 随机生成数据送入网络
     elif test_model == 3:
