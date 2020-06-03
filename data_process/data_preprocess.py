@@ -100,7 +100,7 @@ class DATAPROCESS:
                 ref_base = ref_base.lower()
 
                 s_c_p = sample + '_' + chr + '_' + str(pos)
-                samples_data.append(s_c_p, (ref_base, tuple(seq)))
+                samples_data.append((s_c_p, (ref_base, tuple(seq))))
 
         np.save(self.data_filename, samples_data)
         return samples_data
