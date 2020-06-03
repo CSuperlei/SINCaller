@@ -18,7 +18,8 @@ def args_func():
     parser.add_argument('--log', '-lo', help='log level')
     parser.add_argument('--data', '-d', help='data filename')   ## 生成数据的名字
     parser.add_argument('--load', '-ld', help='load filename')  ## 加载数据
-    parser.add_argument('--test', '-tm', help='test mode 1 is generator_test; mode 2 is batch test ')
+    parser.add_argument('--region', '-r', help='region test filename')  ## 加载测试区域数据
+    parser.add_argument('--test', '-tm', help='test mode 1 is generator_test; mode 2 is batch test; mode 3 is random data')
     parser.add_argument('--mode', '-m', help='mode 1 is training; mode 2 is tesing; mode 3 is generate data', required=True)
     args = parser.parse_args()
     return args
@@ -87,58 +88,93 @@ def main():
                 sendin = testing(samples_data, test_model=1, generator_params=generator_params)
 
         elif int(args.test) == 2:
-            d = {
-                'aa': 1, 'at': 2, 'ac': 3, 'ag': 4, 'ad': -1,
-                'tt': 5, 'ta': 6, 'tc': 7, 'tg': 8, 'td': -1,
-                'cc': 9, 'ca': 10, 'ct': 11, 'cg': 12, 'cd': -1,
-                'gg': 13, 'ga': 14, 'gc': 15, 'gt': 16, 'gd': -1,
-            }
-            docs = ['at at',
-                    'aa aa',
-                    'gt gt gt gt gt',
-                    'cc cc cc cc cc',
-                    'ag ag',
-                    'tt tt',
-                    'tc tc',
-                    'cc cc',
-                    'gc gc gc',
-                    'aa aa aa',
-                    'gg gg gt',
-                    'tt tt tt',
-                    'ag ag ag ag ag ag ag ag ag ag ag ag ag ag',
-                    'gg gg gg gg gg gg gg gg gg gg gg gg gg gg',
-                    'ga ga ga',
-                    'cc cc cc',
-                    ]
+            # d = {
+            #     'aa': 1, 'at': 2, 'ac': 3, 'ag': 4, 'ad': -1,
+            #     'tt': 5, 'ta': 6, 'tc': 7, 'tg': 8, 'td': -1,
+            #     'cc': 9, 'ca': 10, 'ct': 11, 'cg': 12, 'cd': -1,
+            #     'gg': 13, 'ga': 14, 'gc': 15, 'gt': 16, 'gd': -1,
+            # }
+            # docs = ['at at',
+            #         'aa aa',
+            #         'gt gt gt gt gt',
+            #         'cc cc cc cc cc',
+            #         'ag ag',
+            #         'tt tt',
+            #         'tc tc',
+            #         'cc cc',
+            #         'gc gc gc',
+            #         'aa aa aa',
+            #         'gg gg gt',
+            #         'tt tt tt',
+            #         'ag ag ag ag ag ag ag ag ag ag ag ag ag ag',
+            #         'gg gg gg gg gg gg gg gg gg gg gg gg gg gg',
+            #         'ga ga ga',
+            #         'cc cc cc',
+            #         ]
 
-            for i, item in enumerate(docs):
-                t = []
-                for tmp in item.split(' '):
-                    r = d[tmp]
-                    t.append(r)
-                docs[i] = t
-                t = []
-
-            labels = [1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0]
-            # labels = [0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1]
-            ohl = to_categorical(labels, num_classes=2)
-            print('ohl', ohl)
-            max_length = 78
-            padded_docs = pad_sequences(docs, maxlen=max_length, padding='post')
-            print('padded_docs', padded_docs)
-            print('padded_docs shape', padded_docs.shape)
-            sample_test_data = [padded_docs, ohl]
+            samples_data = [
+                ['SRR052047_chr2_49671216', ('a', ('t', 't')), (1, 1)],
+                ('SRR052047_chr2_49671217', ('a', ('a', 'a')), (0, 0)),
+                ('SRR052047_chr2_49671218', ('g', ('t', 't', 't', 't', 't')), (1, 1)),
+                ('SRR052047_chr2_49671219', ('c', ('c', 'c', 'c', 'c', 'c')), (0, 0)),
+                ('SRR052047_chr2_49671220', ('a', ('g', 'g')), (1, 1)),
+                ('SRR052047_chr2_49671221', ('t', ('t', 't')), (0, 0)),
+                ('SRR052047_chr2_49671222', ('t', ('c', 'c')), (1, 1)),
+                ('SRR052047_chr2_49671223', ('c', ('c', 'c')), (0, 0)),
+                ('SRR052047_chr2_49671224', ('g', ('c', 'c')), (1, 1)),
+                ('SRR052047_chr2_49671225', ('a', ('a', 'a')), (0, 0)),
+                ('SRR052047_chr2_49671226', ('g', ('g', 't')), (1, 1)),
+                ('SRR052047_chr2_49671227', ('t', ('t', 't')), (0, 0)),
+                ('SRR052047_chr2_49671228', ('a', ('g', 'g', 'g', 'g', 'g', 'g', 'g', 'g', 'g', 'g', 'g', 'g', 'g', 'g')), (1, 1)),
+                ('SRR052047_chr2_49671229', ('g', ('g', 'g', 'g', 'g', 'g', 'g', 'g', 'g', 'g', 'g', 'g', 'g', 'g', 'g')), (0, 0)),
+                ('SRR052047_chr2_49671230', ('g', ('a', 'a')), (1, 1)),
+                ('SRR052047_chr2_49671231', ('c', ('c', 'c')), (0, 0)),
+            ]
+            # for i, item in enumerate(docs):
+            #     t = []
+            #     for tmp in item.split(' '):
+            #         r = d[tmp]
+            #         t.append(r)
+            #     docs[i] = t
+            #     t = []
+            #
+            # labels = [1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0]
+            # # labels = [0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1]
+            # ohl = to_categorical(labels, num_classes=2)
+            # print('ohl', ohl)
+            # max_length = 78
+            # padded_docs = pad_sequences(docs, maxlen=max_length, padding='post')
+            # print('padded_docs', padded_docs)
+            # print('padded_docs shape', padded_docs.shape)
+            # sample_test_data = [padded_docs, ohl]
             # print(sample_test_data)
-            testing(sample_test_data, test_model=2)
+            testing(samples_data, test_model=2)
+
+        elif int(args.test) == 3:
+            load_filename = args.load
+            if load_filename is not None:
+                samples_data = np.load(load_filename, allow_pickle=True)
+            else:
+                print('load filename is empyt')
+                return
+            testing(samples_data, test_model=3)
+
 
     elif int(mode) == 3:  ## 生成数据
         vcf_filename = args.vcf
         bam_filename = args.bam
         fasta_filename = args.fasta
         data_filename = args.data
-        if data_filename is not None:
+        region_filename = args.region
+        ## 生成已知label数据
+        if data_filename is not None and region_filename is None:
             d = DATAPROCESS(vcf_filename, bam_filename, fasta_filename, data_filename)
             samples_data = d.dataproc()
+            print(samples_data)
+        ## 生成未知label数据
+        elif data_filename is not None and region_filename is not None:
+            d = DATAPROCESS(bam_filename=bam_filename, fasta_filename=fasta_filename, data_filename=data_filename, region_filename=region_filename)
+            samples_data = d.test_pos()
             print(samples_data)
 
 

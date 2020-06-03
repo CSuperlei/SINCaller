@@ -1,16 +1,19 @@
 from bam.bam_process import BAM
 from vcf.vcf_process import VCF
 from fasta.fasta_process import FASTA
+from data_process.region_process import TREGION
 import numpy as np
 
 
 class DATAPROCESS:
-    def __init__(self, vcf_filename, bam_filename, fasta_filename, data_filename):
+    def __init__(self, vcf_filename, bam_filename=None, fasta_filename=None, data_filename=None, region_filename=None):
         self.vcf_filename = vcf_filename
         self.bam_filename = bam_filename
         self.fasta_filename = fasta_filename
         self.data_filename = data_filename
+        self.region_filename = region_filename
 
+    ## 生成已知label数据
     def dataproc(self):
         samples_data = []
         v = VCF()
@@ -64,5 +67,44 @@ class DATAPROCESS:
 
         np.save(self.data_filename, samples_data)
         return samples_data
+
+
+    ## 生成未知label数据
+    def test_pos(self):
+        samples_data = []
+
+        b = BAM()
+        bam_file = b.readfile(self.bam_filename)
+
+        fa = FASTA()
+        fasta_file = fa.readfile(self.fasta_filename)
+
+        t = TREGION()
+        region_file = t.readfile(self.region_filename)
+        region = t.region_info(region_file)
+
+        for rec in region:
+            sample = rec[0]
+            chr = rec[1]
+            l_pos = rec[2]
+            r_pos = rec[3]
+            for pos in range(l_pos, r_pos + 1):
+                seq = b.pileup_column(bam_file, chr, pos, pos + 1)
+                ref_base = fa.ref_atcg(fasta_file, chr, pos, pos + 1)
+
+                if ref_base is None or seq is None:
+                    break
+
+                seq = ['d' if item == '' else item for item in seq]
+                seq = [item.lower() for item in seq]
+                ref_base = ref_base.lower()
+
+                s_c_p = sample + '_' + chr + '_' + str(pos)
+                samples_data.append(s_c_p, (ref_base, tuple(seq)))
+
+        np.save(self.data_filename, samples_data)
+        return samples_data
+
+
 
 
