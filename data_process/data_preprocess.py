@@ -88,7 +88,7 @@ class DATAPROCESS:
             chr = rec[1]
             l_pos = rec[2]
             r_pos = rec[3]
-            for pos in range(l_pos, r_pos + 1):
+            for pos in range(int(l_pos), int(r_pos) + 1):
                 seq = b.pileup_column(bam_file, chr, pos, pos + 1)
                 ref_base = fa.ref_atcg(fasta_file, chr, pos, pos + 1)
 
