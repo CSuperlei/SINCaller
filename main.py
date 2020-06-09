@@ -35,7 +35,7 @@ def main():
     bam_filename = args.bam
     b = BAM()
     bam_file = b.readfile(bam_filename)
-    b.pileup_column(bam_file, 'chr1', 2956920, 2956921)
+    b.pileup_column(bam_file, 'chr1', 54031886, 54031887)
 
     # fasta_filename = args.fasta
     # a = FASTA()
