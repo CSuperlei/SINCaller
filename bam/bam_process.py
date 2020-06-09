@@ -18,7 +18,7 @@ class BAM:
                 # print(rec.get_query_positions())
                 # print(rec.reference_pos)
                 for tmp  in rec.pileups:
-                    print(tmp.alignment.indel)
+                    print(tmp.indel)
                 return rec.get_query_sequences()
 
             elif rec.pos == end - 1:
