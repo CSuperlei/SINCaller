@@ -16,6 +16,7 @@ class BAM:
                 # print(rec.get_query_sequences())
                 # print(rec.get_query_positions())
                 # print(rec.reference_pos)
+                print(rec.indel)
                 return rec.get_query_sequences()
 
             elif rec.pos == end - 1:
