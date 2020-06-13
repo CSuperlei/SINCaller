@@ -5,7 +5,7 @@ from .train_data_generator import DataGenerator
 from .scSNV_model import SCSNVMODEL
 
 
-def training(samples_train_data, samples_val_data, epochs=30, generator_params=None, model_params=None, hdf5_file = False, hdf5_fliename=None, mcheckpoint_dir='/home/cailei/bio_project/nbCNV/train_log/model_checkpoint/', mtensorboard_dir='./tensorboard_logs/'):
+def training(samples_train_data, samples_val_data, epochs=50, generator_params=None, model_params=None, hdf5_file = False, hdf5_fliename=None, mcheckpoint_dir='/home/cailei/bio_project/nbCNV/train_log/model_checkpoint/', mtensorboard_dir='./tensorboard_logs/'):
     print('sample_train_data', len(samples_train_data))
     print('sample_val_data', len(samples_val_data))
     training_generator = DataGenerator(samples_train_data)
@@ -30,7 +30,7 @@ def training(samples_train_data, samples_val_data, epochs=30, generator_params=N
 
     def scheduler(epoch):
         # 每隔100个epoch，学习率减小为原来的1/10
-        if epoch % 10 == 0 and epoch != 0:
+        if epoch % 15 == 0 and epoch != 0:
             lr = K.get_value(model.optimizer.lr)
             print('current lr', lr)
             K.set_value(model.optimizer.lr, lr * 0.1)

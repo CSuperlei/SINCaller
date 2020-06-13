@@ -2,8 +2,10 @@ import os
 import argparse
 import numpy as np
 from data_process.data_preprocess import DATAPROCESS
+from data_process.data_combine import DATACOMBINE
 from model.train_process import training
 from model.test_process import testing
+
 from keras.preprocessing.sequence import pad_sequences
 from keras.utils.np_utils import to_categorical
 from bam.bam_process import BAM
@@ -18,10 +20,13 @@ def args_func():
     parser.add_argument('--gpus', '-g', help='gpu number')
     parser.add_argument('--log', '-lo', help='log level')
     parser.add_argument('--data', '-d', help='data filename')   ## 生成数据的名字
+    parser.add_argument('--data_model', '-dm', help='data generator mode; mode 1 gernerates variant data, mode 2 generates normal data')
     parser.add_argument('--load', '-ld', help='load filename')  ## 加载数据
     parser.add_argument('--region', '-r', help='region test filename')  ## 加载测试区域数据
     parser.add_argument('--test', '-tm', help='test mode 1 is generator_test; mode 2 is batch test; mode 3 is random data')
-    parser.add_argument('--mode', '-m', help='mode 1 is training; mode 2 is tesing; mode 3 is generate data', required=True)
+    parser.add_argument('--dc_origin', '-dco', help='data combine orgin') ## 合并不同标签数据
+    parser.add_argument('--dc_target', '-dct', help='data combine target') ## 生成不同标签数据
+    parser.add_argument('--mode', '-m', help='mode 1 is training; mode 2 is tesing; mode 3 is generate data; mode 4 is combine data', required=True)
     args = parser.parse_args()
     return args
 
@@ -41,7 +46,7 @@ def main():
     # a = FASTA()
     # fasta_file = a.readfile(fasta_filename)
     # a.ref_atcg(fasta_file, 'chr1', 2956920, 2957922)
-    #
+
     # fastq_filename = args.fastq
     # q = FASTQ()
     # fastq_file = q.readfile(fastq_filename)
@@ -70,7 +75,12 @@ def main():
             sep = int(np.floor(len(samples_data) * 0.8))
             samples_train_data = samples_data[:sep]
             samples_val_data = samples_data[sep:]
-            sendin = training(samples_train_data, samples_val_data)
+            model_params = {
+                'alpha_base': [[1],[3],[3],[3],[5],[1],[3],[3],[3],[5],[1],[3],[3],[3],[5],[1],[3],[3],[3],[5]],
+                'alpha_indel': [[1],[5],[5]],
+                'alpha_genotype': [[1],[5],[3],[7]]
+            }
+            sendin = training(samples_train_data, samples_val_data, model_params=model_params)
             # print(sendin)  ## 打印训练数据
         else:
             print('data is empty')
@@ -167,16 +177,23 @@ def main():
         fasta_filename = args.fasta
         data_filename = args.data
         region_filename = args.region
+        data_model = args.data_model
         ## 生成已知label数据
         if data_filename is not None and region_filename is None:
-            d = DATAPROCESS(vcf_filename, bam_filename, fasta_filename, data_filename)
+            d = DATAPROCESS(data_model, vcf_filename, bam_filename, fasta_filename, data_filename)
             samples_data = d.dataproc()
             print(samples_data)
         ## 生成未知label数据
         elif data_filename is not None and region_filename is not None:
-            d = DATAPROCESS(vcf_filename=None, bam_filename=bam_filename, fasta_filename=fasta_filename, data_filename=data_filename, region_filename=region_filename)
+            d = DATAPROCESS(data_model, vcf_filename=None, bam_filename=bam_filename, fasta_filename=fasta_filename, data_filename=data_filename, region_filename=region_filename)
             samples_data = d.test_pos()
             print(samples_data)
+
+    elif int(mode) == 4:
+        origin_dir = args.dc_origin
+        targe_filename = args.dc_target
+        dc = DATACOMBINE(origin_dir, targe_filename)
+        dc.data_combine()
 
 
 if __name__ == '__main__':

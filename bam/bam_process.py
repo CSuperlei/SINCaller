@@ -15,11 +15,24 @@ class BAM:
             if rec.pos == start - 1:
                 # print(rec.get_mapping_qualities())
                 # print(rec.get_query_sequences())
+                base_list = rec.get_query_sequences()
                 # print(rec.get_query_positions())
                 # print(rec.reference_pos)
-                # for tmp  in rec.pileups:
+                # print(dir(rec))
+                # print(dir(rec.pileups))
+                indel_list = [int(tmp.indel) for tmp in rec.pileups]
+                # print(indel_list)
+                # for tmp in rec.pileups:
+                #     print(dir(tmp))
                 #     print(tmp.indel)
-                return rec.get_query_sequences()
+                #     print(dir(tmp.indel))
+                #
+                #     print(dir(tmp.alignment))
+                #     print(tmp.alignment.reference_name)
+                #     print(tmp.alignment.mapping_quality)
+
+                pileup_list = [base_list, indel_list]
+                return pileup_list
 
             elif rec.pos == end - 1:
                 print('pos is not exist')

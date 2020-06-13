@@ -20,7 +20,13 @@ class VCF:
                 label = value['GT']
                 break
             s_c_p = sample + '_' + rec.chrom + '_' + str(rec.pos)
-            ls.append((s_c_p, (rec.ref, rec.alts[0]), label))
+            # print(rec.pos, rec.ref, rec.alts[0])
+
+            ref = list(rec.ref)
+            alts = list(rec.alts[0])
+            # print(rec.pos, ref[-1], alts[-1])
+
+            ls.append((s_c_p, (ref[-1], alts[-1]), label))
 
         return ls
 

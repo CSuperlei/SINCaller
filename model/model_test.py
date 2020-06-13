@@ -153,8 +153,9 @@ print('en', encoded_docs)
 # pad documents to a max length of 4 words
 max_length = 21
 padded_docs = pad_sequences(encoded_docs, maxlen=max_length, padding='post')
-print(padded_docs)
 print('padded_docs shape', padded_docs.shape)
+print(padded_docs)
+
 # define the model
 model = Sequential()
 model.add(Embedding(vocab_size, 17, input_length=max_length))

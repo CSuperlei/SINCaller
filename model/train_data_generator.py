@@ -5,28 +5,17 @@ from keras.preprocessing.sequence import pad_sequences
 from keras.utils.np_utils import to_categorical
 
 class DataGenerator(keras.utils.Sequence):
-    def __init__(self, samples_data, batch_size=64, shuffle=True, vocab_size=17, word_maxlen=78, label_len=2):
+    def __init__(self, samples_data, batch_size=128, shuffle=True, word_maxlen=78, label_base=2, label_indel=3, label_genotype=3):
         self.samples_data = samples_data
         self.batch_size = batch_size
         self.shuffle = shuffle
         self.sendin = []
-        self.vocab_size = vocab_size
         self.word_maxlen = word_maxlen
-        self.label_len = label_len
+        self.label_base = label_base
+        self.label_indel = label_indel
+        self.label_genotype = label_genotype
         self.indexes = None
         self.on_epoch_end()
-        self.d = {'a': 21, 'c': 22, 'g': 23, 't': 24, 'd': 25,
-                  'aa': 1, 'ac': 2, 'ag': 3, 'at': 4, 'ad': 5,
-                  'cc': 6, 'ca': 7, 'cg': 8, 'ct': 9, 'cd': 10,
-                  'gg': 11, 'ga': 12, 'gc': 13, 'gt': 14, 'gd': 15,
-                  'tt': 16, 'ta': 17, 'tc': 18, 'tg': 19, 'td': 20,
-                  }
-
-        # self.d = {'aa': 1, 'at': 2, 'ac': 3, 'ag': 4, 'ad': -1,
-        #           'tt': 5, 'ta': 6, 'tc': 7, 'tg': 8, 'td': -1,
-        #           'cc': 9, 'ca': 10, 'ct': 11, 'cg': 12, 'cd': -1,
-        #           'gg': 13, 'ga': 14, 'gc': 15, 'gt': 16, 'gd': -1,
-        #           }
 
     def __len__(self):
         ## 每一轮训练包含多少个batch
@@ -52,58 +41,45 @@ class DataGenerator(keras.utils.Sequence):
 
             return X, y
 
-    def __str_to_int(self, s):
-        r = self.d[s]
-        return r
-
     def __data_generation(self, idx):
         ## 处理数据
         # X = np.empty((self.batch_size, self.word_maxlen))
         # y = np.empty((self.batch_size, self.label_len))
         batch_data = []
-        label_data = []
+        label_data1 = []
+        label_data2 = []
+        label_data3 = []
         for i, item in enumerate(idx):
             sample = self.samples_data[item]
             info = sample[0]
             self.sendin.append(info)
-            ref = sample[1][0]
-            seq = list(sample[1][1])
-            data = [ref + i for i in seq]
-            i_data = [self.__str_to_int(i) for i in data]
-            # print('i_data', i_data)
-            # print('data', data)
-            # tmp = ", ".join(i_data)
-            # print('tmp', tmp)
+            i_data = sample[1]
             batch_data.append(i_data)
-            # print('batch_data', batch_data)
-            label = sample[2]
-            # if label == (0, 0):
-            #     label = 0
-            #     label_data.append(label)
-            # elif label == (0, 1):
-            #     label = 1
-            #     label_data.append(label)
-            # elif label == (1, 1):
-            #     label = 1
-            #     label_data.append(label)
-            # elif label == (1, 2):
-            #     label = 1
-            label_data.append(label)
+            label_base = sample[2]
+            # label_base = sample[2][0]
+            # label_indel = sample[2][1]
+            # label_genotype = sample[2][2]
+            label_data1.append(label_base)
+            # label_data2.append(label_indel)
+            # label_data3.append(label_genotype)
 
-            # print(label)
-            # print('label_data', label_data)
-
-        # encoded_docs = [one_hot(d, self.vocab_size) for d in batch_data]
-        # print('en_docs shape', encoded_docs.shape)
+        # print(batch_data[-1])
         padded_docs = pad_sequences(batch_data, maxlen=self.word_maxlen, padding='post')
         # print('padded_docs shape', padded_docs.shape)
-        label_data = to_categorical(label_data, num_classes=self.label_len)
-        # print('padded_docs', padded_docs)
-        # print('label_data', label_data)
+        print('padded_docs', padded_docs)
+        label_data1 = to_categorical(label_data1, num_classes=self.label_base)
+        # label_data2 = to_categorical(label_data2, num_classes=self.label_indel)
+        # label_data3 = to_categorical(label_data3, num_classes=self.label_genotype)
+        print('label_data1', label_data1)
+        # print('label_data2', label_data2)
+        # print('label_data3', label_data3)
         X = np.array(padded_docs)
-        y = np.array(label_data)
-        return X, y
-
+        y1 = np.array(label_data1)
+        # print(y1[-1])
+        # y2 = np.array(label_data2)
+        # y3 = np.array(label_data3)
+        # return X, {'outputs_base': y1, 'outputs_indel': y2, 'outputs_genotype':y3}
+        return X, {'outputs_base': y1}
 
     def get_sendin_content(self):
         return self.sendin

@@ -57,10 +57,11 @@ def main():
         docs[i] = t
         t = []
 
+    print('docs')
     print(docs)
     labels = [1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0]
     # labels = [0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1]
-    labels = [[0, 1, 2, 3], [4, 5, 6, 7]]
+    # labels = [[0, 1, 2, 3], [4, 5, 6, 7]]
     ohl = to_categorical(labels, num_classes=4)
     print('ohl', ohl)
     # integer encode the documents
