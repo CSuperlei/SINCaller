@@ -11,7 +11,7 @@ os.environ["CUDA_VISIBLE_DEVICES"] = '5, 6'
 
 
 class SCSNVMODEL:
-    def __init__(self, input_shape=(78, ), n_base_labels=20, n_indel_labels=3, n_genotype_labels=3, n_lstm_outdim=64, word_maxlen=78, em_inputdim=22, em_outdim=22, lstm_layers=3, dense_layers=2, dense_num=64, drop_out=0.5, lr=0.001, gpus=2, alpha_base=[[1],[3],[3],[3],[5],[1],[3],[3],[3],[5],[1],[3],[3],[3],[5],[1],[3],[3],[3],[5]], alpha_indel=[[1],[5],[5]], alpha_genotype=[[1],[5],[3],[7]], gamma=2.0):
+    def __init__(self, input_shape=(234, ), n_base_labels=20, n_indel_labels=3, n_genotype_labels=3, n_lstm_outdim=64, word_maxlen=234, em_inputdim=22, em_outdim=22, lstm_layers=3, dense_layers=2, dense_num=64, drop_out=0.5, lr=0.001, gpus=2, alpha_base=[[1],[3],[3],[3],[5],[1],[3],[3],[3],[5],[1],[3],[3],[3],[5],[1],[3],[3],[3],[5]], alpha_indel=[[1],[5],[5]], alpha_genotype=[[1],[5],[3],[7]], gamma=2.0):
         self.input_shape = input_shape
         self.n_base_labels = n_base_labels
         self.n_indel_labels = n_indel_labels
@@ -50,8 +50,8 @@ class SCSNVMODEL:
             y_true = tf.cast(y_true, tf.float32)
             y_pred = tf.clip_by_value(y_pred, epsilon, 1. - epsilon)
             y_t = tf.multiply(y_true, y_pred) + tf.multiply(1 - y_true, 1 - y_pred)
-            # ce = -tf.math.log(y_t)
-            ce = -tf.log(y_t)
+            ce = -tf.math.log(y_t)
+            # ce = -tf.log(y_t)
             weight = tf.pow(tf.subtract(1., y_t), gamma)
             fl = tf.matmul(tf.multiply(weight, ce), alpha)
             loss = tf.reduce_mean(fl)
@@ -69,84 +69,72 @@ class SCSNVMODEL:
         '''
         em = Embedding(input_dim=self.em_inputdim, output_dim=self.em_outdim, input_length=self.word_maxlen)(inputs)
 
-        # split = Lambda(tf.split, arguments={'axis': 1, 'num_or_size_splits': 3})(em)
-        # lstm_base = split[0]
-        # lstm_indel = split[1]
-        # lstm_genotype = split[2]
-        lstm_base = em
+        split = Lambda(tf.split, arguments={'axis': 1, 'num_or_size_splits': 3})(em)
+        lstm_base = split[0]
+        lstm_indel = split[1]
+        lstm_genotype = split[2]
 
         for i in range(self.lstm_layers):
             if i == self.lstm_layers - 1:
                 ## 最后一层只需要最后一个时刻的输入, 所以return_sequences=False
                 lstm_base = Bidirectional(LSTM(units=self.n_lstm_outdim*(i + 1), return_sequences=False))(lstm_base)
                 lstm_base = BatchNormalization()(lstm_base)
-                # lstm_base = LSTM(units=self.n_lstm_outdim*(i + 1), return_sequences=False)(lstm_base)
                 break
 
             ## return_sequences = True 不到最后一层, LSTM的下一层要用到上一层每个时刻的输入, 所以return_sequences设置为True
             lstm_base = Bidirectional(LSTM(units=self.n_lstm_outdim*(i + 1), return_sequences=True))(lstm_base)
-            # lstm_base = LSTM(units=self.n_lstm_outdim*(i + 1), return_sequences=True)(lstm_base)
             lstm_base = BatchNormalization()(lstm_base)
             lstm_base = Dropout(self.drop_out)(lstm_base)
 
-        # for i in range(self.lstm_layers):
-        #     if i == self.lstm_layers - 1:
-        #         ## 最后一层只需要最后一个时刻的输入, 所以return_sequences=False
-        #         lstm_indel = Bidirectional(LSTM(units=self.n_lstm_outdim * (i + 1), return_sequences=False))(lstm_indel)
-        #         lstm_indel = BatchNormalization()(lstm_indel)
-        #         # lstm_indel = LSTM(units=self.n_lstm_outdim*(i + 1), return_sequences=False)(lstm_indel)
-        #         break
-        #
-        #     ## return_sequences = True 不到最后一层, LSTM的下一层要用到上一层每个时刻的输入, 所以return_sequences设置为True
-        #     lstm_indel = Bidirectional(LSTM(units=self.n_lstm_outdim * (i + 1), return_sequences=True))(lstm_indel)
-        #     # lstm_indel = LSTM(units=self.n_lstm_outdim*(i + 1), return_sequences=True)(lstm_indel)
-        #     lstm_indel = BatchNormalization()(lstm_indel)
-        #     lstm_indel = Dropout(self.drop_out)(lstm_indel)
-        #
-        # for i in range(self.lstm_layers):
-        #     if i == self.lstm_layers - 1:
-        #         ## 最后一层只需要最后一个时刻的输入, 所以return_sequences=False
-        #         lstm_genotype = Bidirectional(LSTM(units=self.n_lstm_outdim * (i + 1), return_sequences=False))(lstm_genotype)
-        #         lstm_genotype = BatchNormalization()(lstm_genotype)
-        #         # lstm_genotype = LSTM(units=self.n_lstm_outdim*(i + 1), return_sequences=False)(lstm_genotype)
-        #         break
-        #
-        #     ## return_sequences = True 不到最后一层, LSTM的下一层要用到上一层每个时刻的输入, 所以return_sequences设置为True
-        #     lstm_genotype = Bidirectional(LSTM(units=self.n_lstm_outdim * (i + 1), return_sequences=True))(lstm_genotype)
-        #     # lstm_genotype = LSTM(units=self.n_lstm_outdim*(i + 1), return_sequences=True)(lstm_genotype)
-        #     lstm_genotype = BatchNormalization()(lstm_genotype)
-        #     lstm_genotype = Dropout(self.drop_out)(lstm_genotype)
+        for i in range(self.lstm_layers):
+            if i == self.lstm_layers - 1:
+                ## 最后一层只需要最后一个时刻的输入, 所以return_sequences=False
+                lstm_indel = Bidirectional(LSTM(units=self.n_lstm_outdim * (i + 1), return_sequences=False))(lstm_indel)
+                lstm_indel = BatchNormalization()(lstm_indel)
+                break
+
+            ## return_sequences = True 不到最后一层, LSTM的下一层要用到上一层每个时刻的输入, 所以return_sequences设置为True
+            lstm_indel = Bidirectional(LSTM(units=self.n_lstm_outdim * (i + 1), return_sequences=True))(lstm_indel)
+            lstm_indel = BatchNormalization()(lstm_indel)
+            lstm_indel = Dropout(self.drop_out)(lstm_indel)
+
+        for i in range(self.lstm_layers):
+            if i == self.lstm_layers - 1:
+                ## 最后一层只需要最后一个时刻的输入, 所以return_sequences=False
+                lstm_genotype = Bidirectional(LSTM(units=self.n_lstm_outdim * (i + 1), return_sequences=False))(lstm_genotype)
+                lstm_genotype = BatchNormalization()(lstm_genotype)
+                break
+
+            ## return_sequences = True 不到最后一层, LSTM的下一层要用到上一层每个时刻的输入, 所以return_sequences设置为True
+            lstm_genotype = Bidirectional(LSTM(units=self.n_lstm_outdim * (i + 1), return_sequences=True))(lstm_genotype)
+            lstm_genotype = BatchNormalization()(lstm_genotype)
+            lstm_genotype = Dropout(self.drop_out)(lstm_genotype)
 
 
         dense_base = lstm_base
-        # dense_indel = lstm_indel
-        # dense_genotype = lstm_genotype
+        dense_indel = lstm_indel
+        dense_genotype = lstm_genotype
 
         for i in range(self.dense_layers - 1, -1, -1):
-            # print(i)
             dense_base = Dense(self.dense_num * (i + 1))(dense_base)
 
         outputs_base = Dense(self.n_base_labels, activation='softmax', name='outputs_base')(dense_base)
 
-        # for i in range(self.dense_layers - 1, -1, -1):
-        #     # print(i)
-        #     dense_indel = Dense(self.dense_num * (i + 1))(dense_indel)
-        #
-        # outputs_indel = Dense(self.n_indel_labels, activation='softmax', name='outputs_indel')(dense_indel)
-        #
-        # for i in range(self.dense_layers - 1, -1, -1):
-        #     # print(i)
-        #     dense_genotype = Dense(self.dense_num * (i + 1))(dense_genotype)
-        #
-        # outputs_genotype = Dense(self.n_genotype_labels, activation='softmax', name='outputs_genotype')(dense_genotype)
+        for i in range(self.dense_layers - 1, -1, -1):
+            dense_indel = Dense(self.dense_num * (i + 1))(dense_indel)
 
-        # model = Model(inputs=inputs, outputs=[outputs_base, outputs_indel, outputs_genotype])
-        model = Model(inputs=inputs, outputs=[outputs_base])
+        outputs_indel = Dense(self.n_indel_labels, activation='softmax', name='outputs_indel')(dense_indel)
+
+        for i in range(self.dense_layers - 1, -1, -1):
+            dense_genotype = Dense(self.dense_num * (i + 1))(dense_genotype)
+
+        outputs_genotype = Dense(self.n_genotype_labels, activation='softmax', name='outputs_genotype')(dense_genotype)
+
+        model = Model(inputs=inputs, outputs=[outputs_base, outputs_indel, outputs_genotype])
 
         # model = multi_gpu_utils(model, multi_gpu_utils=self.gpus)
         # model.compile(optimizer=RMSprop(lr=self.init_lr), loss={'outputs_base': self.multi_category_focal_loss1(self.alpha_base, self.gamma), 'outputs_indel': self.multi_category_focal_loss1(self.alpha_indel, self.gamma), 'outputs_genotype':self.multi_category_focal_loss1(self.alpha_genotype, self.gamma)}, metrics=['acc'])
-        # model.compile(optimizer=RMSprop(lr=self.init_lr), loss={'outputs_base':'categorical_crossentropy', 'outputs_indel': 'categorical_crossentropy', 'outputs_genotype':'categorical_crossentropy'}, metrics=['acc'])
-        model.compile(optimizer=Adam(lr=self.init_lr), loss={'outputs_base':'categorical_crossentropy'}, metrics=['acc'])
+        model.compile(optimizer=Adam(lr=self.init_lr), loss={'outputs_base':'categorical_crossentropy', 'outputs_indel': 'categorical_crossentropy', 'outputs_genotype':'categorical_crossentropy'}, metrics=['acc'])
         plot_model(model, to_file='./model_strcut.png', show_shapes=True, show_layer_names=True)
         model.summary()
         return model

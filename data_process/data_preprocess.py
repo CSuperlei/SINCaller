@@ -16,7 +16,7 @@ class DATAPROCESS:
         self.padded_maxlen = padded_maxlen
         self.mode = mode
         ## [-25, 25]用来预留indel变异的数字，26，27，28，29，30，用来表示基因型(A,T,C,G,D),
-        self.l = {'a': 21, 'c': 22, 'g': 23, 't': 24, 'd': 25,
+        self.l = {
                   'aa': 1, 'ac': 2, 'ag': 3, 'at': 4, 'ad': 5,
                   'cc': 6, 'ca': 7, 'cg': 8, 'ct': 9, 'cd': 10,
                   'gg': 11, 'ga': 12, 'gc': 13, 'gt': 14, 'gd': 15,
@@ -40,7 +40,6 @@ class DATAPROCESS:
         v = VCF()
         vcf_file = v.readfile(self.vcf_filename)
         ls_variant = v.varient_info(vcf_file)
-        # print(ls_variant)
         b = BAM()
         bam_file = b.readfile(self.bam_filename)
 
@@ -65,17 +64,11 @@ class DATAPROCESS:
                 if pileup_list is None or pileup_list[0] is None or pileup_list[1] is None or ref_base is None or alts == '*':
                     continue
 
-                ## 如果某个位点全为'',说明这里是纯合的缺失
-                # norepeat = list(set(pileup_list[0]))
-                # if (len(norepeat) == 1 and norepeat[0] == '') or pileup_list[1] is None:
-                #     continue
-
                 ## 处理该位点得碱基序列
                 variant_seq = ['d' if item == '' else item for item in pileup_list[0]]
                 lower_list = [item.lower() for item in variant_seq]
                 ref_var_list = [ref + i for i in lower_list]
                 ref_var_list = [self.__str_to_int(i) for i in ref_var_list]
-                # print(ref_var_list)
 
                 ## 处理该位点的indel序列
                 indel_list = pileup_list[1]
@@ -89,11 +82,10 @@ class DATAPROCESS:
                 genotype_list_padded = self.__padded_fill(genotype_list, self.padded_maxlen)
 
 
-                # var_ind_gen = ref_var_list_padded + indel_list_padded + genotype_list_padded
-                var_ind_gen = ref_var_list_padded
-                print(var_ind_gen)
+                var_ind_gen = ref_var_list_padded + indel_list_padded + genotype_list_padded
+                # print(var_ind_gen)
 
-                ## 处理label, 碱基label对应的和self.d里类似, indel label 用51，52，53, 基因型label用0，1，2，3，是基因型*/*的加和
+                ## 处理label, 碱基label对应的和self.d里类似, indel label 用0，1，2, 基因型label用0，1，2，1，是基因型*/*的加和
                 ### 处理碱基label (20种)
                 indel_sum = sum(indel_list)
                 if indel_sum != 0:  ## 如果是indel变异，则碱基标签为众数
@@ -101,30 +93,25 @@ class DATAPROCESS:
                 elif indel_sum == 0: ## 如果是snp变异，碱基标签为vcf给出标签组合
                     ref_var_label = self.__str_to_int(str(ref_alts).lower() + str(alts).lower())
 
-                # print(ref_var_label)
                 ### 处理indel的label (3种)
                 indel_sum = sum(indel_list)
                 if indel_sum == 0:  ## 不是indel
-                    indel_label = 51
+                    indel_label = 0
                 if indel_sum < 0:   ## 缺失
-                    indel_label = 52
+                    indel_label = 1
                 if indel_sum > 0:   ## 插入
-                    indel_label = 53
+                    indel_label = 2
 
                 ### 处理基因型label  (4种)
-                if label == (0, 0):
-                    g_label = 0  ## 纯合没有变异
-                elif label == (0, 1):
+                if label == (0, 1):
                     g_label = 1  ## 杂合变异
                 elif label == (1, 1):
                     g_label = 2  ## 纯合变异
                 elif label == (1, 2):
                     g_label = 1  ## 杂合变异
 
-                # v_label = (ref_var_label - 31, indel_label - 51, g_label)
-                v_label = ref_var_label
+                v_label = [ref_var_label, indel_label, g_label]
                 s_c_p = sample + '_' + chr + '_' + str(pos)
-                # variant_sample = (s_c_p, tuple(var_ind_gen), v_label)
                 variant_sample = (s_c_p, var_ind_gen, v_label)
                 samples_data.append(variant_sample)
 
@@ -134,7 +121,7 @@ class DATAPROCESS:
                 while pos:
                     normal_pileup_list = b.pileup_column(bam_file, chr, pos, pos + 1)
                     ref_base = fa.ref_atcg(fasta_file, chr, pos, pos + 1)
-                    ## 如果正常序列不存在就跳出
+                    ## 如果不是正常序列就跳出
                     if normal_pileup_list is None or normal_pileup_list[0] is None or ref_base is None or normal_pileup_list[1] is None:
                         pos += 1
                         continue
@@ -158,11 +145,8 @@ class DATAPROCESS:
                         indel_norm_list_padded = self.__padded_fill(indel_norm_list, self.padded_maxlen)
                         genotype_norm_list_padded = self.__padded_fill(genotype_norm_list, self.padded_maxlen)
 
-                        # nor_ind_gen = ref_norm_list_padded + indel_norm_list_padded + genotype_norm_list_padded
+                        nor_ind_gen = ref_norm_list_padded + indel_norm_list_padded + genotype_norm_list_padded
 
-
-                        nor_ind_gen = ref_norm_list_padded
-                        print(nor_ind_gen)
 
                         ## 处理标签
                         ### 处理碱基label (20种), 如果没有变异，则众数就是组合
@@ -170,21 +154,18 @@ class DATAPROCESS:
                         ### 处理indel
                         indel_norm_sum = sum(indel_norm_list)
                         if indel_norm_sum == 0:
-                            indel_norm_label = 51
+                            indel_norm_label = 0
                         if indel_norm_sum < 0:
-                            indel_norm_label = 52
+                            indel_norm_label = 1
                         if indel_norm_sum > 0:
-                            indel_norm_label = 53
+                            indel_norm_label = 2
                         ### 处理基因型标签
                         g_norm_label = 0
 
-                        # n_label = (ref_norm_label - 31, indel_norm_label - 51, g_norm_label)
-                        n_label = ref_norm_label
+                        n_label = [ref_norm_label, indel_norm_label, g_norm_label]
 
                         normal_s_c_p = sample + '_' + chr + '_' + str(pos)
-                        # normal_sample = (normal_s_c_p, tuple(nor_ind_gen), n_label)
                         normal_sample = (normal_s_c_p, nor_ind_gen, n_label)
-                        # print(normal_sample)
                         samples_data.append(normal_sample)
                         break
                     pos += 1
@@ -237,7 +218,7 @@ class DATAPROCESS:
 
                 test_seq = ref_test_list_padded + indel_test_list_padded + genotyp_test_list_padded
                 s_c_p = sample + '_' + chr + '_' + str(pos)
-                samples_data.append((s_c_p, tuple(test_seq)))
+                samples_data.append((s_c_p, test_seq))
 
         np.save(self.data_filename, samples_data)
         return samples_data

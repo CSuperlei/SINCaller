@@ -4,66 +4,53 @@ from keras.utils.np_utils import to_categorical
 
 
 class TEST:
-    def __init__(self, samples_data, test_type=1, word_maxlen=78, label_len=2):
+    def __init__(self, samples_data, test_type=1, word_maxlen=234, label_base=20, label_indel=3, label_genotype=3):
         self.samples_data = samples_data
         self.word_maxlen = word_maxlen
         self.test_type = test_type
-        self.label_len = label_len
-        self.d = {'aa': 1, 'at': 2, 'ac': 3, 'ag': 4, 'ad': -1,
-                  'tt': 5, 'ta': 6, 'tc': 7, 'tg': 8, 'td': -1,
-                  'cc': 9, 'ca': 10, 'ct': 11, 'cg': 12, 'cd': -1,
-                  'gg': 13, 'ga': 14, 'gc': 15, 'gt': 16, 'gd': -1,
-                  }
+        self.label_base = label_base
+        self.label_indel = label_indel
+        self.label_genotype = label_genotype
         self.sendin = []
 
-    def __str_to_int(self, s):
-        r = self.d[s]
-        return r
-
     def data_generator(self):
-        if self.test_type == 1:
-            test_data = []
-            test_label = []
+        if self.test_type == 1:  ## test_type == 1 生成有标签的数据，便于evaluate
+            batch_data = []
+            label_data1 = []
+            label_data2 = []
+            label_data3 = []
             for i, item in enumerate(self.samples_data):
                 info = item[0]
                 self.sendin.append(info)
-                ref = item[1][0]
-                seq = item[1][1]
-                label = item[2]
-                data = [ref + i for i in seq]
-                i_data = [self.__str_to_int(i) for i in data]
-                test_data.append(i_data)
-                if label == (0, 0):
-                    label = 0
-                    test_label.append(label)
-                elif label == (0, 1):
-                    label = 1
-                    test_label.append(label)
-                elif label == (1, 1):
-                    label = 1
-                    test_label.append(label)
-                elif label == (1, 2):
-                    label = 1
-                    test_label.append(label)
+                i_data = item[1]
+                batch_data.append(i_data)
+                label_base = item[2][0]
+                label_indel = item[2][1]
+                label_genotype = item[2][2]
+                label_data1.append(label_base)
+                label_data2.append(label_indel)
+                label_data3.append(label_genotype)
 
-            padded_docs = pad_sequences(test_data, maxlen=self.word_maxlen, padding='post')
-            label_data = to_categorical(test_label, num_classes=self.label_len)
+            padded_docs = pad_sequences(batch_data, maxlen=self.word_maxlen, padding='post')
+            label_data1 = to_categorical(label_data1, num_classes=self.label_base)
+            label_data2 = to_categorical(label_data2, num_classes=self.label_indel)
+            label_data3 = to_categorical(label_data3, num_classes=self.label_genotype)
             X = np.array(padded_docs)
-            y = np.array(label_data)
-            return X, y
+            y1 = np.array(label_data1)
+            y2 = np.array(label_data2)
+            y3 = np.array(label_data3)
 
-        elif self.test_type == 2:
-            test_data = []
+            return X, {'outputs_base': y1, 'outputs_indel': y2, 'outputs_genotype':y3}
+
+        elif self.test_type == 2:  ## 生成没有标签的数据
+            batch_data = []
             for i, item in enumerate(self.samples_data):
                 info = item[0]
                 self.sendin.append(info)
-                ref = item[1][0]
-                seq = item[1][1]
-                data = [ref + i for i in seq]
-                i_data = [self.__str_to_int(i) for i in data]
-                test_data.append(i_data)
+                i_data = item[1]
+                batch_data.append(i_data)
 
-            padded_docs = pad_sequences(test_data, maxlen=self.word_maxlen, padding='post')
+            padded_docs = pad_sequences(batch_data, maxlen=self.word_maxlen, padding='post')
             X = np.array(padded_docs)
             return X
 

@@ -5,11 +5,7 @@ from data_process.data_preprocess import DATAPROCESS
 from data_process.data_combine import DATACOMBINE
 from model.train_process import training
 from model.test_process import testing
-
-from keras.preprocessing.sequence import pad_sequences
-from keras.utils.np_utils import to_categorical
 from bam.bam_process import BAM
-
 
 def args_func():
     parser = argparse.ArgumentParser(description="scSNV software")
@@ -99,30 +95,6 @@ def main():
                 sendin = testing(samples_data, test_model=1, generator_params=generator_params)
 
         elif int(args.test) == 2:
-            # d = {
-            #     'aa': 1, 'at': 2, 'ac': 3, 'ag': 4, 'ad': -1,
-            #     'tt': 5, 'ta': 6, 'tc': 7, 'tg': 8, 'td': -1,
-            #     'cc': 9, 'ca': 10, 'ct': 11, 'cg': 12, 'cd': -1,
-            #     'gg': 13, 'ga': 14, 'gc': 15, 'gt': 16, 'gd': -1,
-            # }
-            # docs = ['at at',
-            #         'aa aa',
-            #         'gt gt gt gt gt',
-            #         'cc cc cc cc cc',
-            #         'ag ag',
-            #         'tt tt',
-            #         'tc tc',
-            #         'cc cc',
-            #         'gc gc gc',
-            #         'aa aa aa',
-            #         'gg gg gt',
-            #         'tt tt tt',
-            #         'ag ag ag ag ag ag ag ag ag ag ag ag ag ag',
-            #         'gg gg gg gg gg gg gg gg gg gg gg gg gg gg',
-            #         'ga ga ga',
-            #         'cc cc cc',
-            #         ]
-
             samples_data = [
                 ('SRR052047_chr2_49671216', ('a', ('t', 't')), (1, 1)),
                 ('SRR052047_chr2_49671217', ('a', ('a', 'a')), (0, 0)),
@@ -141,24 +113,6 @@ def main():
                 ('SRR052047_chr2_49671230', ('g', ('a', 'a')), (1, 1)),
                 ('SRR052047_chr2_49671231', ('c', ('c', 'c')), (0, 0)),
             ]
-            # for i, item in enumerate(docs):
-            #     t = []
-            #     for tmp in item.split(' '):
-            #         r = d[tmp]
-            #         t.append(r)
-            #     docs[i] = t
-            #     t = []
-            #
-            # labels = [1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0]
-            # # labels = [0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1]
-            # ohl = to_categorical(labels, num_classes=2)
-            # print('ohl', ohl)
-            # max_length = 78
-            # padded_docs = pad_sequences(docs, maxlen=max_length, padding='post')
-            # print('padded_docs', padded_docs)
-            # print('padded_docs shape', padded_docs.shape)
-            # sample_test_data = [padded_docs, ohl]
-            # print(sample_test_data)
             testing(samples_data, test_model=2)
 
         elif int(args.test) == 3:
@@ -189,7 +143,7 @@ def main():
             samples_data = d.test_pos()
             print(samples_data)
 
-    elif int(mode) == 4:
+    elif int(mode) == 4:  ## 合并有变异与没有变异不同标签的数据
         origin_dir = args.dc_origin
         targe_filename = args.dc_target
         dc = DATACOMBINE(origin_dir, targe_filename)

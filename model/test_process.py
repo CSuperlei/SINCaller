@@ -25,7 +25,7 @@ def testing(samples_test_data, test_model=1, model_params=None,  generator_param
         # print(result)
         return testing_generator.get_sendin_content()
 
-    ## 直接送数据
+    ## 直接送有标签的测试数据进行评价
     elif test_model == 2:
         testing_generator = TEST(samples_test_data, test_type=1)
         X, y = testing_generator.data_generator()
@@ -36,7 +36,7 @@ def testing(samples_test_data, test_model=1, model_params=None,  generator_param
         print(re.argmax())
         print(testing_generator.get_sendin())
 
-    ## 随机生成数据送入网络
+    ## 直接送没有便签的测试数据进行评价
     elif test_model == 3:
         testing_generator = TEST(samples_test_data, test_type=2)
         test_data = testing_generator.data_generator()
