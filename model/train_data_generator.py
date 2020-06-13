@@ -15,18 +15,18 @@ class DataGenerator(keras.utils.Sequence):
         self.label_len = label_len
         self.indexes = None
         self.on_epoch_end()
-        # self.d = {'a': 26, 'c': 27, 'g': 28, 't': 29, 'd': 30,
-        #           'aa': 31, 'ac': 32, 'ag': 33, 'at': 34, 'ad': 35,
-        #           'cc': 36, 'ca': 37, 'cg': 38, 'ct': 39, 'cd': 40,
-        #           'gg': 41, 'ga': 42, 'gc': 43, 'gt': 44, 'gd': 45,
-        #           'tt': 46, 'ta': 47, 'tc': 48, 'tg': 49, 'td': 50,
-        #           }
-
-        self.d = {'aa': 1, 'at': 2, 'ac': 3, 'ag': 4, 'ad': -1,
-                  'tt': 5, 'ta': 6, 'tc': 7, 'tg': 8, 'td': -1,
-                  'cc': 9, 'ca': 10, 'ct': 11, 'cg': 12, 'cd': -1,
-                  'gg': 13, 'ga': 14, 'gc': 15, 'gt': 16, 'gd': -1,
+        self.d = {'a': 21, 'c': 22, 'g': 23, 't': 24, 'd': 25,
+                  'aa': 1, 'ac': 2, 'ag': 3, 'at': 4, 'ad': 5,
+                  'cc': 6, 'ca': 7, 'cg': 8, 'ct': 9, 'cd': 10,
+                  'gg': 11, 'ga': 12, 'gc': 13, 'gt': 14, 'gd': 15,
+                  'tt': 16, 'ta': 17, 'tc': 18, 'tg': 19, 'td': 20,
                   }
+
+        # self.d = {'aa': 1, 'at': 2, 'ac': 3, 'ag': 4, 'ad': -1,
+        #           'tt': 5, 'ta': 6, 'tc': 7, 'tg': 8, 'td': -1,
+        #           'cc': 9, 'ca': 10, 'ct': 11, 'cg': 12, 'cd': -1,
+        #           'gg': 13, 'ga': 14, 'gc': 15, 'gt': 16, 'gd': -1,
+        #           }
 
     def __len__(self):
         ## 每一轮训练包含多少个batch
