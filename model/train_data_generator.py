@@ -60,10 +60,11 @@ class DataGenerator(keras.utils.Sequence):
             sample = self.samples_data[item]
             info = sample[0]
             self.sendin.append(info)
-            ref = sample[1][0]
-            seq = list(sample[1][1])
-            data = [ref + i for i in seq]
-            i_data = [self.__str_to_int(i) for i in data]
+            # ref = sample[1][0]
+            # seq = list(sample[1][1])
+            # data = [ref + i for i in seq]
+            # i_data = [self.__str_to_int(i) for i in data]
+            i_data = sample[1]
             # print('i_data', i_data)
             # print('data', data)
             # tmp = ", ".join(i_data)
@@ -71,18 +72,18 @@ class DataGenerator(keras.utils.Sequence):
             batch_data.append(i_data)
             # print('batch_data', batch_data)
             label = sample[2]
-            if label == (0, 0):
-                label = 0
-                label_data.append(label)
-            elif label == (0, 1):
-                label = 1
-                label_data.append(label)
-            elif label == (1, 1):
-                label = 1
-                label_data.append(label)
-            elif label == (1, 2):
-                label = 1
-                label_data.append(label)
+            # if label == (0, 0):
+            #     label = 0
+            #     label_data.append(label)
+            # elif label == (0, 1):
+            #     label = 1
+            #     label_data.append(label)
+            # elif label == (1, 1):
+            #     label = 1
+            #     label_data.append(label)
+            # elif label == (1, 2):
+            #     label = 1
+            label_data.append(label)
 
             # print(label)
             # print('label_data', label_data)

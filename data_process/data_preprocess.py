@@ -12,6 +12,16 @@ class DATAPROCESS:
         self.fasta_filename = fasta_filename
         self.data_filename = data_filename
         self.region_filename = region_filename
+        self.l = {'a': 26, 'c': 27, 'g': 28, 't': 29, 'd': 30,
+                  'aa': 31, 'ac': 32, 'ag': 33, 'at': 34, 'ad': 35,
+                  'cc': 36, 'ca': 37, 'cg': 38, 'ct': 39, 'cd': 40,
+                  'gg': 41, 'ga': 42, 'gc': 43, 'gt': 44, 'gd': 45,
+                  'tt': 46, 'ta': 47, 'tc': 48, 'tg': 49, 'td': 50,
+                  }
+
+    def __str_to_int(self, s):
+        r = self.l[s]
+        return r
 
     ## 生成已知label数据
     def dataproc(self):
@@ -41,7 +51,10 @@ class DATAPROCESS:
             variant_seq = ['d' if item == '' else item for item in variant_seq]
             variant_seq = [item.lower() for item in variant_seq]
             s_c_p = sample + '_' + chr + '_' + pos
-            variant_sample = (s_c_p, (ref, tuple(variant_seq)), label)
+            variant_seq = [ref + i for i in variant_seq]
+            variant_seq = [self.__str_to_int(i) for i in variant_seq]
+            # variant_sample = (s_c_p, (ref, tuple(variant_seq)), label)
+            variant_sample = (s_c_p, variant_seq, 1)
             samples_data.append(variant_sample)
 
             # 非变异数据
@@ -59,7 +72,10 @@ class DATAPROCESS:
                 # print(norepeat)
                 if len(norepeat) == 1 and list(norepeat)[0] == ref_base:
                     normal_s_c_p = sample + '_' + chr + '_' + str(pos)
-                    normal_sample = (normal_s_c_p, (ref_base, tuple(normal_seq)), (0, 0))
+                    normal_seq = [ref_base + i for i in normal_seq]
+                    normal_seq = [self.__str_to_int(i) for i in normal_seq]
+                    # normal_sample = (normal_s_c_p, (ref_base, tuple(normal_seq)), (0, 0))
+                    normal_sample = (normal_s_c_p, normal_seq, 0)
                     # print(normal_sample)
                     samples_data.append(normal_sample)
                     break
