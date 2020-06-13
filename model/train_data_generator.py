@@ -5,7 +5,7 @@ from keras.preprocessing.sequence import pad_sequences
 from keras.utils.np_utils import to_categorical
 
 class DataGenerator(keras.utils.Sequence):
-    def __init__(self, samples_data, batch_size=128, shuffle=True, word_maxlen=78, label_base=2, label_indel=3, label_genotype=3):
+    def __init__(self, samples_data, batch_size=128, shuffle=True, word_maxlen=78, label_base=20, label_indel=3, label_genotype=3):
         self.samples_data = samples_data
         self.batch_size = batch_size
         self.shuffle = shuffle
