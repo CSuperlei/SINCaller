@@ -13,12 +13,12 @@ class TREGION:
         lines = region_file.readlines()
         for line in lines:
             item = line.split(",")
-            # sample = item[0]
-            # chr = item[1]
-            # left = item[2]
-            # right = item[3]
-            item = list(item)
-            ls.append(item)
+            sample = item[0]
+            chr = item[1]
+            left = item[2]
+            right = item[3]
+            # item = list(item)
+            ls.append([sample, chr, left, right])
 
         return ls
 
