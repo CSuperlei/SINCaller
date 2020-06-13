@@ -6,8 +6,8 @@ import tensorflow as tf
 from keras.utils.vis_utils import plot_model
 from keras.utils import multi_gpu_utils
 
-import os
-os.environ["CUDA_VISIBLE_DEVICES"] = '5, 6'
+# import os
+# os.environ["CUDA_VISIBLE_DEVICES"] = '5, 6'
 
 
 class SCSNVMODEL:
