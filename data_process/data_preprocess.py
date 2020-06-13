@@ -51,10 +51,10 @@ class DATAPROCESS:
             variant_seq = ['d' if item == '' else item for item in variant_seq]
             variant_seq = [item.lower() for item in variant_seq]
             s_c_p = sample + '_' + chr + '_' + pos
-            variant_seq = [ref + i for i in variant_seq]
-            variant_seq = [self.__str_to_int(i) for i in variant_seq]
-            # variant_sample = (s_c_p, (ref, tuple(variant_seq)), label)
-            variant_sample = (s_c_p, variant_seq, 1)
+            # variant_seq = [ref + i for i in variant_seq]
+            # variant_seq = [self.__str_to_int(i) for i in variant_seq]
+            variant_sample = (s_c_p, (ref, tuple(variant_seq)), 1)
+            # variant_sample = (s_c_p, variant_seq, 1)
             samples_data.append(variant_sample)
 
             # 非变异数据
@@ -72,10 +72,10 @@ class DATAPROCESS:
                 # print(norepeat)
                 if len(norepeat) == 1 and list(norepeat)[0] == ref_base:
                     normal_s_c_p = sample + '_' + chr + '_' + str(pos)
-                    normal_seq = [ref_base + i for i in normal_seq]
-                    normal_seq = [self.__str_to_int(i) for i in normal_seq]
-                    # normal_sample = (normal_s_c_p, (ref_base, tuple(normal_seq)), (0, 0))
-                    normal_sample = (normal_s_c_p, normal_seq, 0)
+                    # normal_seq = [ref_base + i for i in normal_seq]
+                    # normal_seq = [self.__str_to_int(i) for i in normal_seq]
+                    normal_sample = (normal_s_c_p, (ref_base, tuple(normal_seq)),  0)
+                    # normal_sample = (normal_s_c_p, normal_seq, 0)
                     # print(normal_sample)
                     samples_data.append(normal_sample)
                     break
