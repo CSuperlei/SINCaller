@@ -12,9 +12,11 @@ class TREGION:
         ls = []
         lines = region_file.readlines()
         for line in lines:
+            if line == '':
+                continue
             line = line.strip()
             item = line.split(",")
-            print(item)
+            # print(item)
             sample = item[0]
             chr = item[1]
             left = item[2]
