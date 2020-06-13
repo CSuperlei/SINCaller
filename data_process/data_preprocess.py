@@ -122,10 +122,10 @@ class DATAPROCESS:
                     g_label = 1  ## 杂合变异
 
                 # v_label = (ref_var_label - 31, indel_label - 51, g_label)
-                v_label = (ref_var_label)
+                v_label = ref_var_label
                 s_c_p = sample + '_' + chr + '_' + str(pos)
                 # variant_sample = (s_c_p, tuple(var_ind_gen), v_label)
-                variant_sample = (s_c_p, var_ind_gen, 1)
+                variant_sample = (s_c_p, var_ind_gen, v_label)
                 samples_data.append(variant_sample)
 
             elif int(self.mode) == 2: ## 生成非变异数据
@@ -179,11 +179,11 @@ class DATAPROCESS:
                         g_norm_label = 0
 
                         # n_label = (ref_norm_label - 31, indel_norm_label - 51, g_norm_label)
-                        n_label = (ref_norm_label - 31)
+                        n_label = ref_norm_label
 
                         normal_s_c_p = sample + '_' + chr + '_' + str(pos)
                         # normal_sample = (normal_s_c_p, tuple(nor_ind_gen), n_label)
-                        normal_sample = (normal_s_c_p, nor_ind_gen, 0)
+                        normal_sample = (normal_s_c_p, nor_ind_gen, n_label)
                         # print(normal_sample)
                         samples_data.append(normal_sample)
                         break
