@@ -122,7 +122,7 @@ class DATAPROCESS:
                     g_label = 1  ## 杂合变异
 
                 # v_label = (ref_var_label - 31, indel_label - 51, g_label)
-                v_label = (ref_var_label - 31)
+                v_label = (ref_var_label)
                 s_c_p = sample + '_' + chr + '_' + str(pos)
                 # variant_sample = (s_c_p, tuple(var_ind_gen), v_label)
                 variant_sample = (s_c_p, var_ind_gen, 1)
