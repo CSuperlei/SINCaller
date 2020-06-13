@@ -42,8 +42,12 @@ def testing(samples_test_data, test_model=1, model_params=None,  generator_param
         test_data = testing_generator.data_generator()
         result = model.predict(test_data, batch_size=64)
         print(result)
-        re = np.argmax(result, axis=1)
-        print(re)
+        re_base = np.argmax(result[0], axis=1)
+        print('re_base', re_base)
+        re_indel = np.argmax(result[1], axis=1)
+        print('re_indel', re_indel)
+        re_genotype = np.argmax(result[2], axis=1)
+        print('re_genotype', re_genotype)
 
         print(testing_generator.get_sendin())
 
