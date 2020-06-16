@@ -43,7 +43,7 @@ class BAM:
         for rec in bam_file.fetch(chr_id, start - 1 , end - 1):
             print(type(rec.get_reference_positions))
             print(list(rec.get_reference_positions()))
-            offset = int(start - 1) - int(list(rec.get_reference_positions)[0])
+            offset = int(start - 1) - int(rec.get_reference_positions()[0])
             seq = list(rec.seq)
             print(seq)
             print(seq[offset])
