@@ -94,28 +94,14 @@ def main():
                 generator_params = { 'shuffle': False }
                 sendin = testing(samples_data, test_model=1, generator_params=generator_params)
 
-        elif int(args.test) == 2:
+        elif int(args.test) == 2:  ## 测试有标签的数据
             samples_data = [
-                ('SRR052047_chr2_49671216', ('a', ('t', 't')), (1, 1)),
-                ('SRR052047_chr2_49671217', ('a', ('a', 'a')), (0, 0)),
-                ('SRR052047_chr2_49671218', ('g', ('t', 't', 't', 't', 't')), (1, 1)),
-                ('SRR052047_chr2_49671219', ('c', ('c', 'c', 'c', 'c', 'c')), (0, 0)),
-                ('SRR052047_chr2_49671220', ('a', ('g', 'g')), (1, 1)),
-                ('SRR052047_chr2_49671221', ('t', ('t', 't')), (0, 0)),
-                ('SRR052047_chr2_49671222', ('t', ('c', 'c')), (1, 1)),
-                ('SRR052047_chr2_49671223', ('c', ('c', 'c')), (0, 0)),
-                ('SRR052047_chr2_49671224', ('g', ('c', 'c')), (1, 1)),
-                ('SRR052047_chr2_49671225', ('a', ('a', 'a')), (0, 0)),
-                ('SRR052047_chr2_49671226', ('g', ('g', 't')), (1, 1)),
-                ('SRR052047_chr2_49671227', ('t', ('t', 't')), (0, 0)),
-                ('SRR052047_chr2_49671228', ('a', ('g', 'g', 'g', 'g', 'g', 'g', 'g', 'g', 'g', 'g', 'g', 'g', 'g', 'g')), (1, 1)),
-                ('SRR052047_chr2_49671229', ('g', ('g', 'g', 'g', 'g', 'g', 'g', 'g', 'g', 'g', 'g', 'g', 'g', 'g', 'g')), (0, 0)),
-                ('SRR052047_chr2_49671230', ('g', ('a', 'a')), (1, 1)),
-                ('SRR052047_chr2_49671231', ('c', ('c', 'c')), (0, 0)),
+                ### 写入随机位点进行测试
+
             ]
             testing(samples_data, test_model=2)
 
-        elif int(args.test) == 3:
+        elif int(args.test) == 3:  ## 测试没有标签的数据
             load_filename = args.load
             if load_filename is not None:
                 samples_data = np.load(load_filename, allow_pickle=True)

@@ -89,7 +89,7 @@ class DATAPROCESS:
                     genotype_list = [ref_base_indel + i for i in genotype_list]
                     genotype_list = [self.__str_to_int(i) for i in genotype_list]
                 elif indel_sum > 0:
-                ### indel插入，把插入序列读出，并且读到该位点的参考基因组
+                ### indel插入，把插入序列读出，并且加上该位点的参考基因组
                     ref_base_indel = fa.ref_atcg(fasta_file, chr, pos + 1, pos + 2)  ## 读下一个位置
                     genotype_list = b.fetch_row(bam_file, chr, pos + 1, pos + 2)  ## 读取这个插入位点的序列值
                     genotype_list = ['d' if item == '' else item for item in genotype_list]
