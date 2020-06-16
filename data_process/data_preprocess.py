@@ -29,6 +29,7 @@ class DATAPROCESS:
         }
 
     def __str_to_int(self, s, type = 1):
+        print(s)
         if type == 1:
             r = self.l[s]
             return r
