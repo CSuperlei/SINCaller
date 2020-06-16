@@ -43,6 +43,7 @@ class BAM:
         for rec in bam_file.fetch(chr_id, start -1 , end - 1):
             print(dir(rec))
             print(rec)
+            print(rec.reads)
             # print(list(rec))
             print(rec.cigar)
             print(rec.get_reference_sequence())
