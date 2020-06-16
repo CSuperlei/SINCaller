@@ -40,14 +40,9 @@ class BAM:
 
 
     def fetch_row(self, bam_file, chr_id, start, end):
-        for rec in bam_file.fetch(chr_id, start -1 , end - 1):
-            print(dir(rec))
-            print(rec)
-            print(rec.seq)
-            # print(list(rec))
-            print(rec.cigar)
-            print(rec.get_reference_sequence())
-            print(rec.get_reference_positions())
-            if rec.pos == start -1:
-                print(rec)
+        for rec in bam_file.fetch(chr_id, start - 1 , end - 1):
+            offset = int(start - 1) - int(rec.get_reference_positions[0])
+            seq = list(rec.seq)
+            print(seq)
+            print(seq[offset])
 

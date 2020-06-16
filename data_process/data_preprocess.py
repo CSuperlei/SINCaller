@@ -78,6 +78,21 @@ class DATAPROCESS:
                 if indel_sum == 0:
                     genotype_list = ref_var_list
                 ## indel 基因型处理
+                elif indel_sum < 0:
+                ### indel缺失，去临近位点的参考基因组值和比对到该位点的pileup值
+                    ref_base_indel = fa.ref_atcg(fasta_file, chr, pos + 1, pos + 2)  ## 读下一个位置
+                    ref_base_indel = ref_base_indel.lower()
+                    pileup_list_indel = b.pileup_column(bam_file, chr, pos + 1, pos + 2) ## 读下一个位置
+                    genotype_list = pileup_list_indel[0]
+                    genotype_list = ['d' if item == '' else item for item in genotype_list]
+                    genotype_list = [item.lower() for item in genotype_list]
+                    genotype_list = [ref_base_indel + i for i in genotype_list]
+                    genotype_list = [self.__str_to_int(i) for i in genotype_list]
+                elif indel_sum > 0:
+                ### indel插入，把插入序列读出，并且读到该位点的参考基因组
+                    ref_base_indel = fa.ref_atcg(fasta_file, chr, pos + 1, pos + 2)  ## 读下一个位置
+
+                    pass
 
 
 
