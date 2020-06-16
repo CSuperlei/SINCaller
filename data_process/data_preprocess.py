@@ -96,7 +96,8 @@ class DATAPROCESS:
                     genotype_list = ['d' if item == '' else item for item in genotype_list]
                     genotype_list = [item.lower() for item in genotype_list]
                     genotype_list = [ref_base_indel + i for i in genotype_list]
-                    print('g', genotype_list)
+                    s_c_p = sample + '_' + chr + '_' + str(pos)
+                    print('g', s_c_p, genotype_list)
                     genotype_list = [self.__str_to_int(i) for i in genotype_list]
 
                 ## padded_list, 对数据进行规整
