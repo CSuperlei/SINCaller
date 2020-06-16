@@ -91,10 +91,12 @@ class DATAPROCESS:
                 elif indel_sum > 0:
                 ### indel插入，把插入序列读出，并且读到该位点的参考基因组
                     ref_base_indel = fa.ref_atcg(fasta_file, chr, pos + 1, pos + 2)  ## 读下一个位置
-
-                    pass
-
-
+                    genotype_list = b.fetch_row(bam_file, chr, pos + 1, pos + 2)
+                    genotype_list = ['d' if item == '' else item for item in genotype_list]
+                    genotype_list = [item.lower() for item in genotype_list]
+                    genotype_list = [ref_base_indel + i for i in genotype_list]
+                    print('g', genotype_list)
+                    genotype_list = [self.__str_to_int(i) for i in genotype_list]
 
                 ## padded_list, 对数据进行规整
                 ref_var_list_padded = self.__padded_fill(ref_var_list, self.padded_maxlen)

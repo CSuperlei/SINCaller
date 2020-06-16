@@ -38,13 +38,16 @@ class BAM:
                 print('pos is not exist')
                 return None
 
-
     def fetch_row(self, bam_file, chr_id, start, end):
+        re = []
         for rec in bam_file.fetch(chr_id, start - 1 , end - 1):
-            # print(type(rec.get_reference_positions))
             # print(list(rec.get_reference_positions()))
+            ## 求出当前位点到序列起始位点的长度
             offset = int(start - 1) - int(rec.get_reference_positions()[0])
             seq = list(rec.seq)
-            # print(seq)
             print(seq[offset])
+            re.append(seq[offset])
+
+        return re
+
 
