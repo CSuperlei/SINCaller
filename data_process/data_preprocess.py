@@ -190,6 +190,7 @@ class DATAPROCESS:
 
                         ## 处理该位点的indel序列
                         indel_norm_list = normal_pileup_list[1]
+                        print('normal', indel_norm_list)
 
                         ## 处理该位点的genotype序列
                         indel_norm_list_sum = sum(indel_norm_list)
@@ -198,10 +199,8 @@ class DATAPROCESS:
                             ref_norm_base_genotype = ref_norm_base_genotype.lower()
                             genotype_norm_list = [ref_norm_base_genotype for i in indel_norm_list]
                             s_c_p = sample + '_' + chr + '_' + str(pos)
-
-
-                        genotype_norm_list = [self.__str_to_int(i, type=2) for i in genotype_norm_list]
-                        print('gn', s_c_p, genotype_norm_list)
+                            genotype_norm_list = [self.__str_to_int(i, type=2) for i in genotype_norm_list]
+                            print('gn', s_c_p, genotype_norm_list)
 
                         ref_norm_list_padded = self.__padded_fill(ref_norm_list, self.padded_maxlen)
                         indel_norm_list_padded = self.__padded_fill(indel_norm_list, self.padded_maxlen)
