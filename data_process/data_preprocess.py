@@ -190,8 +190,16 @@ class DATAPROCESS:
                         indel_norm_list = normal_pileup_list[1]
 
                         ## 处理该位点的genotype序列
-                        genotype_norm_list = ref_norm_list
+                        indel_norm_list_sum = sum(indel_norm_list)
+                        if indel_norm_list_sum == 0:
+                            ref_norm_base_genotype = fa.ref_atcg(fasta_file, chr, pos, pos + 1)  ## 读下一个位置
+                            ref_norm_base_genotype = ref_norm_base_genotype.lower()
+                            genotype_norm_list = [ref_norm_base_genotype for i in indel_norm_list]
+                            s_c_p = sample + '_' + chr + '_' + str(pos)
+                            print('gn', s_c_p, genotype_norm_list)
 
+
+                        genotype_norm_list = [self.__str_to_int(i, type=2) for i in genotype_norm_list]
                         ref_norm_list_padded = self.__padded_fill(ref_norm_list, self.padded_maxlen)
                         indel_norm_list_padded = self.__padded_fill(indel_norm_list, self.padded_maxlen)
                         genotype_norm_list_padded = self.__padded_fill(genotype_norm_list, self.padded_maxlen)
@@ -260,13 +268,24 @@ class DATAPROCESS:
                 ref_test_list = [self.__str_to_int(i) for i in ref_test_list]
                 ## 生成indel序列
                 indel_test_list = seq_list[1]
+
                 ## 生成genotype序列
-                ## 改，如果是indel序列，要判断出indel的基因型
-                genotyp_test_list = ref_test_list
+                indel_test_list_sum = sum(indel_test_list)
+                ref_base_genotype_test = fa.ref_atcg(fasta_file, chr, pos, pos + 1)
+                ref_base_genotype_test = ref_base_genotype_test.lower()
+                if indel_test_list_sum == 0:
+                    genotype_test_list = [ref_base_genotype_test for i in indel_test_list]
+                ## indel 基因型处理
+                elif indel_test_list_sum > 0:
+                    genotype_test_list = [ref_base_genotype_test + '+' if i > 0 else ref_base_genotype_test for i in indel_test_list]
+                elif indel_test_list_sum < 0:
+                    genotype_test_list = [ref_base_genotype_test + '-' if i < 0 else ref_base_genotype_test for i in indel_test_list]
+
+                genotype_test_list = [self.__str_to_int(i, type=2) for i in genotype_test_list]
 
                 ref_test_list_padded = self.__padded_fill(ref_test_list, self.padded_maxlen)
                 indel_test_list_padded = self.__padded_fill(indel_test_list, self.padded_maxlen)
-                genotyp_test_list_padded = self.__padded_fill(genotyp_test_list, self.padded_maxlen)
+                genotyp_test_list_padded = self.__padded_fill(genotype_test_list, self.padded_maxlen)
 
                 test_seq = ref_test_list_padded + indel_test_list_padded + genotyp_test_list_padded
                 s_c_p = sample + '_' + chr + '_' + str(pos)
