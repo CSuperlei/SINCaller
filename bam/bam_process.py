@@ -21,7 +21,7 @@ class BAM:
                 # print(dir(rec))
                 # print(dir(rec.pileups))
                 indel_list = [int(tmp.indel) for tmp in rec.pileups]
-                print(indel_list)
+                # print(indel_list)
                 # for tmp in rec.pileups:
                 #     print(dir(tmp))
                 #     print(tmp.indel)
@@ -45,7 +45,8 @@ class BAM:
             ## 求出当前位点到序列起始位点的长度
             offset = int(start - 1) - int(rec.get_reference_positions()[0])
             seq = list(rec.seq)
-            print(seq[offset])
+            # print(seq[offset])
+            ## 求得匹配到该点的序列
             re.append(seq[offset])
 
         return re

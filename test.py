@@ -5,6 +5,7 @@ from keras.utils.np_utils import to_categorical
 from keras.preprocessing.text import one_hot
 from keras.preprocessing.sequence import pad_sequences
 from bam.bam_process import BAM
+from fasta.fasta_process import FASTA
 import os
 import argparse
 
@@ -96,11 +97,17 @@ def main():
     # print('padded_docs', padded_docs)
     # print('padded_docs shape', padded_docs.shape)
 
+    fasta_filename = args.fasta
     bam_filename = args.bam
     b = BAM()
     bam_file = b.readfile(bam_filename)
     print('hello')
-    b.fetch_row(bam_file, 'chr1', 15607118, 15607119)
+    fa = FASTA()
+    fasta_file = fa.readfile(fasta_filename)
+
+    ref_base_indel = fa.ref_atcg(fasta_file, chr, 2370295, 2370295)
+    print(ref_base_indel)
+    b.fetch_row(bam_file, 'chr1', 2370295, 2370296)
     # re = b.pileup_column(bam_file, 'chr1', 10594829, 10594830)
     # print(re[0])
     # print(re[1])
