@@ -20,11 +20,22 @@ class DATAPROCESS:
                   'cc': 6, 'ca': 7, 'cg': 8, 'ct': 9, 'cd': 10,
                   'gg': 11, 'ga': 12, 'gc': 13, 'gt': 14, 'gd': 15,
                   'tt': 16, 'ta': 17, 'tc': 18, 'tg': 19, 'td': 20,
+                  'a' : 1, 'c' : 2, ''
                   }
+        self.l2 = {
+                    'a': 1, 'a+': 2, 'a-': 3,
+                    'c': 4, 'c+': 5, 'c-': 6,
+                    'g': 7, 'g+': 8, 'g-': 9,
+                    't': 10, 't+': 11, 'g-': 12
+        }
 
-    def __str_to_int(self, s):
-        r = self.l[s]
-        return r
+    def __str_to_int(self, s, type = 1):
+        if type == 1:
+            r = self.l[s]
+            return r
+        elif type == 2:
+            r = self.l2[s]
+            return r
 
     def __padded_fill(self, data=None, padded_len=78):
         data_len = len(data)
@@ -74,31 +85,47 @@ class DATAPROCESS:
 
                 ## 处理genotype
                 indel_sum = sum(indel_list)
+                ref_base_genotype = fa.ref_atcg(fasta_file, chr, pos, pos)  ## 读下一个位置
+                ref_base_genotype = ref_base_genotype.lower()
                 ## snp基因型处理
                 if indel_sum == 0:
-                    genotype_list = ref_var_list
+                    # genotype_list = ref_var_list
+                    genotype_list = [ref_base_genotype for i in indel_list]
                 ## indel 基因型处理
-                elif indel_sum < 0:
-                ### indel缺失，去临近位点的参考基因组值和比对到该位点的pileup值
-                    ref_base_indel = fa.ref_atcg(fasta_file, chr, pos + 1, pos + 2)  ## 读下一个位置
-                    ref_base_indel = ref_base_indel.lower()
-                    pileup_list_indel = b.pileup_column(bam_file, chr, pos + 1, pos + 2) ## 读下一个位置
-                    genotype_list = pileup_list_indel[0]
-                    genotype_list = ['d' if item == '' else item for item in genotype_list]
-                    genotype_list = [item.lower() for item in genotype_list]
-                    genotype_list = [ref_base_indel + i for i in genotype_list]
-                    genotype_list = [self.__str_to_int(i) for i in genotype_list]
                 elif indel_sum > 0:
+                    genotype_list = [ref_base_genotype + '+' if i > 0 else ref_base_genotype for i in indel_list]
+                elif indel_sum < 0:
+                    genotype_list = [ref_base_genotype + '-' if i < 0 else ref_base_genotype for i in indel_list]
+
+                print('g', s_c_p, genotype_list)
+                genotype_list = [self.__str_to_int(i, type=2) for i in genotype_list]
+                # elif indel_sum < 0:
+                ### indel缺失，去临近位点的参考基因组值和比对到该位点的pileup值
+                    # ref_base_indel = fa.ref_atcg(fasta_file, chr, pos, pos)  ## 读下一个位置
+                    # ref_base_indel = ref_base_indel.lower()
+                    # pileup_list_indel = b.pileup_column(bam_file, chr, pos + 1, pos + 2) ## 读下一个位置
+                    # genotype_list = pileup_list_indel[0]
+                    # genotype_list = ['d' if item == '' else item for item in genotype_list]
+                    # genotype_list = [item.lower() for item in genotype_list]
+                    # genotype_list = [ref_base_indel + i for i in genotype_list]
+                    # print(genotype_list)
+                    # genotype_list = [self.__str_to_int(i) for i in genotype_list]
+
+                # elif indel_sum > 0:
                 ### indel插入，把插入序列读出，并且加上该位点的参考基因组
-                    ref_base_indel = fa.ref_atcg(fasta_file, chr, pos, pos + 1)  ## 读下一个位置
-                    ref_base_indel = ref_base_indel.lower()
-                    genotype_list = b.fetch_row(bam_file, chr, pos + 1, pos + 2)  ## 读取这个插入位点的序列值
-                    genotype_list = ['d' if item == '' else item for item in genotype_list]
-                    genotype_list = [item.lower() for item in genotype_list]
-                    genotype_list = [ref_base_indel + i for i in genotype_list]
-                    s_c_p = sample + '_' + chr + '_' + str(pos)
-                    print('g', s_c_p, genotype_list)
-                    genotype_list = [self.__str_to_int(i) for i in genotype_list]
+                    # genotype_list = b.fetch_row(bam_file, chr, pos + 1, pos + 2)  ## 读取这个插入位点的序列值
+                    # genotype_list = ['d' if item == '' else item for item in genotype_list]
+                    # genotype_list = [item.lower() for item in genotype_list]
+                    # ref_base_indel = fa.ref_atcg(fasta_file, chr, pos, pos + 1)  ## 读下一个位置
+                    # ref_base_indel = ref_base_indel.lower()
+                    # genotype_list_norepeate = set(genotype_list)
+                    # if (ref_base_indel == list(genotype_list_norepeate[0])):
+                    #     genotype_list = [i + ref_base_indel for i in indel_list]
+                    #     ['+'+ref_base_indel if i > 0 else ref_base_indel + i for i in indel_list]
+                    # genotype_list = [ref_base_indel + i for i in genotype_list]
+                    # s_c_p = sample + '_' + chr + '_' + str(pos)
+                    # print('g', s_c_p, genotype_list)
+                    # genotype_list = [self.__str_to_int(i) for i in genotype_list]
 
                 ## padded_list, 对数据进行规整
                 ref_var_list_padded = self.__padded_fill(ref_var_list, self.padded_maxlen)
@@ -234,6 +261,7 @@ class DATAPROCESS:
                 ## 生成indel序列
                 indel_test_list = seq_list[1]
                 ## 生成genotype序列
+                ## 改，如果是indel序列，要判断出indel的基因型
                 genotyp_test_list = ref_test_list
 
                 ref_test_list_padded = self.__padded_fill(ref_test_list, self.padded_maxlen)
