@@ -15,7 +15,6 @@ class DATAPROCESS:
         self.region_filename = region_filename
         self.padded_maxlen = padded_maxlen
         self.mode = mode
-        ## [-25, 25]用来预留indel变异的数字，26，27，28，29，30，用来表示基因型(A,T,C,G,D),
         self.l = {
                   'aa': 1, 'ac': 2, 'ag': 3, 'at': 4, 'ad': 5,
                   'cc': 6, 'ca': 7, 'cg': 8, 'ct': 9, 'cd': 10,
@@ -74,7 +73,13 @@ class DATAPROCESS:
                 indel_list = pileup_list[1]
 
                 ## 处理genotype
-                genotype_list = ref_var_list
+                indel_sum = sum(indel_list)
+                ## snp基因型处理
+                if indel_sum == 0:
+                    genotype_list = ref_var_list
+                ## indel 基因型处理
+
+
 
                 ## padded_list, 对数据进行规整
                 ref_var_list_padded = self.__padded_fill(ref_var_list, self.padded_maxlen)

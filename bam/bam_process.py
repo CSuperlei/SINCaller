@@ -37,3 +37,10 @@ class BAM:
             elif rec.pos == end - 1:
                 print('pos is not exist')
                 return None
+
+
+    def fetch_row(self, bam_file, chr_id, start, end):
+        for rec in bam_file.fetch(chr_id, start -1 , end - 1):
+            if rec.pos == start -1:
+                print(rec)
+
