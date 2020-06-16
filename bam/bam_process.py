@@ -42,6 +42,8 @@ class BAM:
     def fetch_row(self, bam_file, chr_id, start, end):
         for rec in bam_file.fetch(chr_id, start -1 , end - 1):
             print(rec)
+            print(rec.get_query_sequences())
+            print(rec.get_reference_positions())
             if rec.pos == start -1:
                 print(rec)
 
