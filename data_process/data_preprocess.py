@@ -33,7 +33,7 @@ class DATAPROCESS:
             r = self.l[s]
             return r
         elif type == 2:
-            print(s)
+            # print(s)
             r = self.l2[s]
             return r
 
@@ -97,9 +97,7 @@ class DATAPROCESS:
                 elif indel_sum < 0:
                     genotype_list = [ref_base_genotype + '-' if i < 0 else ref_base_genotype for i in indel_list]
 
-                s_c_p = sample + '_' + chr + '_' + str(pos)
                 genotype_list = [self.__str_to_int(i, type=2) for i in genotype_list]
-                print('g', s_c_p, genotype_list)
 
                 # elif indel_sum < 0:
                 ### indel缺失，去临近位点的参考基因组值和比对到该位点的pileup值
@@ -190,7 +188,7 @@ class DATAPROCESS:
 
                         ## 处理该位点的indel序列
                         indel_norm_list = normal_pileup_list[1]
-                        print('normal', indel_norm_list)
+                        # print('normal', indel_norm_list)
 
                         ## 处理该位点的genotype序列
                         indel_norm_list_sum = sum(indel_norm_list)
@@ -198,9 +196,7 @@ class DATAPROCESS:
                             ref_norm_base_genotype = fa.ref_atcg(fasta_file, chr, pos, pos + 1)  ## 读下一个位置
                             ref_norm_base_genotype = ref_norm_base_genotype.lower()
                             genotype_norm_list = [ref_norm_base_genotype for i in indel_norm_list]
-                            s_c_p = sample + '_' + chr + '_' + str(pos)
                             genotype_norm_list = [self.__str_to_int(i, type=2) for i in genotype_norm_list]
-                            print('gn', s_c_p, genotype_norm_list)
 
                         ref_norm_list_padded = self.__padded_fill(ref_norm_list, self.padded_maxlen)
                         indel_norm_list_padded = self.__padded_fill(indel_norm_list, self.padded_maxlen)
