@@ -105,9 +105,9 @@ def main():
     fa = FASTA()
     fasta_file = fa.readfile(fasta_filename)
 
-    ref_base_indel = fa.ref_atcg(fasta_file, chr, 2370295, 2370295)
+    ref_base_indel = fa.ref_atcg(fasta_file, 'chr10', 2370295, 2370295)
     print(ref_base_indel)
-    b.fetch_row(bam_file, 'chr1', 2370295, 2370296)
+    b.fetch_row(bam_file, 'chr10', 2370295, 2370296)
     # re = b.pileup_column(bam_file, 'chr1', 10594829, 10594830)
     # print(re[0])
     # print(re[1])
