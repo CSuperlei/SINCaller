@@ -99,7 +99,7 @@ def main():
     bam_filename = args.bam
     b = BAM()
     bam_file = b.readfile(bam_filename)
-    b.pileup_column(bam_file, 'chr1', 10594830, 10594831)
+    b.fetch_row(bam_file, 'chr1', 10594830, 10594831)
 
 
 
