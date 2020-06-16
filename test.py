@@ -100,7 +100,7 @@ def main():
     b = BAM()
     bam_file = b.readfile(bam_filename)
     print('hello')
-    b.fetch_row(bam_file, 'chr1', 15607117, 15607118)
+    b.fetch_row(bam_file, 'chr1', 15607118, 15607119)
     # re = b.pileup_column(bam_file, 'chr1', 10594829, 10594830)
     # print(re[0])
     # print(re[1])
