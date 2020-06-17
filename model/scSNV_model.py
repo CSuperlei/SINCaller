@@ -3,13 +3,14 @@
 # from keras.layers import Input, Embedding, LSTM, Bidirectional, Dense, BatchNormalization
 # from keras.layers import Dropout, Lambda
 # from keras.utils import multi_gpu_utils
+# from keras.utils.vis_utils import plot_model
+
 
 import tensorflow as tf
-from keras.utils.vis_utils import plot_model
 from tensorflow.keras.layers import *
 from tensorflow.keras.models import Model
 from tensorflow.keras.optimizers import Adam, RMSprop
-
+from tensorflow.keras.utils import plot_model
 
 # import os
 # os.environ["CUDA_VISIBLE_DEVICES"] = '5, 6'
