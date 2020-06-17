@@ -43,11 +43,11 @@ class DATAPROCESS:
 
     def __indel_to_int(self, item):
         if item < 0:
-            return 34
+            return 33
         elif item == 0:
-            return 35
+            return 34
         elif item > 0:
-            return 36
+            return 35
 
     def __padded_fill(self, data=None, padded_len=78):
         data_len = len(data)
