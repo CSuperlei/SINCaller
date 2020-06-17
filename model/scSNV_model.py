@@ -17,7 +17,7 @@ from tensorflow.keras.utils import plot_model
 
 
 class SCSNVMODEL:
-    def __init__(self, input_shape=(234, ), n_base_labels=20, n_indel_labels=3, n_genotype_labels=3, n_lstm_outdim=64, word_maxlen=234, em_inputdim=22, em_outdim=22, lstm_layers=3, dense_layers=2, dense_num=64, drop_out=0.5, lr=0.001, gpus=2, alpha_base=[[1],[3],[3],[3],[5],[1],[3],[3],[3],[5],[1],[3],[3],[3],[5],[1],[3],[3],[3],[5]], alpha_indel=[[1],[5],[5]], alpha_genotype=[[1],[5],[3],[7]], gamma=2.0):
+    def __init__(self, input_shape=(234, ), n_base_labels=20, n_indel_labels=3, n_genotype_labels=3, n_lstm_outdim=64, word_maxlen=234, em_inputdim=33, em_outdim=33, lstm_layers=3, dense_layers=2, dense_num=64, drop_out=0.5, lr=0.001, gpus=2, alpha_base=[[1],[3],[3],[3],[5],[1],[3],[3],[3],[5],[1],[3],[3],[3],[5],[1],[3],[3],[3],[5]], alpha_indel=[[1],[5],[5]], alpha_genotype=[[1],[5],[3],[7]], gamma=2.0):
         self.input_shape = input_shape
         self.n_base_labels = n_base_labels
         self.n_indel_labels = n_indel_labels
