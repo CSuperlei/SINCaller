@@ -1,5 +1,5 @@
 # import keras
-# import keras.backend as K
+import keras.backend as K
 import time
 from .train_data_generator import DataGenerator
 from .scSNV_model import SCSNVMODEL
