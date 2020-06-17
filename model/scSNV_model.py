@@ -144,7 +144,7 @@ class SCSNVMODEL:
         # model = multi_gpu_utils(model, multi_gpu_utils=self.gpus)
         # model.compile(optimizer=RMSprop(lr=self.init_lr), loss={'outputs_base': self.multi_category_focal_loss1(self.alpha_base, self.gamma), 'outputs_indel': self.multi_category_focal_loss1(self.alpha_indel, self.gamma), 'outputs_genotype':self.multi_category_focal_loss1(self.alpha_genotype, self.gamma)}, metrics=['acc'])
         model.compile(optimizer=Adam(lr=self.init_lr), loss={'outputs_base':'categorical_crossentropy', 'outputs_indel': 'categorical_crossentropy', 'outputs_genotype':'categorical_crossentropy'}, metrics=['acc'])
-        plot_model(model, to_file='./model_strcut.png')
+        # plot_model(model, to_file='./model_strcut.png')
         model.summary()
         return model
 
