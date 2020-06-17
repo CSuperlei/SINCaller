@@ -3,7 +3,8 @@ import keras
 from tensorflow.keras.preprocessing.sequence import pad_sequences
 # from tensorflow.keras.utils.np_utils import to_categorical
 from tensorflow.keras.utils import to_categorical
-class DataGenerator(keras.utils.Sequence):
+from tensorflow.keras.utils import Sequence
+class DataGenerator(Sequence):
     def __init__(self, samples_data, batch_size=128, shuffle=True, word_maxlen=234, label_base=20, label_indel=3, label_genotype=3):
         self.samples_data = samples_data
         self.batch_size = batch_size
