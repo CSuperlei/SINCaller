@@ -1,16 +1,19 @@
 # from keras.models import Model
 # from keras.optimizers import Adam, RMSprop
-from keras.layers import Input, Embedding, LSTM, Bidirectional, Dense, BatchNormalization
+# from keras.layers import Input, Embedding, LSTM, Bidirectional, Dense, BatchNormalization
 # from keras.layers import Dropout, Lambda
 # from keras.utils import multi_gpu_utils
 # from keras.utils.vis_utils import plot_model
 
-
-import tensorflow as tf
 from tensorflow.keras.layers import *
 from tensorflow.keras.models import Model
 from tensorflow.keras.optimizers import Adam, RMSprop
 from tensorflow.keras.utils import plot_model
+from tensorflow.keras.layers import Embedding
+
+
+import tensorflow as tf
+
 
 import os
 os.environ["CUDA_VISIBLE_DEVICES"] = '5, 6'
@@ -141,7 +144,7 @@ class SCSNVMODEL:
         # model = multi_gpu_utils(model, multi_gpu_utils=self.gpus)
         # model.compile(optimizer=RMSprop(lr=self.init_lr), loss={'outputs_base': self.multi_category_focal_loss1(self.alpha_base, self.gamma), 'outputs_indel': self.multi_category_focal_loss1(self.alpha_indel, self.gamma), 'outputs_genotype':self.multi_category_focal_loss1(self.alpha_genotype, self.gamma)}, metrics=['acc'])
         model.compile(optimizer=Adam(lr=self.init_lr), loss={'outputs_base':'categorical_crossentropy', 'outputs_indel': 'categorical_crossentropy', 'outputs_genotype':'categorical_crossentropy'}, metrics=['acc'])
-        plot_model(model, to_file='./model_strcut.png', show_shapes=True, show_layer_names=True)
+        # plot_model(model, to_file='./model_strcut.png', show_shapes=True, show_layer_names=True)
         model.summary()
         return model
 
