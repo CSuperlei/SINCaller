@@ -44,7 +44,6 @@ def training(samples_train_data, samples_val_data, epochs=30, generator_params=N
     results = model.fit_generator(generator=training_generator,
                                   validation_data=validation_generator,
                                   epochs=epochs,
-                                  nb_worker=1,
                                   callbacks=[cb_1, cb_2, cb_3, cb_4])
 
     return training_generator.get_sendin_content()
