@@ -296,6 +296,7 @@ class DATAPROCESS:
                     genotype_test_list = [ref_base_genotype_test + '+' if i > 0 else ref_base_genotype_test for i in indel_test_list]
                     genotype_test_list = [self.__str_to_int(i) for i in genotype_test_list]
                 elif indel_test_list_sum < 0:
+                    ## 改 要对indel缺失做进一步处理
                     genotype_test_list = [ref_base_genotype_test + '-' if i < 0 else ref_base_genotype_test for i in indel_test_list]
                     genotype_test_list = [self.__str_to_int(i) for i in genotype_test_list]
 
