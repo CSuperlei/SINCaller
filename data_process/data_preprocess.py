@@ -100,6 +100,19 @@ class DATAPROCESS:
                     genotype_list = [ref_base_genotype + '+' if i > 0 else ref_base_genotype for i in indel_list]
                     genotype_list = [self.__str_to_int(i) for i in genotype_list]
                 elif indel_sum < 0:
+                    ## 如果是缺失indel要特判一下
+                    ref_base_indel_next = fa.ref_atcg(fasta_file, chr, pos + 1, pos + 2) ## 取indel缺失位置位置
+                    if ref_base_indel_next is None:
+                        continue
+                    ref_base_indel_next = ref_base_indel_next.lower()
+                    pileup_list_indel_next = b.pileup_column(bam_file, chr, pos + 1, pos + 2)
+                    if pileup_list_indel_next is None or pileup_list_indel_next[0] is None:
+                        continue
+                    pileup_list_indel_next = pileup_list_indel_next[0]
+                    # pileup_list_indel_next = ['d' if item == '' else item for item in pileup_list_indel_next]
+                    ## 如果跟参考基因组不同就用-1表示，如果相同就用0表示
+                    indel = [-1 if i != ref_base_indel_next else 0 for i in pileup_list_indel_next]
+                    indel_list = [indel[i] + indel_list[i] for i in range(min(len(indel), len(indel_list)))]
                     genotype_list = [ref_base_genotype + '-' if i < 0 else ref_base_genotype for i in indel_list]
                     genotype_list = [self.__str_to_int(i) for i in genotype_list]
 
