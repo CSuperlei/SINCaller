@@ -4,6 +4,7 @@ import time
 from .train_data_generator import DataGenerator
 from .scSNV_model import SCSNVMODEL
 import time
+import tensorflow.keras
 from tensorflow.keras.callbacks import TensorBoard
 
 
