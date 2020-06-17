@@ -41,6 +41,14 @@ class DATAPROCESS:
             r = self.l2[s]
             return r
 
+    def __indel_to_int(self, item):
+        if item < 0:
+            return 34
+        elif item == 0:
+            return 35
+        elif item > 0:
+            return 36
+
     def __padded_fill(self, data=None, padded_len=78):
         data_len = len(data)
         fill_zero = padded_len - data_len
@@ -86,6 +94,7 @@ class DATAPROCESS:
 
                 ## 处理该位点的indel序列
                 indel_list = pileup_list[1]
+                indel_seq = [self.__indel_to_int(i) for i in indel_list]
 
                 ## 处理genotype
                 indel_sum = sum(indel_list)
@@ -146,7 +155,7 @@ class DATAPROCESS:
 
                 ## padded_list, 对数据进行规整
                 ref_var_list_padded = self.__padded_fill(ref_var_list, self.padded_maxlen)
-                indel_list_padded = self.__padded_fill(indel_list, self.padded_maxlen)
+                indel_list_padded = self.__padded_fill(indel_seq, self.padded_maxlen)
                 genotype_list_padded = self.__padded_fill(genotype_list, self.padded_maxlen)
 
 
@@ -205,6 +214,7 @@ class DATAPROCESS:
 
                         ## 处理该位点的indel序列
                         indel_norm_list = normal_pileup_list[1]
+                        indel_norm_seq = [self.__indel_to_int(i) for i in indel_norm_list]
                         # print('normal', indel_norm_list)
 
                         ## 处理该位点的genotype序列
@@ -217,7 +227,7 @@ class DATAPROCESS:
                             genotype_norm_list = ref_norm_list
 
                         ref_norm_list_padded = self.__padded_fill(ref_norm_list, self.padded_maxlen)
-                        indel_norm_list_padded = self.__padded_fill(indel_norm_list, self.padded_maxlen)
+                        indel_norm_list_padded = self.__padded_fill(indel_norm_seq, self.padded_maxlen)
                         genotype_norm_list_padded = self.__padded_fill(genotype_norm_list, self.padded_maxlen)
 
                         nor_ind_gen = ref_norm_list_padded + indel_norm_list_padded + genotype_norm_list_padded
@@ -284,6 +294,7 @@ class DATAPROCESS:
                 ref_test_list = [self.__str_to_int(i) for i in ref_test_list]
                 ## 生成indel序列
                 indel_test_list = seq_list[1]
+                indel_test_seq = [self.__indel_to_int(i) for i in indel_test_list]
 
                 ## 生成genotype序列
                 indel_test_list_sum = sum(indel_test_list)
@@ -301,7 +312,7 @@ class DATAPROCESS:
                     genotype_test_list = [self.__str_to_int(i) for i in genotype_test_list]
 
                 ref_test_list_padded = self.__padded_fill(ref_test_list, self.padded_maxlen)
-                indel_test_list_padded = self.__padded_fill(indel_test_list, self.padded_maxlen)
+                indel_test_list_padded = self.__padded_fill(indel_test_seq, self.padded_maxlen)
                 genotyp_test_list_padded = self.__padded_fill(genotype_test_list, self.padded_maxlen)
 
                 test_seq = ref_test_list_padded + indel_test_list_padded + genotyp_test_list_padded

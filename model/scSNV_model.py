@@ -20,7 +20,7 @@ os.environ["CUDA_VISIBLE_DEVICES"] = '5, 6'
 
 
 class SCSNVMODEL:
-    def __init__(self, input_shape=(234, ), n_base_labels=20, n_indel_labels=3, n_genotype_labels=3, n_lstm_outdim=64, word_maxlen=234, em_inputdim=33, em_outdim=33, lstm_layers=3, dense_layers=2, dense_num=64, drop_out=0.5, lr=0.001, gpus=2, alpha_base=[[1],[3],[3],[3],[5],[1],[3],[3],[3],[5],[1],[3],[3],[3],[5],[1],[3],[3],[3],[5]], alpha_indel=[[1],[5],[5]], alpha_genotype=[[1],[5],[3],[7]], gamma=2.0):
+    def __init__(self, input_shape=(234, ), n_base_labels=20, n_indel_labels=3, n_genotype_labels=3, n_lstm_outdim=64, word_maxlen=234, em_inputdim=37, em_outdim=37, lstm_layers=3, dense_layers=2, dense_num=64, drop_out=0.5, lr=0.001, gpus=2, alpha_base=[[1],[3],[3],[3],[5],[1],[3],[3],[3],[5],[1],[3],[3],[3],[5],[1],[3],[3],[3],[5]], alpha_indel=[[1],[5],[5]], alpha_genotype=[[1],[5],[3],[7]], gamma=2.0):
         self.input_shape = input_shape
         self.n_base_labels = n_base_labels
         self.n_indel_labels = n_indel_labels
@@ -144,7 +144,7 @@ class SCSNVMODEL:
         # model = multi_gpu_utils(model, multi_gpu_utils=self.gpus)
         # model.compile(optimizer=RMSprop(lr=self.init_lr), loss={'outputs_base': self.multi_category_focal_loss1(self.alpha_base, self.gamma), 'outputs_indel': self.multi_category_focal_loss1(self.alpha_indel, self.gamma), 'outputs_genotype':self.multi_category_focal_loss1(self.alpha_genotype, self.gamma)}, metrics=['acc'])
         model.compile(optimizer=Adam(lr=self.init_lr), loss={'outputs_base':'categorical_crossentropy', 'outputs_indel': 'categorical_crossentropy', 'outputs_genotype':'categorical_crossentropy'}, metrics=['acc'])
-        # plot_model(model, to_file='./model_strcut.png', show_shapes=True, show_layer_names=True)
+        plot_model(model, to_file='./model_strcut.png', show_shapes=True, show_layer_names=True)
         model.summary()
         return model
 
