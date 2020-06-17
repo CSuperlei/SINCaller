@@ -145,7 +145,7 @@ class SCSNVMODEL:
         # model.compile(optimizer=RMSprop(lr=self.init_lr), loss={'outputs_base': self.multi_category_focal_loss1(self.alpha_base, self.gamma), 'outputs_indel': self.multi_category_focal_loss1(self.alpha_indel, self.gamma), 'outputs_genotype':self.multi_category_focal_loss1(self.alpha_genotype, self.gamma)}, metrics=['acc'])
         model.compile(optimizer=Adam(lr=self.init_lr), loss={'outputs_base':'categorical_crossentropy', 'outputs_indel': 'categorical_crossentropy', 'outputs_genotype':'categorical_crossentropy'}, metrics=['acc'])
         # plot_model(model, './model_strcut.png', show_shapes=True)
-        plot_model(model, expand_nested=True, show_shapes=True, to_file='model_strcut.png', dpi=80)
+        # plot_model(model, expand_nested=True, show_shapes=True, to_file='model_strcut.png', dpi=80)
         model.summary()
         return model
 
