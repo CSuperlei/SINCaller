@@ -19,6 +19,7 @@ def testing(samples_test_data, test_model=1, model_params=None,  generator_param
         if generator_params:
             testing_generator = DataGenerator(samples_test_data, **generator_params)
 
+        print(testing_generator)
         evaluate = model.evaluate_generator(generator=testing_generator, verbose=1)
         print(evaluate)
         print(testing_generator.get_sendin_content())
