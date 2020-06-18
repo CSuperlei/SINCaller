@@ -273,7 +273,6 @@ class DATAPROCESS:
                 ref_base = fa.ref_atcg(fasta_file, chr, pos, pos + 1)
 
                 if ref_base is None or seq_list is None or seq_list[0] is None or seq_list[1] is None:
-                    print('ref_base is None')
                     continue
 
                 ## 生成碱基序列
