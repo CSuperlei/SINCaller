@@ -29,8 +29,8 @@ def testing(samples_test_data, test_model=1, model_params=None,  generator_param
     elif test_model == 2:
         testing_generator = TEST(samples_test_data, test_type=1)
         X, Y = testing_generator.data_generator()
-        outputs_base_loss, outputs_indel_loss, outputs_genotype_loss, outputs_base_acc, outputs_indel_acc, outputs_genotype_acc = model.evaluate(x=X, y=Y, batch_size=64)
-
+        evalue = model.evaluate(x=X, y=Y, batch_size=64)
+        print(evalue)
         # print('Accuracy: %f'%(accuracy * 100))
         result = model.predict(x=X, batch_size=64)
         print(result)
