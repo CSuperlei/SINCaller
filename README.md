@@ -21,7 +21,7 @@ scSNVIndel can call the complicated SNV and Indel, which is superior to others t
 ## Innovation
 Single cell data is different form Next Generation Data.
 The single cell data is sparse and the coverage is low, so it is
-challenge to call the SNV and  
+challenge to call the SNV and  Indel from whole genome. And the 
 
 
 
