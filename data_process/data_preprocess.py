@@ -27,9 +27,8 @@ class DATAPROCESS:
                   }
 
     def __str_to_int(self, s):
-        if type == 1:
-            r = self.l[s]
-            return r
+        r = self.l[s]
+        return r
 
     def __indel_to_int(self, item):
         if item < 0:
@@ -274,6 +273,7 @@ class DATAPROCESS:
                 ref_base = fa.ref_atcg(fasta_file, chr, pos, pos + 1)
 
                 if ref_base is None or seq_list is None or seq_list[0] is None or seq_list[1] is None:
+                    print('ref_base is None')
                     continue
 
                 ## 生成碱基序列
