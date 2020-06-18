@@ -19,7 +19,6 @@ def testing(samples_test_data, test_model=1, model_params=None,  generator_param
         if generator_params:
             testing_generator = DataGenerator(samples_test_data, **generator_params)
 
-
         loss, accuracy = model.evaluate_generator(generator=testing_generator, verbose=1)
         print('Accuracy: %f' % (accuracy * 100))
         result = model.predict_generator(generator=testing_generator, verbose=1)
@@ -30,7 +29,7 @@ def testing(samples_test_data, test_model=1, model_params=None,  generator_param
     elif test_model == 2:
         testing_generator = TEST(samples_test_data, test_type=1)
         X, y = testing_generator.data_generator()
-        loss, accuracy = model.evaluate(X, batch_size=64)
+        loss, accuracy = model.evaluate(X, y, batch_size=64)
         print('Accuracy: %f'%(accuracy * 100))
         result = model.predict(X, batch_size=64)
         re = np.array(result)

@@ -23,10 +23,14 @@ class TEST:
                 info = item[0]
                 self.sendin.append(info)
                 i_data = item[1]
+                print(i_data)
                 batch_data.append(i_data)
                 label_base = item[2][0]
                 label_indel = item[2][1]
                 label_genotype = item[2][2]
+                print(label_base)
+                print(label_indel)
+                print(label_genotype)
                 label_data1.append(label_base)
                 label_data2.append(label_indel)
                 label_data3.append(label_genotype)
