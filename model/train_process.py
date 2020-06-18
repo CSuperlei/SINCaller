@@ -5,7 +5,7 @@ from tensorflow.keras.callbacks import TensorBoard, EarlyStopping, ModelCheckpoi
 import tensorflow.keras.backend as K
 
 
-def training(samples_train_data, samples_val_data, epochs=30, generator_params=None, model_params=None, hdf5_file = False, hdf5_fliename=None, mcheckpoint_dir='/home/cailei/bio_project/nbCNV/train_log/model_checkpoint/', mtensorboard_dir='/home/cailei/bio_project/nbCNV/tensorboard_logs/'):
+def training(samples_train_data, samples_val_data, epochs=30, generator_params=None, model_params=None, hdf5_file = False, hdf5_fliename=None, mcheckpoint_dir='/home/cailei/bio_project/nbCNV/train_log/model_checkpoint/', mtensorboard_dir='/home/cailei/bio_project/nbCNV/train_log/tensorboard_logs/'):
     print('sample_train_data', len(samples_train_data))
     print('sample_val_data', len(samples_val_data))
     training_generator = DataGenerator(samples_train_data)
