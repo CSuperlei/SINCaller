@@ -13,19 +13,8 @@ def testing(samples_test_data, test_model=1, model_params=None,  generator_param
     if hdf5_file and hdf5_fliename is not None:
         model.load_weights(hdf5_fliename)
 
-    ## 用generator送数据
-    if test_model == 1:
-        testing_generator = DataGenerator(samples_test_data)
-        if generator_params:
-            testing_generator = DataGenerator(samples_test_data, **generator_params)
-
-        print(testing_generator)
-        evaluate = model.evaluate_generator(generator=testing_generator, verbose=1)
-        print(evaluate)
-        print(testing_generator.get_sendin_content())
-
     ## 直接送有标签的测试数据进行评价
-    elif test_model == 2:
+    if test_model == 1:
         testing_generator = TEST(samples_test_data, test_type=1)
         X, Y = testing_generator.data_generator()
         evalue = model.evaluate(x=X, y=Y, batch_size=64)
@@ -37,7 +26,7 @@ def testing(samples_test_data, test_model=1, model_params=None,  generator_param
         print(testing_generator.get_sendin())
 
     ## 直接送没有便签的测试数据进行评价
-    elif test_model == 3:
+    elif test_model == 2:
         testing_generator = TEST(samples_test_data, test_type=2)
         test_data = testing_generator.data_generator()
         result = model.predict(test_data, batch_size=64)

@@ -83,7 +83,7 @@ def main():
             print('data is empty')
             return
 
-    elif int(mode) == 2:  ## 测试
+    elif int(mode) == 2:  ## 测试文件中的数据
         if int(args.test) == 1:
             load_filename = args.load
             if load_filename is not None:
@@ -92,9 +92,9 @@ def main():
                 print('load filename is empyt')
                 return
             if samples_data is not None and int(args.test) == 1:
-                testing(samples_data, test_model=2)
+                testing(samples_data, test_model=1)
 
-        elif int(args.test) == 2:  ## 测试有标签的数据
+        elif int(args.test) == 2:  ## 测试有标签的手写数据
             samples_data = [
                 ### 写入随机位点进行测试
                 ('SRR053608_chr6_95723412',
@@ -163,16 +163,16 @@ def main():
                      0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
                      0, 0, 0, 0, 0, 0, 0, 0, 0], [14, 0, 2]),
             ]
-            testing(samples_data, test_model=2)
+            testing(samples_data, test_model=1)
 
-        elif int(args.test) == 3:  ## 测试没有标签的数据
+        elif int(args.test) == 2:  ## 测试没有标签的数据
             load_filename = args.load
             if load_filename is not None:
                 samples_data = np.load(load_filename, allow_pickle=True)
             else:
                 print('load filename is empyt')
                 return
-            testing(samples_data, test_model=3)
+            testing(samples_data, test_model=2)
 
 
     elif int(mode) == 3:  ## 生成数据
