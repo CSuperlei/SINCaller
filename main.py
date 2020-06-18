@@ -9,7 +9,7 @@ from model.test_process import testing
 
 
 def args_func():
-    parser = argparse.ArgumentParser(description="scSNV software")
+    parser = argparse.ArgumentParser(description="scSNVIndel software")
     parser.add_argument('--vcf', '-v', help='vcf filename')
     parser.add_argument('--bam', '-b', help='bam filename')
     parser.add_argument('--fasta', '-fa', help='fasta, filename')
