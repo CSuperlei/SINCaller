@@ -1,11 +1,8 @@
-# import keras
-import keras.backend as K
-import time
 from .train_data_generator import DataGenerator
 from .scSNV_model import SCSNVMODEL
 import time
-import tensorflow.keras
-from tensorflow.keras.callbacks import TensorBoard
+from tensorflow.keras.callbacks import TensorBoard, EarlyStopping, ModelCheckpoint, LearningRateScheduler
+import tensorflow.keras.backend as K
 
 
 def training(samples_train_data, samples_val_data, epochs=30, generator_params=None, model_params=None, hdf5_file = False, hdf5_fliename=None, mcheckpoint_dir='/home/cailei/bio_project/nbCNV/train_log/model_checkpoint/', mtensorboard_dir='/home/cailei/bio_project/nbCNV/tensorboard_logs/'):
@@ -25,11 +22,11 @@ def training(samples_train_data, samples_val_data, epochs=30, generator_params=N
     if hdf5_file and hdf5_fliename != None:
         model.load_weights(hdf5_fliename)
 
-    cb_1 = tensorflow.keras.callbacks.EarlyStopping(min_delta=0, patience=30, verbose=0, mode='auto')
-    cb_2 = tensorflow.keras.callbacks.ModelCheckpoint(filepath=mcheckpoint_dir+'model_{epoch:02d}.hdf5', verbose=0,
+    cb_1 = EarlyStopping(min_delta=0, patience=30, verbose=0, mode='auto')
+    cb_2 = ModelCheckpoint(filepath=mcheckpoint_dir+'model_{epoch:02d}.hdf5', verbose=0,
                                            save_best_only=False, save_weights_only=False, mode='auto', period=1)
     model_name = 'tensorboard_scSNV_{}'.format(int(time.time()))
-    cb_3 = tensorflow.keras.callbacks.TensorBoard(log_dir=mtensorboard_dir+'{}'.format(model_name))
+    cb_3 = TensorBoard(log_dir=mtensorboard_dir+'{}'.format(model_name))
 
     def scheduler(epoch):
         # 每隔100个epoch，学习率减小为原来的1/10
@@ -40,11 +37,11 @@ def training(samples_train_data, samples_val_data, epochs=30, generator_params=N
             print("lr changed to {}".format(lr * 0.1))
         return K.get_value(model.optimizer.lr)
 
-    cb_4 = tensorflow.keras.callbacks.LearningRateScheduler(scheduler)
+    cb_4 = LearningRateScheduler(scheduler)
     results = model.fit_generator(generator=training_generator,
                                   validation_data=validation_generator,
                                   epochs=epochs,
-                                  callbacks=[cb_1, cb_2, cb_4])
+                                  callbacks=[cb_1, cb_2, cb_3, cb_4])
 
     return training_generator.get_sendin_content()
 

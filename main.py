@@ -6,7 +6,7 @@ from data_process.data_preprocess import DATAPROCESS
 from data_process.data_combine import DATACOMBINE
 from model.train_process import training
 from model.test_process import testing
-from bam.bam_process import BAM
+
 
 def args_func():
     parser = argparse.ArgumentParser(description="scSNV software")

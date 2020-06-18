@@ -1,23 +1,9 @@
-# from keras.models import Model
-# from keras.optimizers import Adam, RMSprop
-# from keras.layers import Input, Embedding, LSTM, Bidirectional, Dense, BatchNormalization
-# from keras.layers import Dropout, Lambda
-# from keras.utils import multi_gpu_utils
-# from keras.utils.vis_utils import plot_model
-
+import tensorflow as tf
 from tensorflow.keras.layers import *
 from tensorflow.keras.models import Model
 from tensorflow.keras.optimizers import Adam, RMSprop
-from tensorflow.keras.utils import plot_model
+from tensorflow.keras.utils import plot_model, multi_gpu_model
 from tensorflow.keras.layers import Embedding
-
-
-import tensorflow as tf
-
-
-import os
-os.environ["CUDA_VISIBLE_DEVICES"] = '5, 6'
-
 
 class SCSNVMODEL:
     def __init__(self, input_shape=(234, ), n_base_labels=20, n_indel_labels=3, n_genotype_labels=3, n_lstm_outdim=64, word_maxlen=234, em_inputdim=36, em_outdim=36, lstm_layers=3, dense_layers=2, dense_num=64, drop_out=0.5, lr=0.001, gpus=2, alpha_base=[[1],[3],[3],[3],[5],[1],[3],[3],[3],[5],[1],[3],[3],[3],[5],[1],[3],[3],[3],[5]], alpha_indel=[[1],[5],[5]], alpha_genotype=[[1],[5],[3],[7]], gamma=2.0):
@@ -140,12 +126,12 @@ class SCSNVMODEL:
         outputs_genotype = Dense(self.n_genotype_labels, activation='softmax', name='outputs_genotype')(dense_genotype)
 
         model = Model(inputs=inputs, outputs=[outputs_base, outputs_indel, outputs_genotype], name='model')
+        ## 必须放到model.comile前边
+        plot_model(model, expand_nested=True, show_shapes=True, show_layer_names=True, to_file='model_strcut.png', dpi=80)
 
         # model = multi_gpu_utils(model, multi_gpu_utils=self.gpus)
         # model.compile(optimizer=RMSprop(lr=self.init_lr), loss={'outputs_base': self.multi_category_focal_loss1(self.alpha_base, self.gamma), 'outputs_indel': self.multi_category_focal_loss1(self.alpha_indel, self.gamma), 'outputs_genotype':self.multi_category_focal_loss1(self.alpha_genotype, self.gamma)}, metrics=['acc'])
         model.compile(optimizer=Adam(lr=self.init_lr), loss={'outputs_base':'categorical_crossentropy', 'outputs_indel': 'categorical_crossentropy', 'outputs_genotype':'categorical_crossentropy'}, metrics=['acc'])
-        # plot_model(model, './model_strcut.png', show_shapes=True)
-        # plot_model(model, expand_nested=True, show_shapes=True, to_file='model_strcut.png', dpi=80)
         model.summary()
         return model
 
