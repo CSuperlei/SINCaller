@@ -93,6 +93,7 @@ def main():
                 return
             if samples_data is not None and int(args.test) == 1:
                 generator_params = { 'shuffle': False }
+                print(samples_data)
                 sendin = testing(samples_data, test_model=1, generator_params=generator_params)
 
         elif int(args.test) == 2:  ## 测试有标签的数据

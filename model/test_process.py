@@ -21,8 +21,6 @@ def testing(samples_test_data, test_model=1, model_params=None,  generator_param
 
         evaluate = model.evaluate_generator(generator=testing_generator, verbose=1)
         print(evaluate)
-        result = model.predict_generator(generator=testing_generator, verbose=1)
-        print(result)
         print(testing_generator.get_sendin_content())
 
     ## 直接送有标签的测试数据进行评价
