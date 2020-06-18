@@ -29,8 +29,8 @@ def testing(samples_test_data, test_model=1, model_params=None,  generator_param
     elif test_model == 2:
         testing_generator = TEST(samples_test_data, test_type=1)
         X, Y = testing_generator.data_generator()
-        loss, accuracy = model.evaluate(x=X, y=Y, batch_size=64)
-        print('Accuracy: %f'%(accuracy * 100))
+        model.evaluate(x=X, y=Y, batch_size=64)
+        # print('Accuracy: %f'%(accuracy * 100))
         result = model.predict(x=X, batch_size=64)
         re = np.array(result)
         print(re.argmax())

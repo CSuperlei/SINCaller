@@ -44,7 +44,7 @@ class TEST:
             y2 = np.array(label_data2)
             y3 = np.array(label_data3)
 
-            return X, {'outputs_base': y1, 'outputs_indel': y2, 'outputs_genotype':y3}
+            return X, {'outputs_base': y1, 'outputs_indel': y2, 'outputs_genotype': y3}
 
         elif self.test_type == 2:  ## 生成没有标签的数据
             batch_data = []
