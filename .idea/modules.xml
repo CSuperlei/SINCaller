@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/scSNVIndel.iml" filepath="$PROJECT_DIR$/.idea/scSNVIndel.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/scSNV.iml" filepath="$PROJECT_DIR$/.idea/scSNV.iml" />
     </modules>
   </component>
 </project>

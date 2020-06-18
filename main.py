@@ -20,7 +20,7 @@ def args_func():
     parser.add_argument('--data_model', '-dm', help='data generator mode; mode 1 gernerates variant data, mode 2 generates normal data')
     parser.add_argument('--load', '-ld', help='load filename')  ## 加载数据
     parser.add_argument('--region', '-r', help='region test filename')  ## 加载测试区域数据
-    parser.add_argument('--test', '-tm', help='test mode 1 is generator_test; mode 2 is batch test; mode 3 is random data')
+    parser.add_argument('--test', '-tm', help='test mode 1 is batch test; mode 3 is random data')
     parser.add_argument('--dc_origin', '-dco', help='data combine orgin') ## 合并不同标签数据
     parser.add_argument('--dc_target', '-dct', help='data combine target') ## 生成不同标签数据
     parser.add_argument('--mode', '-m', help='mode 1 is training; mode 2 is tesing; mode 3 is generate data; mode 4 is combine data', required=True)
