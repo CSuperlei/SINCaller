@@ -58,7 +58,7 @@ def main():
     log_level = args.log
     if log_level is not None:
         # print('log_level', log_level)
-        os.environ['TF_CPP_MIN_LOG_LEVEL'] = log_level
+        os.environ['TF_CPP_MIN_LOG_LEVEL'] = str(log_level)
 
     mode = args.mode
     if int(mode) == 1:   ## 训练
@@ -165,7 +165,7 @@ def main():
             ]
             testing(samples_data, test_model=1)
 
-        elif int(args.test) == 2:  ## 测试没有标签的数据
+        elif int(args.test) == 3:  ## 测试没有标签的数据
             load_filename = args.load
             if load_filename is not None:
                 samples_data = np.load(load_filename, allow_pickle=True)
