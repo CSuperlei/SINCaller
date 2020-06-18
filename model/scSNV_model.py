@@ -127,7 +127,7 @@ class SCSNVMODEL:
 
         model = Model(inputs=inputs, outputs=[outputs_base, outputs_indel, outputs_genotype], name='model')
         ## 必须放到model.comile前边
-        plot_model(model, expand_nested=True, show_shapes=True, show_layer_names=True, to_file='model_strcut.png', dpi=800)
+        plot_model(model, expand_nested=True, show_shapes=True, show_layer_names=True, to_file='model_strcut.png', dpi=200)
 
         # model = multi_gpu_utils(model, multi_gpu_utils=self.gpus)
         # model.compile(optimizer=RMSprop(lr=self.init_lr), loss={'outputs_base': self.multi_category_focal_loss1(self.alpha_base, self.gamma), 'outputs_indel': self.multi_category_focal_loss1(self.alpha_indel, self.gamma), 'outputs_genotype':self.multi_category_focal_loss1(self.alpha_genotype, self.gamma)}, metrics=['acc'])
