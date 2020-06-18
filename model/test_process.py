@@ -19,11 +19,11 @@ def testing(samples_test_data, test_model=1, model_params=None,  generator_param
         if generator_params:
             testing_generator = DataGenerator(samples_test_data, **generator_params)
 
-        loss, accuracy = model.evaluate_generator(generator=testing_generator, verbose=1)
-        print('Accuracy: %f' % (accuracy * 100))
+        evaluate = model.evaluate_generator(generator=testing_generator, verbose=1)
+        print(evaluate)
         result = model.predict_generator(generator=testing_generator, verbose=1)
         print(result)
-        return testing_generator.get_sendin_content()
+        print(testing_generator.get_sendin_content())
 
     ## 直接送有标签的测试数据进行评价
     elif test_model == 2:
@@ -31,7 +31,6 @@ def testing(samples_test_data, test_model=1, model_params=None,  generator_param
         X, Y = testing_generator.data_generator()
         evalue = model.evaluate(x=X, y=Y, batch_size=64)
         print(evalue)
-        # print('Accuracy: %f'%(accuracy * 100))
         result = model.predict(x=X, batch_size=64)
         print(result)
         # re = np.array(result)
