@@ -25,20 +25,10 @@ class DATAPROCESS:
                    'g': 27, 'g+': 28, 'g-': 29,
                    't': 30, 't+': 31, 't-': 32
                   }
-        self.l2 = {
-                    'a': 1, 'a+': 2, 'a-': 3,
-                    'c': 4, 'c+': 5, 'c-': 6,
-                    'g': 7, 'g+': 8, 'g-': 9,
-                    't': 10, 't+': 11, 't-': 12
-        }
 
-    def __str_to_int(self, s, type = 1):
+    def __str_to_int(self, s):
         if type == 1:
             r = self.l[s]
-            return r
-        elif type == 2:
-            # print(s)
-            r = self.l2[s]
             return r
 
     def __indel_to_int(self, item):
@@ -307,7 +297,19 @@ class DATAPROCESS:
                     genotype_test_list = [ref_base_genotype_test + '+' if i > 0 else ref_base_genotype_test for i in indel_test_list]
                     genotype_test_list = [self.__str_to_int(i) for i in genotype_test_list]
                 elif indel_test_list_sum < 0:
-                    ## 改 要对indel缺失做进一步处理
+                    ## 如果是缺失indel要特判一下
+                    ref_base_indel_next_test = fa.ref_atcg(fasta_file, chr, pos + 1, pos + 2)  ## 取indel缺失位置位置
+                    if ref_base_indel_next_test is None:
+                        continue
+                    ref_base_indel_next_test = ref_base_indel_next_test.lower()
+                    pileup_list_indel_next_test = b.pileup_column(bam_file, chr, pos + 1, pos + 2)
+                    if pileup_list_indel_next_test is None or pileup_list_indel_next_test[0] is None:
+                        continue
+                    pileup_list_indel_next_test = pileup_list_indel_next_test[0]
+                    ## 如果跟参考基因组不同就用-1表示，如果相同就用0表示
+                    indel = [-1 if i != ref_base_indel_next_test else 0 for i in pileup_list_indel_next_test]
+                    indel_test_list = [indel[i] + indel_test_list[i] for i in range(min(len(indel), len(indel_test_list)))]
+
                     genotype_test_list = [ref_base_genotype_test + '-' if i < 0 else ref_base_genotype_test for i in indel_test_list]
                     genotype_test_list = [self.__str_to_int(i) for i in genotype_test_list]
 
