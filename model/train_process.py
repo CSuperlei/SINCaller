@@ -38,7 +38,7 @@ def training(samples_train_data, samples_val_data, epochs=30, generator_params=N
         return K.get_value(model.optimizer.lr)
 
     cb_4 = LearningRateScheduler(scheduler)
-    results = model.fit(generator=training_generator,
+    results = model.fit_generator(generator=training_generator,
                         validation_data=validation_generator,
                         epochs=epochs,
                         callbacks=[cb_1, cb_2, cb_3, cb_4])
