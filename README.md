@@ -1,6 +1,6 @@
-# scSNVIndel:Searching the potential of using Bi-LSTM neural network for single cell SNV and Indel calling.
+# scSNVIndel: *Searching the potential of using Bi-LSTM neural network for single cell SNV and Indel calling.*
 <div align="center">
-    <img src="./pic/single_cell_data.jpg", width="100%", height="15%">
+    <img src="./pic/single_cell_data.jpg" width="100%" height="15%">
     <br>
 </div>
 <p align="left">
