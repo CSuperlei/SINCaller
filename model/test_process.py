@@ -33,11 +33,24 @@ def testing(samples_test_data, test_model=1, model_params=None,  generator_param
         print(result)
         re_base = np.argmax(result[0], axis=1)
         print('re_base', re_base)
+        re_base_pro = np.max(result[0], axis=1)
+
         re_indel = np.argmax(result[1], axis=1)
         print('re_indel', re_indel)
+        re_indel_pro = np.max(result[1], axis=1)
+
         re_genotype = np.argmax(result[2], axis=1)
         print('re_genotype', re_genotype)
+        re_genotype_pro = np.max(result[2], axis=1)
 
         print(testing_generator.get_sendin())
+
+        info = testing_generator.get_sendin()
+        re = []
+        for i, rec in enumerate(info):
+            item = (rec, (re_base[i], re_base_pro[i]), (re_indel[i], re_indel_pro[i]), (re_genotype[i], re_genotype_pro[i]))
+            re.append(item)
+
+        print(re)
 
 
