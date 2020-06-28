@@ -23,6 +23,7 @@ def args_func():
     parser.add_argument('--test', '-tm', help='test mode 1 is batch test; mode 3 is random data')
     parser.add_argument('--dc_origin', '-dco', help='data combine orgin') ## 合并不同标签数据
     parser.add_argument('--dc_target', '-dct', help='data combine target') ## 生成不同标签数据
+    parser.add_argument('--save_result', '-sr', help='save the predict result')  ## 将模型检测结果保存用来进一步生成vcf
     parser.add_argument('--mode', '-m', help='mode 1 is training; mode 2 is tesing; mode 3 is generate data; mode 4 is combine data', required=True)
     args = parser.parse_args()
     return args
@@ -167,12 +168,13 @@ def main():
 
         elif int(args.test) == 3:  ## 测试没有标签的数据
             load_filename = args.load
+            save_filename = args.save_result
             if load_filename is not None:
                 samples_data = np.load(load_filename, allow_pickle=True)
             else:
                 print('load filename is empyt')
                 return
-            testing(samples_data, test_model=2)
+            testing(samples_data, save_filename, test_model=2)
 
 
     elif int(mode) == 3:  ## 生成数据
