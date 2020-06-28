@@ -104,7 +104,8 @@ class DATAPROCESS:
                     genotype_list = [self.__str_to_int(i) for i in genotype_list]
 
                     ## 碱基改变系数
-                    base_coefficient = round(indel_sum / len(indel_list), 3)
+                    base_coefficient = [1 if i > 0 else 0 for i in indel_list]
+                    base_coefficient = round(sum(base_coefficient) / len(indel_list), 3)
 
                 elif indel_sum < 0:
                     '''
@@ -128,7 +129,8 @@ class DATAPROCESS:
                     genotype_list = [self.__str_to_int(i) for i in genotype_list]
 
                     ## 碱基改变系数
-                    base_coefficient = round(abs(sum(indel_list)) / len(indel_list), 3)
+                    base_coefficient = [1 if i < 0 else 0 for i in indel_list]
+                    base_coefficient = round(sum(base_coefficient) / len(indel_list), 3)
 
 
                 ## padded_list, 对数据进行规整
@@ -293,7 +295,8 @@ class DATAPROCESS:
                     genotype_test_list = [self.__str_to_int(i) for i in genotype_test_list]
 
                     ## 计算碱基改变系数
-                    base_coefficient = round(indel_test_list_sum / len(indel_test_list), 3)
+                    base_coefficient = [1 if i > 0 else 0 for i in indel_test_list]
+                    base_coefficient = round(sum(base_coefficient) / len(indel_test_list), 3)
 
                 elif indel_test_list_sum < 0:
                     ## 如果是缺失indel要特判一下
@@ -313,7 +316,8 @@ class DATAPROCESS:
                     genotype_test_list = [self.__str_to_int(i) for i in genotype_test_list]
 
                     ## 计算碱基改变系数
-                    base_coefficient = round(abs(sum(indel_test_list)) / len(indel_test_list), 3)
+                    base_coefficient = [1 if i < 0 else 0 for i in indel_test_list]
+                    base_coefficient = round(sum(base_coefficient) / len(indel_test_list), 3)
 
                 ref_test_list_padded = self.__padded_fill(ref_test_list, self.padded_maxlen)
                 indel_test_list_padded = self.__padded_fill(indel_test_seq, self.padded_maxlen)
