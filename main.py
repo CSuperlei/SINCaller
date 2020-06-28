@@ -174,7 +174,7 @@ def main():
             else:
                 print('load filename is empyt')
                 return
-            testing(samples_data, save_filename, test_model=2)
+            testing(samples_data, save_result=save_filename, test_model=2)
 
 
     elif int(mode) == 3:  ## 生成数据
