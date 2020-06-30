@@ -24,6 +24,7 @@ def args_func():
     parser.add_argument('--dc_origin', '-dco', help='data combine orgin') ## 合并不同标签数据
     parser.add_argument('--dc_target', '-dct', help='data combine target') ## 生成不同标签数据
     parser.add_argument('--save_result', '-sr', help='save the predict result')  ## 将模型检测结果保存用来进一步生成vcf
+    parser.add_argument('--out_vcf', '-ov', help='out vcf')
     parser.add_argument('--mode', '-m', help='mode 1 is training; mode 2 is tesing; mode 3 is generate data; mode 4 is combine data', required=True)
     args = parser.parse_args()
     return args
@@ -200,6 +201,13 @@ def main():
         targe_filename = args.dc_target
         dc = DATACOMBINE(origin_dir, targe_filename)
         dc.data_combine()
+
+    elif int(mode) == 5:
+        load_filename = args.load
+        vcf_filename = args.out_vcf
+        fa_filename = args.fasta
+
+
 
 
 if __name__ == '__main__':

@@ -324,7 +324,7 @@ class DATAPROCESS:
                 genotyp_test_list_padded = self.__padded_fill(genotype_test_list, self.padded_maxlen)
 
                 test_seq = ref_test_list_padded + indel_test_list_padded + genotyp_test_list_padded
-                s_c_p = sample + '_' + chr + '_' + str(pos) + '_' +str(base_coefficient)
+                s_c_p = sample + '_' + chr + '_' + str(pos) + '_' + str(base_coefficient) + str(seq_list[2]) + '_' + str(seq_list[3])
                 samples_data.append((s_c_p, test_seq))
 
         np.save(self.data_filename, samples_data)

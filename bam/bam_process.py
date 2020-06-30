@@ -1,3 +1,5 @@
+import numpy as np
+from collections import Counter
 import pysam
 from pysam import AlignmentFile
 
@@ -30,8 +32,27 @@ class BAM:
                 #     print(dir(tmp.alignment))
                 #     print(tmp.alignment.reference_name)
                 #     print(tmp.alignment.mapping_quality)
+                sum_indel_list = sum(indel_list)
+                if sum_indel_list == 0:
+                    base_ad = Counter(base_list)
+                    ad = []  ## 计算不同等位基因数量
+                    for k, v in base_ad.items():
+                        if k != '':
+                            ad.append(v)
+                    ad = ",".join(ad)
+                    dp = rec.n ## 计算Coverage深度
 
-                pileup_list = [base_list, indel_list]
+                if sum_indel_list < 0:
+                    deletion = np.min(indel_list)
+
+                if sum_indel_list > 0:
+                    insertion = np.max(indel_list)
+                    index = np.argmax(indel_list)
+                    re = self.fetch_row(bam_file, chr_id, rec.pos, rec.pos + insertion)
+                    insert_seq = re[index]
+
+
+                pileup_list = [base_list, indel_list, ad, dp]
                 return pileup_list
 
             elif rec.pos == end - 1:
@@ -51,4 +72,9 @@ class BAM:
 
         return re
 
-
+if __name__ == '__main__':
+    f_d = '/home/cailei/bio_project/nbCNV/bam/SRR052047/SRR052047_rmduplicate.bam'
+    b = BAM()
+    bam_file = b.readfile(f_d)
+    re = b.fetch_row(bam_file, 'chr1', 31988457, 31988460)
+    print(re)

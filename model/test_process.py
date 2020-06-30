@@ -48,7 +48,7 @@ def testing(samples_test_data, test_model=1, model_params=None, save_result=None
         info = testing_generator.get_sendin()
         re = []
         for i, rec in enumerate(info):
-            item = (rec, (re_base[i], re_base_pro[i]), (re_indel[i], re_indel_pro[i]), (re_genotype[i], re_genotype_pro[i]))
+            item = (rec, (re_base[i], re_base_pro[i]), (re_indel[i], re_indel_pro[i]), (re_genotype[i], re_genotype_pro[i]), result[2])
             re.append(item)
 
         print(re)
