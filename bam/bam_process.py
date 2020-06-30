@@ -65,6 +65,7 @@ class BAM:
             print(start - 1)
             print(end - 1)
             print(list(rec.get_reference_positions()))
+            print((rec.get_reference_sequence()))
             ## 求出当前位点到序列起始位点的长度
             offset = int(start - 1) - int(rec.get_reference_positions()[0])
             seq = list(rec.seq)
