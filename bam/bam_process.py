@@ -82,3 +82,7 @@ if __name__ == '__main__':
     bam_file = b.readfile(f_d)
     re = b.fetch_row(bam_file, 'chr1', 31988412, 31988476)
     print(re)
+
+    re = b.fetch_row(bam_file, 'chr1', 43785086, 43785157)
+    print(re)
+
