@@ -15,6 +15,9 @@ class BAM:
     def pileup_column(self, bam_file, chr_id, start, end):
         for rec in bam_file.pileup(chr_id, start - 1, end - 1):  ## 索引从0开始
             if rec.pos == start - 1:
+                print(rec.pos)
+                
+                print(rec.ne().pos)
                 # print(rec.get_mapping_qualities())
                 # print(rec.get_query_sequences())
                 # print(rec.get_query_positions())
@@ -55,8 +58,9 @@ class BAM:
                 dp = sum(ad) ## 总的映射深度
                 ad = [str(i) for i in ad]
                 ad = ",".join(ad) ## 每种等位基因的深度
+                ad_dp = ad + '-' + dp
 
-                pileup_list = [base_list, indel_list, ad, dp, re]
+                pileup_list = [base_list, indel_list, ad_dp, re]
                 return pileup_list
 
             elif rec.pos == end - 1:
