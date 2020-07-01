@@ -33,7 +33,7 @@ class BAM:
                 #     print(tmp.alignment.reference_name)
                 #     print(tmp.alignment.mapping_quality)
                 def son_pilup(bam, chr, s, e):
-                    for r in bam.pileup(chr, s, e):
+                    for r in bam.pileup(chr, s - 1, e - 1):
                         if r.pos == s:
                             bl = r.get_query_sequences()
                             print(bl)
