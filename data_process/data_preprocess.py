@@ -283,7 +283,7 @@ class DATAPROCESS:
 
                 ## 生成genotype序列
                 indel_test_list_sum = sum(indel_test_list)
-                ref_base_genotype_test = fa.ref_atcg(fasta_file, chr, pos, pos + 1)
+                ref_base_genotype_test = ref_base
                 ref_base_genotype_test = ref_base_genotype_test.lower()
                 if indel_test_list_sum == 0:
                     genotype_test_list = ref_test_list
@@ -342,6 +342,101 @@ class DATAPROCESS:
         np.save(self.data_filename, samples_data)
         return samples_data
 
+    def test_pos_all(self):
+        samples_data = []
 
+        b = BAM()
+        bam_file = b.readfile(self.bam_filename)
+
+        fa = FASTA()
+        fasta_file = fa.readfile(self.fasta_filename)
+
+        t = TREGION()
+        region_file = t.readfile(self.region_filename)
+        region = t.region_info(region_file)
+
+        for rec in region:
+            # print('radom test')
+            sample = rec[0]
+            chr = rec[1]
+            l_pos = rec[2]
+            r_pos = rec[3]
+            for pos in range(int(l_pos), int(r_pos) + 1):
+                seq_list = b.pileup_column(bam_file, chr, pos, pos + 1)
+                ref_base = fa.ref_atcg(fasta_file, chr, pos, pos + 1)
+
+                if ref_base is None or seq_list is None or seq_list[0] is None or seq_list[1] is None:
+                    continue
+
+                ## 生成碱基序列
+                seq_base_list = ['d' if item == '' else item for item in seq_list[0]]
+                seq_lower_list = [item.lower() for item in seq_base_list]
+                ref_base = ref_base.lower()
+                ref_test_list = [ref_base + i for i in seq_lower_list]
+                ref_test_list = [self.__str_to_int(i) for i in ref_test_list]
+                ## 生成indel序列
+                indel_test_list = seq_list[1]
+                indel_test_seq = [self.__indel_to_int(i) for i in indel_test_list]
+
+                ## 生成genotype序列
+                indel_test_list_sum = sum(indel_test_list)
+                ref_base_genotype_test = ref_base
+                ref_base_genotype_test = ref_base_genotype_test.lower()
+                if indel_test_list_sum == 0:
+                    genotype_test_list = ref_test_list
+                    ## 计算碱基改变系数
+                    # base_coefficient = [1 if ref_base != i else 0 for i in seq_lower_list]
+                    # base_coefficient = round(sum(base_coefficient) / len(base_coefficient), 3)
+
+                    ## 计算indel跨越了多少个位点
+                    indel_value = 0
+
+                ## indel 基因型处理
+                elif indel_test_list_sum > 0:
+                    genotype_test_list = [ref_base_genotype_test + '+' if i > 0 else ref_base_genotype_test for i in indel_test_list]
+                    genotype_test_list = [self.__str_to_int(i) for i in genotype_test_list]
+
+                    ## 计算碱基改变系数
+                    # base_coefficient = [1 if i > 0 else 0 for i in indel_test_list]
+                    # base_coefficient = round(sum(base_coefficient) / len(indel_test_list), 3)
+
+                    ## 计算indel跨越了多少个位点
+                    indel_value = np.max(indel_test_list)
+
+                elif indel_test_list_sum < 0:
+                    ## 如果是缺失indel要特判一下
+                    ref_base_indel_next_test = fa.ref_atcg(fasta_file, chr, pos + 1, pos + 2)  ## 取indel缺失位置位置
+                    if ref_base_indel_next_test is None:
+                        continue
+                    ref_base_indel_next_test = ref_base_indel_next_test.lower()
+                    pileup_list_indel_next_test = b.pileup_column(bam_file, chr, pos + 1, pos + 2)
+                    if pileup_list_indel_next_test is None or pileup_list_indel_next_test[0] is None:
+                        continue
+                    pileup_list_indel_next_test = pileup_list_indel_next_test[0]
+                    ## 如果跟参考基因组不同就用-1表示，如果相同就用0表示
+                    indel = [-1 if i != ref_base_indel_next_test else 0 for i in pileup_list_indel_next_test]
+                    indel_test_list = [indel[i] + indel_test_list[i] for i in range(min(len(indel), len(indel_test_list)))]
+
+                    genotype_test_list = [ref_base_genotype_test + '-' if i < 0 else ref_base_genotype_test for i in indel_test_list]
+                    genotype_test_list = [self.__str_to_int(i) for i in genotype_test_list]
+
+                    ## 计算碱基改变系数
+                    # base_coefficient = [1 if i < 0 else 0 for i in indel_test_list]
+                    # base_coefficient = round(sum(base_coefficient) / len(indel_test_list), 3)
+
+                    ## 计算indel跨越了多少个位点
+                    indel_value = - np.min(indel_test_list)
+
+                ref_test_list_padded = self.__padded_fill(ref_test_list, self.padded_maxlen)
+                indel_test_list_padded = self.__padded_fill(indel_test_seq, self.padded_maxlen)
+                genotyp_test_list_padded = self.__padded_fill(genotype_test_list, self.padded_maxlen)
+
+                test_seq = ref_test_list_padded + indel_test_list_padded + genotyp_test_list_padded
+                # s_c_p = sample + '_' + chr + '_' + str(pos) + '_' + str(base_coefficient) + '_' + str(seq_list[2]) + '_' + str(seq_list[3])
+                s_c_p = sample + '_' + chr + '_' + str(pos) + '_' + str(indel_value) + '_' + str(seq_list[2]) + '_' + str(seq_list[3] )
+                samples_data.append((s_c_p, test_seq))
+
+        np.save(self.data_filename, samples_data)
+        return samples_data
 
 
