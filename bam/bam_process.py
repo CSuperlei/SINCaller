@@ -18,28 +18,17 @@ class BAM:
                 base_list = rec.get_query_sequences()
                 indel_list = [int(tmp.indel) for tmp in rec.pileups]
 
-                def son_pilup(bam, chr, s, e):
-                    for r in bam.pileup(chr, s - 1, e - 1):
-                        if r.pos == s:
-                            bl = r.get_query_sequences()
-                            print(bl)
-                            return bl
-
                 sum_indel_list = sum(indel_list)
                 if sum_indel_list == 0:  ## 如果是SNP
-                    # bl = rec.get_query_sequences()
                     re = '0'
                 elif sum_indel_list < 0:
-                    # bl = son_pilup(bam_file, chr_id, rec.pos + 1, rec.pos + 2)
                     indel_index = np.argmin(indel_list)
                     indel_value = np.min(indel_list)
                     re = self.fetch_row(bam_file, chr_id, rec.pos, rec.pos + 1, indel_index, indel_value)
                 elif sum_indel_list > 0:
-                    # bl = son_pilup(bam_file, chr_id, rec.pos + 1, rec.pos + 2)
                     indel_value = np.max(indel_list)
                     indel_index = np.argmax(indel_list)
                     re = self.fetch_row(bam_file, chr_id, rec.pos, rec.pos + 1, indel_index, indel_value)
-
 
                 base_ad = Counter(indel_list)
                 ad = []  ## 计算不同等位基因数量
@@ -47,7 +36,7 @@ class BAM:
                     if k != 0:
                         ad.append(v)
                 dp = len(indel_list) ## 总的映射深度
-                d = dp - sum(ad)
+                d = dp - sum(ad)  ## 与参考基因相同的数量
                 ad = [str(i) for i in ad]
                 ad = ",".join(ad) ## 每种等位基因的深度
                 ad = str(d) + ',' + ad
@@ -88,7 +77,7 @@ class BAM:
                     if start in item and None not in item:
                         ref = reference[item[0]]  ## 找到indel缺失的参考基因
                         for i in range(-indel_value):
-                            indel_deletion += reference[item[0] + i + 1]
+                            indel_deletion += reference[item[0] + i + 1] ## 找到缺失的参考基因是什么
 
                         indel_deletion = ref + indel_deletion
                         re = indel_deletion.upper() + '-' + ref.upper()

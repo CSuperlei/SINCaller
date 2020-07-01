@@ -4,6 +4,7 @@ import argparse
 import numpy as np
 from data_process.data_preprocess import DATAPROCESS
 from data_process.data_combine import DATACOMBINE
+from data_process.vcf_geration import GVCF
 from model.train_process import training
 from model.test_process import testing
 
@@ -202,12 +203,12 @@ def main():
         dc = DATACOMBINE(origin_dir, targe_filename)
         dc.data_combine()
 
-    elif int(mode) == 5:
+    elif int(mode) == 5:  ## 生成vcf
         load_filename = args.load
         vcf_filename = args.out_vcf
         fa_filename = args.fasta
-
-
+        gv = GVCF(load_filename, vcf_filename, fa_filename)
+        gv.generation_vcf()
 
 
 if __name__ == '__main__':

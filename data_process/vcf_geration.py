@@ -6,9 +6,9 @@ from bam.bam_process import BAM
 
 class GVCF:
     def __init__(self, load_filename, vcf_filename, fastai_name):
-        self.load_filename = load_filename
-        self.vcf_filename = vcf_filename
-        self.fastai_name = fastai_name
+        self.load_filename = load_filename ## 加载模型预测数据
+        self.vcf_filename = vcf_filename   ## 生成vcf文件
+        self.fastai_name = fastai_name     ## 加载染色体长度文件
         self.diction = {
             1: 'aa', 2: 'ac', 3: 'ag', 4: 'at', 5: 'ad',
             6: 'cc', 7: 'ca', 8: 'cg', 9: 'ct', 10: 'cd',
@@ -71,12 +71,17 @@ class GVCF:
             SAMPLE = data[i][0].split('_')[0]
             CHROM = data[i][0].split('_')[1]
             POS = data[i][0].split('_')[2]
-            base_coeff = data[i][0].split('_')[3]
+
+            # base_coeff = data[i][0].split('_')[3]
+            AD = data[i][0].split('_')[4].split('-')[0]
+            DP = data[i][0].split('_')[4].split('-')[1]
+            REF_ALT = data[i][0].split('_')[5]
             ## 预处理
             ## 判断是否发生了碱基变化
             base_pair = data[i][1][0]
             base_pair_prob = data[i][1][1]
 
+            ## 发生了indel变异
             indel_pair = data[i][2][0]
             indel_pair_pro = data[i][2][1]
 
@@ -89,26 +94,32 @@ class GVCF:
             ALT = self.__int_to_str(base_pair)[1]
 
             sum_e = np.exp(base_pair_prob) + np.exp(indel_pair_pro) + np.exp(genotype_pair_pro)
-            QUAL = - 10 * np.log10(1 - (np.exp(base_pair_prob) + np.exp(genotype_pair_pro)) / sum_e)
 
             GT = self.__gt(genotype_pair)
 
             ## SNP 变异
             if REF != ALT:
-
-
-                ID = "."
+                ID = '.'
                 REF = REF.upper()
                 ALT = ALT.upper()
-                QUAL = QUAL
+                QUAL =str(-10 * np.log10(1 - (np.exp(base_pair_prob) + np.exp(genotype_pair_pro)) / sum_e))
                 FILTER = self.__filter(QUAL)
-                INFO = "."
-                FORMAT = "GT:AD:DP:GQ:PL"
-                VALUE = ""
+                INFO = '.'
+                FORMAT = 'GT:AD:DP:GQ:PL'
+                VALUE = GT + ':' + AD + ':' + DP + ':' + str(QUAL) + ':' + PL
 
                 v.generate_vcf_content(self.vcf_filename, CHROM, POS, ID, REF, ALT, QUAL, FILTER, INFO, FORMAT, VALUE)
 
             ## Indel 变异
-            if ref == alt and indel_pair != 0:
-                if indel_pair == 1: ## indel 缺失
+            elif REF == ALT and indel_pair != 0:
+                ID = '.'
+                REF = REF_ALT.split('-')[0]
+                ALT = REF_ALT.split('-')[1]
+                QUAL = str(-10 * np.log10(1 - (np.exp(indel_pair_pro) + np.exp(genotype_pair_pro)) / sum_e))
+                FILTER = self.__filter(QUAL)
+                INFO = '.'
+                FORMAT = 'GT:AD:DP:GQ:PL'
+                VALUE = GT + ':' + AD + ':' + DP + ':' + str(QUAL) + ':' + PL
+                v.generate_vcf_content(self.vcf_filename, CHROM, POS, ID, REF, ALT, QUAL, FILTER, INFO, FORMAT, VALUE)
+
 
