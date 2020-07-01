@@ -345,7 +345,7 @@ class DATAPROCESS:
 
     def fetch_row(self, bam_file, chr_id, start, end, index, indel_value):
         i = 0
-        for rec in bam_file.fetch(chr_id, start - 1 , end - 1):
+        for rec in bam_file.fetch(chr_id, start - 1 , end - 1, multiple_iterators=True):
             if i != index:
                 i += 1
                 continue
@@ -397,7 +397,7 @@ class DATAPROCESS:
             chr = rec[1]
             l_pos = int(rec[2]) - 1
             r_pos = int(rec[3]) - 1
-            for rec in bam_file.pileup(chr, l_pos, r_pos, all):
+            for rec in bam_file.pileup(chr, l_pos, r_pos):
                 print(next(rec))
                 try:
                     pos = rec.pos + 1  ## 参考基因位点
