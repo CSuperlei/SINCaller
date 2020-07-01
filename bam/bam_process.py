@@ -55,6 +55,7 @@ class BAM:
     def pileup_column_all(self, bam_file, chr_id, start, end):
         pileup_list_re = []
         for rec in bam_file.pileup(chr_id, start - 1, end - 1):  ## 索引从0开始
+            print(dir(rec.pileups))
             base_list = rec.get_query_sequences()
             indel_list = [int(tmp.indel) for tmp in rec.pileups]
 

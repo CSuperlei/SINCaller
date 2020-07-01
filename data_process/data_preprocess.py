@@ -361,11 +361,14 @@ class DATAPROCESS:
             chr = rec[1]
             l_pos = rec[2]
             r_pos = rec[3]
-            for pos in range(int(l_pos), int(r_pos) + 1):
-                seq_list = b.pileup_column(bam_file, chr, pos, pos + 1)
+            rr = b.pileup_column_all(bam_file, chr, l_pos, r_pos)
+            i = 0
+            while i < len(rr):
+                seq_list = rr[i]
                 ref_base = fa.ref_atcg(fasta_file, chr, pos, pos + 1)
 
                 if ref_base is None or seq_list is None or seq_list[0] is None or seq_list[1] is None:
+                    i += 1
                     continue
 
                 ## 生成碱基序列
@@ -406,11 +409,11 @@ class DATAPROCESS:
                 elif indel_test_list_sum < 0:
                     ## 如果是缺失indel要特判一下
                     ref_base_indel_next_test = fa.ref_atcg(fasta_file, chr, pos + 1, pos + 2)  ## 取indel缺失位置位置
-                    if ref_base_indel_next_test is None:
-                        continue
+
                     ref_base_indel_next_test = ref_base_indel_next_test.lower()
-                    pileup_list_indel_next_test = b.pileup_column(bam_file, chr, pos + 1, pos + 2)
+                    pileup_list_indel_next_test = rr[i+1]
                     if pileup_list_indel_next_test is None or pileup_list_indel_next_test[0] is None:
+                        i += 1
                         continue
                     pileup_list_indel_next_test = pileup_list_indel_next_test[0]
                     ## 如果跟参考基因组不同就用-1表示，如果相同就用0表示
@@ -435,6 +438,7 @@ class DATAPROCESS:
                 # s_c_p = sample + '_' + chr + '_' + str(pos) + '_' + str(base_coefficient) + '_' + str(seq_list[2]) + '_' + str(seq_list[3])
                 s_c_p = sample + '_' + chr + '_' + str(pos) + '_' + str(indel_value) + '_' + str(seq_list[2]) + '_' + str(seq_list[3] )
                 samples_data.append((s_c_p, test_seq))
+                i += 1;
 
         np.save(self.data_filename, samples_data)
         return samples_data
