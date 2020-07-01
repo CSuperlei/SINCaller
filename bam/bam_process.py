@@ -15,7 +15,6 @@ class BAM:
     def pileup_column(self, bam_file, chr_id, start, end):
         for rec in bam_file.pileup(chr_id, start - 1, end - 1):  ## 索引从0开始
             if rec.pos == start - 1:
-                print(dir(rec))
                 # print(rec.get_mapping_qualities())
                 # print(rec.get_query_sequences())
                 # print(rec.get_query_positions())
@@ -39,12 +38,12 @@ class BAM:
                 if sum_indel_list == 0:  ## 如果是SNP
                     bl = rec.get_query_sequences()
                 elif sum_indel_list < 0:
-                    bl = rec.next.get_query_sequences()
+                    bl = rec.get_query_sequences()
                     indel_index = np.argmin(indel_list)
                     indel_value = np.min(indel_list)
                     re = self.fetch_row(bam_file, chr_id, rec.pos, rec.pos + 1, indel_index, indel_value)
                 elif sum_indel_list > 0:
-                    bl = rec.next.get_query_sequences()
+                    bl = rec.get_query_sequences()
                     indel_value = np.max(indel_list)
                     indel_index = np.argmax(indel_list)
                     re = self.fetch_row(bam_file, chr_id, rec.pos, rec.pos + 1, indel_index, indel_value)
