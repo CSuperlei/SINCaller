@@ -128,5 +128,5 @@ if __name__ == '__main__':
     re = b.pileup_column(bam_file, 'chr1', 31988447, 31988448)
     print(re)
 
-    re = b.pileup_column(bam_file, 'chr1', 43785114, 43785115)
+    re = b.pileup_column(bam_file, 'chr1', 44164156, 44164157)
     print(re)
