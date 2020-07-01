@@ -32,8 +32,12 @@ class BAM:
                 #     print(dir(tmp.alignment))
                 #     print(tmp.alignment.reference_name)
                 #     print(tmp.alignment.mapping_quality)
+
+                indel_deletion = '0'
+                indel_insertion = '0'
+
                 sum_indel_list = sum(indel_list)
-                if sum_indel_list == 0:
+                if sum_indel_list == 0:  ## 如果是SNP
                     base_ad = Counter(base_list)
                     ad = []  ## 计算不同等位基因数量
                     for k, v in base_ad.items():
@@ -43,47 +47,77 @@ class BAM:
                     dp = rec.n ## 计算Coverage深度
 
                 if sum_indel_list < 0:
-                    deletion = np.min(indel_list)
+
+                    indel_deletion = np.min(indel_list)
 
                 if sum_indel_list > 0:
                     insertion = np.max(indel_list)
                     index = np.argmax(indel_list)
-                    re = self.fetch_row(bam_file, chr_id, rec.pos, rec.pos + insertion)
-                    insert_seq = re[index]
+                    re = self.fetch_row(bam_file, chr_id, rec.pos, rec.pos + 1, index, insertion)
 
 
-                pileup_list = [base_list, indel_list, ad, dp]
+
+                pileup_list = [base_list, indel_list, ad, dp, indel_deletion, indel_insertion]
                 return pileup_list
 
             elif rec.pos == end - 1:
                 print('pos is not exist')
                 return None
 
-    def fetch_row(self, bam_file, chr_id, start, end):
-        re = []
+    def fetch_row(self, bam_file, chr_id, start, end, index, indel_value):
+        # re = []
+        i = 1
         for rec in bam_file.fetch(chr_id, start - 1 , end - 1):
-            print(start - 1)
-            print(end - 1)
-            print(list(rec.get_reference_positions()))
-            print((rec.get_reference_sequence()))
-            ## 求出当前位点到序列起始位点的长度
-            offset = int(start - 1) - int(rec.get_reference_positions()[0])
-            seq = list(rec.seq)
-            print(rec.seq)
-            print(rec.get_aligned_pairs())
-            # print(seq[offset])
-            ## 求得匹配到该点的序列
-            re.append(seq[offset])
+            if i != index:
+                i += 1
+                continue
+            # print(start - 1)
+            # print(end - 1)
+            # print(list(rec.get_reference_positions()))
+            # print((rec.get_reference_sequence()))
+            # ## 求出当前位点到序列起始位点的长度
+            # offset = int(start - 1) - int(rec.get_reference_positions()[0])
+            # seq = list(rec.seq)
+            # print(rec.seq)
+            # print(rec.get_aligned_pairs())
+            # # print(seq[offset])
+            # ## 求得匹配到该点的序列
+            # re.append(seq[offset])
 
-        return re
+            reference = rec.get_reference_sequence()
+            pairs = rec.get_aligned_pairs()
+            if indel_value > 0: ## 插入
+                ref = ""
+                indel_insertion = ""
+                for item in pairs:
+                    if start-1 in item and None not in item:
+                        ref = rec.seq(item[0])   ##找到indel插入的参考基因
+                        for i in range(indel_value):
+                            indel_insertion += rec.seq(item[0] + i + 1)  ## 找到后边插入的基因是什么
+                        re = ref.upper() + '-' + indel_insertion.upper()
+                        return re
+
+            elif indel_value < 0:
+                ref = ""
+                indel_deletion = ""
+                for item in pairs:
+                    if start-1 in item and None not in item:
+                        ref = rec.seq(item[0])  ## 找到indel缺失的参考基因
+                        for i in range(-indel_value):
+                            indel_deletion += reference(item[0] + i + 1)
+
+                        indel_deletion = ref + indel_deletion
+                        re = indel_deletion.upper() + '-' + ref.upper()
+                        return re
+
 
 if __name__ == '__main__':
     f_d = '/home/cailei/bio_project/nbCNV/bam/SRR052047/SRR052047_rmduplicate.bam'
     b = BAM()
     bam_file = b.readfile(f_d)
-    re = b.fetch_row(bam_file, 'chr1', 31988412, 31988476)
+    re = b.fetch_row(bam_file, 'chr1', 31988447, 31988413, 2, -1)
     print(re)
 
-    re = b.fetch_row(bam_file, 'chr1', 43785086, 43785157)
+    re = b.fetch_row(bam_file, 'chr1', 43785114, 43785157, 1, 1)
     print(re)
 
