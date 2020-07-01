@@ -88,7 +88,7 @@ class GVCF:
             genotype_pair = data[i][3][0]
             genotype_pair_pro = data[i][3][1]
 
-            PL = str(1 - data[i][4][0]) + ',' + str(1 - data[i][4][1]) + ',' + str(1 - data[i][4][2])
+            PL = str(round(1 - data[i][4][0], 3)) + ',' + str(round(1 - data[i][4][1], 3)) + ',' + str(round(1 - data[i][4][2],3))
 
             REF = self.__int_to_str(base_pair)[0]
             ALT = self.__int_to_str(base_pair)[1]
@@ -102,13 +102,13 @@ class GVCF:
                 ID = '.'
                 REF = REF.upper()
                 ALT = ALT.upper()
-                QUAL = -10 * np.log10(1 - (np.exp(base_pair_prob) + np.exp(genotype_pair_pro)) / sum_e)
+                QUAL = np.round(-10 * np.log10(1 - (np.exp(base_pair_prob) + np.exp(genotype_pair_pro)) / sum_e), 3)
                 FILTER = self.__filter(QUAL)
                 INFO = '.'
                 FORMAT = 'GT:AD:DP:GQ:PL'
                 VALUE = GT + ':' + AD + ':' + DP + ':' + str(QUAL) + ':' + PL
 
-                v.generate_vcf_content(self.vcf_filename, CHROM, POS, ID, REF, ALT, QUAL, FILTER, INFO, FORMAT, VALUE)
+                v.generate_vcf_content(self.vcf_filename, CHROM, POS, ID, REF, ALT, str(QUAL), FILTER, INFO, FORMAT, VALUE)
 
             ## Indel 变异
             elif REF == ALT and indel_pair != 0:
