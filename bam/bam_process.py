@@ -43,12 +43,12 @@ class BAM:
                 if sum_indel_list == 0:  ## 如果是SNP
                     bl = rec.get_query_sequences()
                 elif sum_indel_list < 0:
-                    bl = son_pilup(bam_file, chr_id, rec.pos + 1, rec.pos + 2)
+                    bl = son_pilup(bam_file, chr_id, rec.pos + 2, rec.pos + 3)
                     indel_index = np.argmin(indel_list)
                     indel_value = np.min(indel_list)
                     re = self.fetch_row(bam_file, chr_id, rec.pos, rec.pos + 1, indel_index, indel_value)
                 elif sum_indel_list > 0:
-                    bl = son_pilup(bam_file, chr_id, rec.pos + 1, rec.pos + 2)
+                    bl = son_pilup(bam_file, chr_id, rec.pos + 2, rec.pos + 3)
                     indel_value = np.max(indel_list)
                     indel_index = np.argmax(indel_list)
                     re = self.fetch_row(bam_file, chr_id, rec.pos, rec.pos + 1, indel_index, indel_value)
