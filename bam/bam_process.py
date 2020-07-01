@@ -70,6 +70,7 @@ class BAM:
             offset = int(start - 1) - int(rec.get_reference_positions()[0])
             seq = list(rec.seq)
             print(rec.seq)
+            print(rec.get_aligned_pairs())
             # print(seq[offset])
             ## 求得匹配到该点的序列
             re.append(seq[offset])
