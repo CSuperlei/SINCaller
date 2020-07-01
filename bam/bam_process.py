@@ -110,7 +110,8 @@ class BAM:
                     if start-1 in item and None not in item:
                         ref = seq[item[0]]  ## 找到indel缺失的参考基因
                         for i in range(-indel_value):
-                            print(reference)
+                            print(reference[item[0] + i + 1])
+                            print(reference[item[0] + i + 2])
                             indel_deletion += reference[item[0] + i + 1]
 
                         indel_deletion = ref + indel_deletion
