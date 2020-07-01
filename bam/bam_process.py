@@ -53,6 +53,7 @@ class BAM:
                 return None
 
     def pileup_column_all(self, bam_file, chr_id, start, end):
+        pileup_list_re = []
         for rec in bam_file.pileup(chr_id, start - 1, end - 1):  ## 索引从0开始
             base_list = rec.get_query_sequences()
             indel_list = [int(tmp.indel) for tmp in rec.pileups]
@@ -85,7 +86,8 @@ class BAM:
                 ad_dp = str(dp) + '-' + str(dp)
 
             pileup_list = [base_list, indel_list, ad_dp, re]
-            return pileup_list
+            pileup_list_re.append(pileup_list)
+        return pileup_list_re
 
 
 
