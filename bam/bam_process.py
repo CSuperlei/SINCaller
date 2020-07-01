@@ -37,10 +37,13 @@ class BAM:
                         ad.append(v)
                 dp = len(indel_list) ## 总的映射深度
                 d = dp - sum(ad)  ## 与参考基因相同的数量
-                ad = [str(i) for i in ad]
-                ad = ",".join(ad) ## 每种等位基因的深度
-                ad = str(d) + ',' + ad
-                ad_dp = ad + '-' + str(dp)
+                if ad != 0:
+                    ad = [str(i) for i in ad]
+                    ad = ",".join(ad) ## 每种等位基因的深度
+                    ad = str(d) + ',' + ad
+                    ad_dp = ad + '-' + str(dp)
+                else:
+                    ad_dp = str(dp) + '_' + str(dp)
 
                 pileup_list = [base_list, indel_list, ad_dp, re]
                 return pileup_list

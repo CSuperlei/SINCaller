@@ -257,7 +257,7 @@ class DATAPROCESS:
         region = t.region_info(region_file)
 
         for rec in region:
-            print('radom test')
+            # print('radom test')
             sample = rec[0]
             chr = rec[1]
             l_pos = rec[2]
