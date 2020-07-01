@@ -17,7 +17,7 @@ class BAM:
             if rec.pos == start - 1:
                 print(rec.pos)
 
-                print(rec.__ne__)
+                print(rec.__ne__.pos)
                 # print(rec.get_mapping_qualities())
                 # print(rec.get_query_sequences())
                 # print(rec.get_query_positions())
@@ -58,7 +58,7 @@ class BAM:
                 dp = sum(ad) ## 总的映射深度
                 ad = [str(i) for i in ad]
                 ad = ",".join(ad) ## 每种等位基因的深度
-                ad_dp = ad + '-' + dp
+                ad_dp = ad + '-' + str(dp)
 
                 pileup_list = [base_list, indel_list, ad_dp, re]
                 return pileup_list
