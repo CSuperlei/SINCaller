@@ -486,8 +486,11 @@ class DATAPROCESS:
                     pileup_list_indel_next_test = pileup_list_indel_next_test[0]
                     ## 如果跟参考基因组不同就用-1表示，如果相同就用0表示
                     indel = [-1 if i != ref_base_indel_next_test else 0 for i in pileup_list_indel_next_test]
-                    indel_test_list = [indel[i] + indel_test_list[i] for i in
-                                       range(min(len(indel), len(indel_test_list)))]
+                    if len(indel) == 0:
+                        indel_test_list = indel_test_list
+                    else:
+                        indel_test_list = [indel[i] + indel_test_list[i] for i in
+                                           range(min(len(indel), len(indel_test_list)))]
 
                     genotype_test_list = [ref_base_genotype_test + '-' if i < 0 else ref_base_genotype_test for i in
                                           indel_test_list]
@@ -498,7 +501,7 @@ class DATAPROCESS:
                     # base_coefficient = round(sum(base_coefficient) / len(indel_test_list), 3)
 
                     ## 计算indel跨越了多少个位点
-                    indel_value = - np.min(indel_test_list)
+                    indel_value = -np.min(indel_test_list)
 
                 ref_test_list_padded = self.__padded_fill(ref_test_list, self.padded_maxlen)
                 indel_test_list_padded = self.__padded_fill(indel_test_seq, self.padded_maxlen)
