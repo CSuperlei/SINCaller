@@ -25,10 +25,10 @@ class BAM:
                             print(bl)
                             return bl
 
-                re = '0'
                 sum_indel_list = sum(indel_list)
                 if sum_indel_list == 0:  ## 如果是SNP
                     # bl = rec.get_query_sequences()
+                    re = '0'
                 elif sum_indel_list < 0:
                     # bl = son_pilup(bam_file, chr_id, rec.pos + 1, rec.pos + 2)
                     indel_index = np.argmin(indel_list)
