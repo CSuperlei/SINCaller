@@ -16,8 +16,8 @@ class BAM:
         for rec in bam_file.pileup(chr_id, start - 1, end - 1):  ## 索引从0开始
             if rec.pos == start - 1:
                 print(rec.pos)
-                
-                print(rec.ne().pos)
+
+                print(rec.__ne__)
                 # print(rec.get_mapping_qualities())
                 # print(rec.get_query_sequences())
                 # print(rec.get_query_positions())
