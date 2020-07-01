@@ -33,8 +33,8 @@ class BAM:
                 #     print(tmp.alignment.reference_name)
                 #     print(tmp.alignment.mapping_quality)
                 def son_pilup(bam, chr, s, e):
-                    for r in bam.pileup(chr, s - 1, e - 1):
-                        if r.pos == s - 1:
+                    for r in bam.pileup(chr, s, e):
+                        if r.pos == s:
                             bl = r.get_query_sequences()
                             print(bl)
                             return bl
@@ -44,12 +44,12 @@ class BAM:
                 if sum_indel_list == 0:  ## 如果是SNP
                     bl = rec.get_query_sequences()
                 elif sum_indel_list < 0:
-                    bl = son_pilup(bam_file, chr_id, start + 1, end + 1)
+                    bl = son_pilup(bam_file, chr_id, rec.pos + 1, rec.pos + 2)
                     indel_index = np.argmin(indel_list)
                     indel_value = np.min(indel_list)
                     re = self.fetch_row(bam_file, chr_id, rec.pos, rec.pos + 1, indel_index, indel_value)
                 elif sum_indel_list > 0:
-                    bl = son_pilup(bam_file, chr_id, start + 1, end + 1)
+                    bl = son_pilup(bam_file, chr_id, rec.pos + 1, rec.pos + 2)
                     indel_value = np.max(indel_list)
                     indel_index = np.argmax(indel_list)
                     re = self.fetch_row(bam_file, chr_id, rec.pos, rec.pos + 1, indel_index, indel_value)
