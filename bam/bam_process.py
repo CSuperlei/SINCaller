@@ -115,9 +115,9 @@ if __name__ == '__main__':
     f_d = '/home/cailei/bio_project/nbCNV/bam/SRR052047/SRR052047_rmduplicate.bam'
     b = BAM()
     bam_file = b.readfile(f_d)
-    re = b.fetch_row(bam_file, 'chr1', 31988447, 31988413, 2, -1)
+    re = b.fetch_row(bam_file, 'chr1', 31988447, 31988448, 2, -1)
     print(re)
 
-    re = b.fetch_row(bam_file, 'chr1', 43785114, 43785157, 1, 1)
+    re = b.fetch_row(bam_file, 'chr1', 43785114, 43785115, 1, 1)
     print(re)
 
