@@ -4,6 +4,7 @@ from fasta.fasta_process import FASTA
 from data_process.region_process import TREGION
 import numpy as np
 from scipy import stats
+from collections import Counter
 
 
 class DATAPROCESS:
@@ -342,6 +343,41 @@ class DATAPROCESS:
         np.save(self.data_filename, samples_data)
         return samples_data
 
+    def fetch_row(self, bam_file, chr_id, start, end, index, indel_value):
+        i = 0
+        for rec in bam_file.fetch(chr_id, start - 1 , end - 1):
+            if i != index:
+                i += 1
+                continue
+
+            seq = list(rec.seq)
+            reference = rec.get_reference_sequence()
+            reference = list(reference)
+            pairs = rec.get_aligned_pairs()
+            if indel_value > 0: ## 插入
+                indel_insertion = ""
+                for item in pairs:
+                    if start in item and None not in item:
+                        ref = reference[item[0]]   ##找到indel插入的参考基因
+                        for i in range(indel_value):
+                            indel_insertion += seq[item[0] + i + 1]  ## 找到后边插入的基因是什么
+                        indel_insertion = ref + indel_insertion
+                        re = ref.upper() + '-' + indel_insertion.upper()
+                        return re
+
+            elif indel_value < 0:
+                indel_deletion = ""
+                for item in pairs:
+                    if start in item and None not in item:
+                        ref = reference[item[0]]  ## 找到indel缺失的参考基因
+                        for i in range(-indel_value):
+                            indel_deletion += reference[item[0] + i + 1] ## 找到缺失的参考基因是什么
+
+                        indel_deletion = ref + indel_deletion
+                        re = indel_deletion.upper() + '-' + ref.upper()
+                        return re
+
+
     def test_pos_all(self):
         samples_data = []
 
@@ -356,19 +392,53 @@ class DATAPROCESS:
         region = t.region_info(region_file)
 
         for rec in region:
-            # print('radom test')
+            print('generation test data')
             sample = rec[0]
             chr = rec[1]
             l_pos = rec[2]
             r_pos = rec[3]
-            rr = b.pileup_column_all(bam_file, chr, l_pos, r_pos)
-            i = 0
-            while i < len(rr):
-                seq_list = rr[i]
+            # rr = b.pileup_column_all(bam_file, chr, l_pos, r_pos)
+            # print(rr)
+            # i = 0
+            for rec in bam_file.pileup(chr, l_pos, r_pos):
+                pos = rec.pos  ## 参考基因位点
+                base_list = rec.get_query_sequences()
+                indel_list = [int(tmp.indel) for tmp in rec.pileups]
+
+                sum_indel_list = sum(indel_list)
+                if sum_indel_list == 0:  ## 如果是SNP
+                    re = '0'
+                elif sum_indel_list < 0:
+                    indel_index = np.argmin(indel_list)
+                    indel_value = np.min(indel_list)
+                    re = self.fetch_row(bam_file, chr, rec.pos, rec.pos + 1, indel_index, indel_value)
+                elif sum_indel_list > 0:
+                    indel_value = np.max(indel_list)
+                    indel_index = np.argmax(indel_list)
+                    re = self.fetch_row(bam_file, chr, rec.pos, rec.pos + 1, indel_index, indel_value)
+
+                base_ad = Counter(indel_list)
+                ad = []  ## 计算不同等位基因数量
+                for k, v in base_ad.items():
+                    if k != 0:
+                        ad.append(v)
+                dp = len(indel_list)  ## 总的映射深度
+                d = dp - sum(ad)  ## 与参考基因相同的数量
+                if sum(indel_list) != 0:
+                    ad = [str(i) for i in ad]
+                    ad = ",".join(ad)  ## 每种等位基因的深度
+                    ad = str(d) + ',' + ad
+                    ad_dp = ad + '-' + str(dp)
+                else:
+                    ad_dp = str(dp) + '-' + str(dp)
+
+                pileup_list = [base_list, indel_list, ad_dp, re]
+
+                ####################################################################
+                seq_list = pileup_list
                 ref_base = fa.ref_atcg(fasta_file, chr, pos, pos + 1)
 
                 if ref_base is None or seq_list is None or seq_list[0] is None or seq_list[1] is None:
-                    i += 1
                     continue
 
                 ## 生成碱基序列
@@ -396,7 +466,8 @@ class DATAPROCESS:
 
                 ## indel 基因型处理
                 elif indel_test_list_sum > 0:
-                    genotype_test_list = [ref_base_genotype_test + '+' if i > 0 else ref_base_genotype_test for i in indel_test_list]
+                    genotype_test_list = [ref_base_genotype_test + '+' if i > 0 else ref_base_genotype_test for i in
+                                          indel_test_list]
                     genotype_test_list = [self.__str_to_int(i) for i in genotype_test_list]
 
                     ## 计算碱基改变系数
@@ -409,18 +480,20 @@ class DATAPROCESS:
                 elif indel_test_list_sum < 0:
                     ## 如果是缺失indel要特判一下
                     ref_base_indel_next_test = fa.ref_atcg(fasta_file, chr, pos + 1, pos + 2)  ## 取indel缺失位置位置
-
+                    if ref_base_indel_next_test is None:
+                        continue
                     ref_base_indel_next_test = ref_base_indel_next_test.lower()
-                    pileup_list_indel_next_test = rr[i+1]
+                    pileup_list_indel_next_test = b.pileup_column(bam_file, chr, pos + 1, pos + 2)
                     if pileup_list_indel_next_test is None or pileup_list_indel_next_test[0] is None:
-                        i += 1
                         continue
                     pileup_list_indel_next_test = pileup_list_indel_next_test[0]
                     ## 如果跟参考基因组不同就用-1表示，如果相同就用0表示
                     indel = [-1 if i != ref_base_indel_next_test else 0 for i in pileup_list_indel_next_test]
-                    indel_test_list = [indel[i] + indel_test_list[i] for i in range(min(len(indel), len(indel_test_list)))]
+                    indel_test_list = [indel[i] + indel_test_list[i] for i in
+                                       range(min(len(indel), len(indel_test_list)))]
 
-                    genotype_test_list = [ref_base_genotype_test + '-' if i < 0 else ref_base_genotype_test for i in indel_test_list]
+                    genotype_test_list = [ref_base_genotype_test + '-' if i < 0 else ref_base_genotype_test for i in
+                                          indel_test_list]
                     genotype_test_list = [self.__str_to_int(i) for i in genotype_test_list]
 
                     ## 计算碱基改变系数
@@ -436,11 +509,12 @@ class DATAPROCESS:
 
                 test_seq = ref_test_list_padded + indel_test_list_padded + genotyp_test_list_padded
                 # s_c_p = sample + '_' + chr + '_' + str(pos) + '_' + str(base_coefficient) + '_' + str(seq_list[2]) + '_' + str(seq_list[3])
-                s_c_p = sample + '_' + chr + '_' + str(pos) + '_' + str(indel_value) + '_' + str(seq_list[2]) + '_' + str(seq_list[3] )
+                s_c_p = sample + '_' + chr + '_' + str(pos) + '_' + str(indel_value) + '_' + str(
+                    seq_list[2]) + '_' + str(seq_list[3])
+
+                print((s_c_p, test_seq))
                 samples_data.append((s_c_p, test_seq))
-                i += 1;
 
-        np.save(self.data_filename, samples_data)
-        return samples_data
-
+            np.save(self.data_filename, samples_data)
+            return samples_data
 

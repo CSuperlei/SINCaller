@@ -55,7 +55,7 @@ class BAM:
     def pileup_column_all(self, bam_file, chr_id, start, end):
         pileup_list_re = []
         for rec in bam_file.pileup(chr_id, start - 1, end - 1):  ## 索引从0开始
-            print(rec.reference_name)
+            pos = rec.pos  ## 参考基因位点
             base_list = rec.get_query_sequences()
             indel_list = [int(tmp.indel) for tmp in rec.pileups]
 
@@ -86,10 +86,9 @@ class BAM:
             else:
                 ad_dp = str(dp) + '-' + str(dp)
 
-            pileup_list = [base_list, indel_list, ad_dp, re]
+            pileup_list = [base_list, indel_list, ad_dp, re, pos]
             pileup_list_re.append(pileup_list)
         return pileup_list_re
-
 
 
     def fetch_row(self, bam_file, chr_id, start, end, index, indel_value):
