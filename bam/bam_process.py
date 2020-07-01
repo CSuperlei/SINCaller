@@ -183,6 +183,6 @@ if __name__ == '__main__':
 
 
     column = b.pileup_column_all(bam_file, 'chr1', 31988447, 31988468)
-    print(column.pos)
+    print(column)
     row = b.fetch_row_all(bam_file, 'chr1', 31988447, 31988468)
-    print(row.get_aligned_pairs())
+    print(row)
