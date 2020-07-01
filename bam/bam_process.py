@@ -37,7 +37,7 @@ class BAM:
                         ad.append(v)
                 dp = len(indel_list) ## 总的映射深度
                 d = dp - sum(ad)  ## 与参考基因相同的数量
-                if ad != 0:
+                if sum(indel_list) != 0:
                     ad = [str(i) for i in ad]
                     ad = ",".join(ad) ## 每种等位基因的深度
                     ad = str(d) + ',' + ad
