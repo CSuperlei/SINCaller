@@ -64,7 +64,7 @@ class BAM:
                 return None
 
     def fetch_row(self, bam_file, chr_id, start, end, index, indel_value):
-        i = 1
+        i = 0
         for rec in bam_file.fetch(chr_id, start - 1 , end - 1):
             if i != index:
                 i += 1
