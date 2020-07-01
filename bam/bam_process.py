@@ -33,9 +33,10 @@ class BAM:
                 #     print(tmp.alignment.reference_name)
                 #     print(tmp.alignment.mapping_quality)
                 def son_pilup(bam, chr, s, e):
-                    for rec in bam.pileup(chr, s, e):
-                        bl = rec.get_query_sequences()
-                        return bl
+                    for r in bam.pileup(chr, s, e):
+                        if r.pos == int(s) - 1:
+                            bl = rec.get_query_sequences()
+                            return bl
 
                 re = '0'
                 sum_indel_list = sum(indel_list)
