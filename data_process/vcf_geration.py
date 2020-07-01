@@ -102,7 +102,7 @@ class GVCF:
                 ID = '.'
                 REF = REF.upper()
                 ALT = ALT.upper()
-                QUAL = np.round(-10 * np.log10(1 - (np.exp(base_pair_prob) + np.exp(genotype_pair_pro)) / sum_e), 3)
+                QUAL = round(-10 * np.log10(1 - (np.exp(base_pair_prob) + np.exp(genotype_pair_pro)) / sum_e), 3)
                 FILTER = self.__filter(QUAL)
                 INFO = '.'
                 FORMAT = 'GT:AD:DP:GQ:PL'
@@ -115,11 +115,11 @@ class GVCF:
                 ID = '.'
                 REF = REF_ALT.split('-')[0]
                 ALT = REF_ALT.split('-')[1]
-                QUAL = -10 * np.log10(1 - (np.exp(indel_pair_pro) + np.exp(genotype_pair_pro)) / sum_e)
+                QUAL = round(-10 * np.log10(1 - (np.exp(indel_pair_pro) + np.exp(genotype_pair_pro)) / sum_e), 3)
                 FILTER = self.__filter(QUAL)
                 INFO = '.'
                 FORMAT = 'GT:AD:DP:GQ:PL'
                 VALUE = GT + ':' + AD + ':' + DP + ':' + str(QUAL) + ':' + PL
-                v.generate_vcf_content(self.vcf_filename, CHROM, POS, ID, REF, ALT, QUAL, FILTER, INFO, FORMAT, VALUE)
+                v.generate_vcf_content(self.vcf_filename, CHROM, POS, ID, REF, ALT, str(QUAL), FILTER, INFO, FORMAT, VALUE)
 
 
