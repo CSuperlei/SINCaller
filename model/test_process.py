@@ -30,20 +30,20 @@ def testing(samples_test_data, test_model=1, model_params=None, save_result=None
         testing_generator = TEST(samples_test_data, test_type=2)
         test_data = testing_generator.data_generator()
         result = model.predict(test_data, batch_size=64)
-        print(result)
+        # print(result)
         re_base = np.argmax(result[0], axis=1)
-        print('re_base', re_base)
+        # print('re_base', re_base)
         re_base_pro = np.max(result[0], axis=1)
 
         re_indel = np.argmax(result[1], axis=1)
-        print('re_indel', re_indel)
+        # print('re_indel', re_indel)
         re_indel_pro = np.max(result[1], axis=1)
 
         re_genotype = np.argmax(result[2], axis=1)
-        print('re_genotype', re_genotype)
+        # print('re_genotype', re_genotype)
         re_genotype_pro = np.max(result[2], axis=1)
 
-        print(testing_generator.get_sendin())
+        # print(testing_generator.get_sendin())
 
         info = testing_generator.get_sendin()
         re = []
@@ -51,7 +51,7 @@ def testing(samples_test_data, test_model=1, model_params=None, save_result=None
             item = (rec, (re_base[i], re_base_pro[i]), (re_indel[i], re_indel_pro[i]), (re_genotype[i], re_genotype_pro[i]), list(result[2][i]))
             re.append(item)
 
-        print(re)
+        # print(re)
         np.save(save_result, re)
 
 
