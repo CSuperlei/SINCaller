@@ -397,7 +397,7 @@ class DATAPROCESS:
             chr = rec[1]
             l_pos = int(rec[2]) - 1
             r_pos = int(rec[3]) - 1
-            for rec in bam_file.pileup(chr, l_pos, r_pos):
+            for rec in bam_file.pileup(chr, all):
                 try:
                     pos = rec.pos + 1  ## 参考基因位点
                     base_list = rec.get_query_sequences()
