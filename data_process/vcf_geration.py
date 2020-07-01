@@ -102,8 +102,8 @@ class GVCF:
                 ID = '.'
                 REF = REF.upper()
                 ALT = ALT.upper()
+                QUAL = -10 * np.log10(1 - (np.exp(base_pair_prob) + np.exp(genotype_pair_pro)) / sum_e)
                 FILTER = self.__filter(QUAL)
-                QUAL =str(-10 * np.log10(1 - (np.exp(base_pair_prob) + np.exp(genotype_pair_pro)) / sum_e))
                 INFO = '.'
                 FORMAT = 'GT:AD:DP:GQ:PL'
                 VALUE = GT + ':' + AD + ':' + DP + ':' + str(QUAL) + ':' + PL
@@ -115,8 +115,8 @@ class GVCF:
                 ID = '.'
                 REF = REF_ALT.split('-')[0]
                 ALT = REF_ALT.split('-')[1]
+                QUAL = -10 * np.log10(1 - (np.exp(indel_pair_pro) + np.exp(genotype_pair_pro)) / sum_e)
                 FILTER = self.__filter(QUAL)
-                QUAL = str(-10 * np.log10(1 - (np.exp(indel_pair_pro) + np.exp(genotype_pair_pro)) / sum_e))
                 INFO = '.'
                 FORMAT = 'GT:AD:DP:GQ:PL'
                 VALUE = GT + ':' + AD + ':' + DP + ':' + str(QUAL) + ':' + PL
