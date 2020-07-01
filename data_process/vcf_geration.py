@@ -67,7 +67,8 @@ class GVCF:
         ### title, fastai_name, sample_name, vcf_filename_file
         v.gernate_vcf_title(title, self.fastai_name, sample_name, self.vcf_filename)
 
-        for i in range(len(data)):
+        i = 0
+        while i < len(data):
             SAMPLE = data[i][0].split('_')[0]
             CHROM = data[i][0].split('_')[1]
             POS = data[i][0].split('_')[2]
