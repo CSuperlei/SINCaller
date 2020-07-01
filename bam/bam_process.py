@@ -97,7 +97,7 @@ class BAM:
                 indel_insertion = ""
                 for item in pairs:
                     if start-1 in item and None not in item:
-                        ref = seq[item[0]]   ##找到indel插入的参考基因
+                        ref = reference[item[0]]   ##找到indel插入的参考基因
                         for i in range(indel_value):
                             indel_insertion += seq[item[0] + i + 1]  ## 找到后边插入的基因是什么
                         indel_insertion = ref + indel_insertion
@@ -108,10 +108,11 @@ class BAM:
                 indel_deletion = ""
                 for item in pairs:
                     if start-1 in item and None not in item:
-                        ref = seq[item[0]]  ## 找到indel缺失的参考基因
-                        for i in range(-indel_value):
-                            print(reference[item[0] + i + 1])
-                            print(reference[item[0] + i + 2])
+                        ref = reference[item[0]]  ## 找到indel缺失的参考基因
+                        print(ref)
+                        for i in range(-indel_value + 1):
+                            # print(reference[item[0] + i + 1])
+                            # print(reference[item[0] + i + 2])
                             indel_deletion += reference[item[0] + i + 1]
 
                         indel_deletion = ref + indel_deletion
