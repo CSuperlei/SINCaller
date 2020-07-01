@@ -395,12 +395,9 @@ class DATAPROCESS:
             print('generation test data')
             sample = rec[0]
             chr = rec[1]
-            l_pos = int(rec[2])
-            r_pos = int(rec[3])
-            # rr = b.pileup_column_all(bam_file, chr, l_pos, r_pos)
-            # print(rr)
-            # i = 0
-            for rec in bam_file.pileup(chr, l_pos - 1, r_pos):
+            l_pos = int(rec[2]) - 1
+            r_pos = int(rec[3]) - 1
+            for rec in bam_file.pileup(chr, l_pos, r_pos):
                 pos = rec.pos  ## 参考基因位点
                 base_list = rec.get_query_sequences()
                 indel_list = [int(tmp.indel) for tmp in rec.pileups]
@@ -436,7 +433,7 @@ class DATAPROCESS:
 
                 ####################################################################
                 seq_list = pileup_list
-                ref_base = fa.ref_atcg(fasta_file, chr, pos-1, pos)
+                ref_base = fa.ref_atcg(fasta_file, chr, pos, pos + 1)
 
                 if ref_base is None or seq_list is None or seq_list[0] is None or seq_list[1] is None:
                     continue
