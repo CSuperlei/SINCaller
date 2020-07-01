@@ -43,7 +43,7 @@ class BAM:
                     ad = str(d) + ',' + ad
                     ad_dp = ad + '-' + str(dp)
                 else:
-                    ad_dp = str(dp) + '_' + str(dp)
+                    ad_dp = str(dp) + '-' + str(dp)
 
                 pileup_list = [base_list, indel_list, ad_dp, re]
                 return pileup_list
