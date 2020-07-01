@@ -15,16 +15,12 @@ class BAM:
     def pileup_column(self, bam_file, chr_id, start, end):
         for rec in bam_file.pileup(chr_id, start - 1, end - 1):  ## 索引从0开始
             if rec.pos == start - 1:
-                print(rec.pos)
-
-                print(dir(rec.__ne__))
                 # print(rec.get_mapping_qualities())
                 # print(rec.get_query_sequences())
                 # print(rec.get_query_positions())
                 # print(rec.reference_pos)
                 # print(dir(rec))
                 # print(dir(rec.pileups))
-                print(rec.get_reference_name())
                 base_list = rec.get_query_sequences()
                 indel_list = [int(tmp.indel) for tmp in rec.pileups]
                 # print(indel_list)
@@ -36,18 +32,22 @@ class BAM:
                 #     print(dir(tmp.alignment))
                 #     print(tmp.alignment.reference_name)
                 #     print(tmp.alignment.mapping_quality)
+                def son_pilup(bam, chr, s, e):
+                    for rec in bam.pileup(chr, s, e):
+                        bl = rec.get_reference_sequence()
+                        return bl
 
                 re = '0'
                 sum_indel_list = sum(indel_list)
                 if sum_indel_list == 0:  ## 如果是SNP
                     bl = rec.get_query_sequences()
                 elif sum_indel_list < 0:
-                    bl = rec.get_query_sequences()
+                    bl = son_pilup(bam_file, rec.pos + 1, rec.pos + 2)
                     indel_index = np.argmin(indel_list)
                     indel_value = np.min(indel_list)
                     re = self.fetch_row(bam_file, chr_id, rec.pos, rec.pos + 1, indel_index, indel_value)
                 elif sum_indel_list > 0:
-                    bl = rec.get_query_sequences()
+                    bl = son_pilup(bam_file, rec.pos + 1, rec.pos + 2)
                     indel_value = np.max(indel_list)
                     indel_index = np.argmax(indel_list)
                     re = self.fetch_row(bam_file, chr_id, rec.pos, rec.pos + 1, indel_index, indel_value)
