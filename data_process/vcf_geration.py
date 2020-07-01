@@ -72,7 +72,7 @@ class GVCF:
             CHROM = data[i][0].split('_')[1]
             POS = data[i][0].split('_')[2]
 
-            # base_coeff = data[i][0].split('_')[3]
+            indel_value = data[i][0].split('_')[3]
             AD = data[i][0].split('_')[4].split('-')[0]
             DP = data[i][0].split('_')[4].split('-')[1]
             REF_ALT = data[i][0].split('_')[5]
@@ -112,6 +112,7 @@ class GVCF:
 
             ## Indel 变异
             elif REF == ALT and indel_pair != 0:
+                i += indel_value
                 ID = '.'
                 REF = REF_ALT.split('-')[0]
                 ALT = REF_ALT.split('-')[1]

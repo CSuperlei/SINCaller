@@ -94,8 +94,8 @@ class DATAPROCESS:
                     genotype_list = ref_var_list
 
                     ## 计算碱基改变系数
-                    base_coefficient = [1 if ref != i else 0 for i in lower_list]
-                    base_coefficient = round(sum(base_coefficient) / len(base_coefficient), 3)
+                    # base_coefficient = [1 if ref != i else 0 for i in lower_list]
+                    # base_coefficient = round(sum(base_coefficient) / len(base_coefficient), 3)
 
                 ## indel 基因型处理
                 elif indel_sum > 0:
@@ -104,8 +104,8 @@ class DATAPROCESS:
                     genotype_list = [self.__str_to_int(i) for i in genotype_list]
 
                     ## 碱基改变系数
-                    base_coefficient = [1 if i > 0 else 0 for i in indel_list]
-                    base_coefficient = round(sum(base_coefficient) / len(indel_list), 3)
+                    # base_coefficient = [1 if i > 0 else 0 for i in indel_list]
+                    # base_coefficient = round(sum(base_coefficient) / len(indel_list), 3)
 
                 elif indel_sum < 0:
                     '''
@@ -129,8 +129,8 @@ class DATAPROCESS:
                     genotype_list = [self.__str_to_int(i) for i in genotype_list]
 
                     ## 碱基改变系数
-                    base_coefficient = [1 if i < 0 else 0 for i in indel_list]
-                    base_coefficient = round(sum(base_coefficient) / len(indel_list), 3)
+                    # base_coefficient = [1 if i < 0 else 0 for i in indel_list]
+                    # base_coefficient = round(sum(base_coefficient) / len(indel_list), 3)
 
 
                 ## padded_list, 对数据进行规整
@@ -168,7 +168,8 @@ class DATAPROCESS:
                     g_label = 1  ## 杂合变异
 
                 v_label = [ref_var_label, indel_label, g_label]
-                s_c_p = sample + '_' + chr + '_' + str(pos) + '_' + str(base_coefficient)
+                # s_c_p = sample + '_' + chr + '_' + str(pos) + '_' + str(base_coefficient)
+                s_c_p = sample + '_' + chr + '_' + str(pos)
                 variant_sample = (s_c_p, var_ind_gen, v_label)
                 samples_data.append(variant_sample)
 
@@ -207,7 +208,7 @@ class DATAPROCESS:
                             genotype_norm_list = ref_norm_list
 
                             ## 碱基改变系数
-                            base_coefficient = round(indel_norm_list_sum / len(indel_norm_list), 3)
+                            # base_coefficient = round(indel_norm_list_sum / len(indel_norm_list), 3)
 
                         ref_norm_list_padded = self.__padded_fill(ref_norm_list, self.padded_maxlen)
                         indel_norm_list_padded = self.__padded_fill(indel_norm_seq, self.padded_maxlen)
@@ -232,7 +233,8 @@ class DATAPROCESS:
 
                         n_label = [ref_norm_label, indel_norm_label, g_norm_label]
 
-                        normal_s_c_p = sample + '_' + chr + '_' + str(pos) + '_' + str(base_coefficient)
+                        # normal_s_c_p = sample + '_' + chr + '_' + str(pos) + '_' + str(base_coefficient)
+                        normal_s_c_p = sample + '_' + chr + '_' + str(pos)
                         normal_sample = (normal_s_c_p, nor_ind_gen, n_label)
                         samples_data.append(normal_sample)
                         break
@@ -286,8 +288,11 @@ class DATAPROCESS:
                 if indel_test_list_sum == 0:
                     genotype_test_list = ref_test_list
                     ## 计算碱基改变系数
-                    base_coefficient = [1 if ref_base != i else 0 for i in seq_lower_list]
-                    base_coefficient = round(sum(base_coefficient) / len(base_coefficient), 3)
+                    # base_coefficient = [1 if ref_base != i else 0 for i in seq_lower_list]
+                    # base_coefficient = round(sum(base_coefficient) / len(base_coefficient), 3)
+
+                    ## 计算indel跨越了多少个位点
+                    indel_value = 0
 
                 ## indel 基因型处理
                 elif indel_test_list_sum > 0:
@@ -295,8 +300,11 @@ class DATAPROCESS:
                     genotype_test_list = [self.__str_to_int(i) for i in genotype_test_list]
 
                     ## 计算碱基改变系数
-                    base_coefficient = [1 if i > 0 else 0 for i in indel_test_list]
-                    base_coefficient = round(sum(base_coefficient) / len(indel_test_list), 3)
+                    # base_coefficient = [1 if i > 0 else 0 for i in indel_test_list]
+                    # base_coefficient = round(sum(base_coefficient) / len(indel_test_list), 3)
+
+                    ## 计算indel跨越了多少个位点
+                    indel_value = np.max(indel_test_list)
 
                 elif indel_test_list_sum < 0:
                     ## 如果是缺失indel要特判一下
@@ -316,15 +324,19 @@ class DATAPROCESS:
                     genotype_test_list = [self.__str_to_int(i) for i in genotype_test_list]
 
                     ## 计算碱基改变系数
-                    base_coefficient = [1 if i < 0 else 0 for i in indel_test_list]
-                    base_coefficient = round(sum(base_coefficient) / len(indel_test_list), 3)
+                    # base_coefficient = [1 if i < 0 else 0 for i in indel_test_list]
+                    # base_coefficient = round(sum(base_coefficient) / len(indel_test_list), 3)
+
+                    ## 计算indel跨越了多少个位点
+                    indel_value = - np.min(indel_test_list)
 
                 ref_test_list_padded = self.__padded_fill(ref_test_list, self.padded_maxlen)
                 indel_test_list_padded = self.__padded_fill(indel_test_seq, self.padded_maxlen)
                 genotyp_test_list_padded = self.__padded_fill(genotype_test_list, self.padded_maxlen)
 
                 test_seq = ref_test_list_padded + indel_test_list_padded + genotyp_test_list_padded
-                s_c_p = sample + '_' + chr + '_' + str(pos) + '_' + str(base_coefficient) + '_' + str(seq_list[2]) + '_' + str(seq_list[3])
+                # s_c_p = sample + '_' + chr + '_' + str(pos) + '_' + str(base_coefficient) + '_' + str(seq_list[2]) + '_' + str(seq_list[3])
+                s_c_p = sample + '_' + chr + '_' + str(pos) + '_' + str(indel_value) + '_' + str(seq_list[2]) + '_' + str(seq_list[3] )
                 samples_data.append((s_c_p, test_seq))
 
         np.save(self.data_filename, samples_data)
