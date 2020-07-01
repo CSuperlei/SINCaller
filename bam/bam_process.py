@@ -36,6 +36,7 @@ class BAM:
                     for r in bam.pileup(chr, s - 1, e - 1):
                         if r.pos == int(s) - 1:
                             bl = rec.get_query_sequences()
+                            print(bl)
                             return bl
 
                 re = '0'
@@ -53,7 +54,7 @@ class BAM:
                     indel_index = np.argmax(indel_list)
                     re = self.fetch_row(bam_file, chr_id, rec.pos, rec.pos + 1, indel_index, indel_value)
 
-                print(bl)
+                # print(bl)
                 base_ad = Counter(bl)
                 ad = []  ## 计算不同等位基因数量
                 for k, v in base_ad.items():
