@@ -29,9 +29,9 @@ class VCF:
 
     def gernate_vcf_title(self, title, fastai, sample_name, output_file):
         if output_file is not None:
-            with open(output_file, 'w') as output_file:
-                def output(string):
-                    print(string, file=output_file)
+            output_file = open(output_file, 'w')
+            def output(string):
+                print(string, file=output_file)
         title = dedent(title)
         output(title)
         if fastai is not None:
@@ -44,7 +44,7 @@ class VCF:
 
     def generate_vcf_content(self, output_file, CHROM, POS, ID, REF, ALT, QUAL, FILTER, INFO, FORMAT, VALUE):
         if output_file is not None:
-            with open(output_file, "w") as output_file:
+            with open(output_file, "a") as output_file:
                 def output(string):
                     print(string, file=output_file)
 
