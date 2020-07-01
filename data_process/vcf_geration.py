@@ -113,7 +113,6 @@ class GVCF:
 
             ## Indel 变异
             elif REF == ALT and indel_pair != 0:
-                i += int(indel_value)
                 ID = '.'
                 REF = REF_ALT.split('-')[0]
                 ALT = REF_ALT.split('-')[1]
@@ -123,5 +122,6 @@ class GVCF:
                 FORMAT = 'GT:AD:DP:GQ:PL'
                 VALUE = GT + ':' + AD + ':' + DP + ':' + str(QUAL) + ':' + PL
                 v.generate_vcf_content(self.vcf_filename, CHROM, POS, ID, REF, ALT, str(QUAL), FILTER, INFO, FORMAT, VALUE)
-
+                print(i)
+                i += int(indel_value)
 
