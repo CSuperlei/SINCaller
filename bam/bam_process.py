@@ -17,13 +17,14 @@ class BAM:
             if rec.pos == start - 1:
                 print(rec.pos)
 
-                print(ne(rec).pos)
+                print(dir(rec.__ne__))
                 # print(rec.get_mapping_qualities())
                 # print(rec.get_query_sequences())
                 # print(rec.get_query_positions())
                 # print(rec.reference_pos)
                 # print(dir(rec))
                 # print(dir(rec.pileups))
+                print(rec.get_reference_name())
                 base_list = rec.get_query_sequences()
                 indel_list = [int(tmp.indel) for tmp in rec.pileups]
                 # print(indel_list)
