@@ -184,5 +184,7 @@ if __name__ == '__main__':
 
     column = b.pileup_column_all(bam_file, 'chr1', 31988447, 31988468)
     print(column)
+    print(len(column))
     row = b.fetch_row_all(bam_file, 'chr1', 31988447, 31988468)
     print(row)
+    print(len(row))
