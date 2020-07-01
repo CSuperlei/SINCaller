@@ -395,8 +395,8 @@ class DATAPROCESS:
             print('generation test data')
             sample = rec[0]
             chr = rec[1]
-            l_pos = rec[2]
-            r_pos = rec[3]
+            l_pos = int(rec[2])
+            r_pos = int(rec[3])
             # rr = b.pileup_column_all(bam_file, chr, l_pos, r_pos)
             # print(rr)
             # i = 0
