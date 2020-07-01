@@ -53,6 +53,7 @@ class BAM:
                 for k, v in base_ad.items():
                     ad.append(v)
                 dp = sum(ad) ## 总的映射深度
+                ad = [str(i) for i in ad]
                 ad = ",".join(ad) ## 每种等位基因的深度
 
                 pileup_list = [base_list, indel_list, ad, dp, re]
