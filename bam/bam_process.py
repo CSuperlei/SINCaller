@@ -17,7 +17,7 @@ class BAM:
             if rec.pos == start - 1:
                 print(rec.pos)
 
-                print(rec.__ne__.pos)
+                print(ne(rec).pos)
                 # print(rec.get_mapping_qualities())
                 # print(rec.get_query_sequences())
                 # print(rec.get_query_positions())
