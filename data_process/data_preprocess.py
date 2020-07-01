@@ -395,8 +395,8 @@ class DATAPROCESS:
             print('generation test data')
             sample = rec[0]
             chr = rec[1]
-            l_pos = int(rec[2]) - 1
-            r_pos = int(rec[3]) - 1
+            l_pos = int(rec[2])
+            r_pos = int(rec[3])
             for rec in bam_file.pileup(chr, l_pos, r_pos):
                 pos = rec.pos - 1  ## 参考基因位点
                 base_list = rec.get_query_sequences()
