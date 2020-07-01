@@ -436,7 +436,7 @@ class DATAPROCESS:
 
                 ####################################################################
                 seq_list = pileup_list
-                ref_base = fa.ref_atcg(fasta_file, chr, pos, pos + 1)
+                ref_base = fa.ref_atcg(fasta_file, chr, pos-1, pos)
 
                 if ref_base is None or seq_list is None or seq_list[0] is None or seq_list[1] is None:
                     continue
