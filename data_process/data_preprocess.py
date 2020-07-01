@@ -400,7 +400,7 @@ class DATAPROCESS:
             # rr = b.pileup_column_all(bam_file, chr, l_pos, r_pos)
             # print(rr)
             # i = 0
-            for rec in bam_file.pileup(chr, l_pos, r_pos):
+            for rec in bam_file.pileup(chr, l_pos - 1, r_pos):
                 pos = rec.pos  ## 参考基因位点
                 base_list = rec.get_query_sequences()
                 indel_list = [int(tmp.indel) for tmp in rec.pileups]
