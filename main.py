@@ -195,7 +195,7 @@ def main():
         elif data_filename is not None and region_filename is not None:
             d = DATAPROCESS(data_model, vcf_filename=None, bam_filename=bam_filename, fasta_filename=fasta_filename, data_filename=data_filename, region_filename=region_filename)
             samples_data = d.test_pos_all()
-            print(samples_data)
+            # print(samples_data)
 
     elif int(mode) == 4:  ## 合并有变异与没有变异不同标签的数据
         origin_dir = args.dc_origin

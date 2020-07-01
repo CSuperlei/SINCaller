@@ -52,48 +52,10 @@ class BAM:
                 print('pos is not exist')
                 return None
 
-    def pileup_column_all(self, bam_file, chr_id, start, end):
-        pileup_list_re = []
-        for rec in bam_file.pileup(chr_id, start - 1, end - 1):  ## 索引从0开始
-            pos = rec.pos  ## 参考基因位点
-            base_list = rec.get_query_sequences()
-            indel_list = [int(tmp.indel) for tmp in rec.pileups]
-
-            sum_indel_list = sum(indel_list)
-            if sum_indel_list == 0:  ## 如果是SNP
-                re = '0'
-            elif sum_indel_list < 0:
-                indel_index = np.argmin(indel_list)
-                indel_value = np.min(indel_list)
-                re = self.fetch_row(bam_file, chr_id, rec.pos, rec.pos + 1, indel_index, indel_value)
-            elif sum_indel_list > 0:
-                indel_value = np.max(indel_list)
-                indel_index = np.argmax(indel_list)
-                re = self.fetch_row(bam_file, chr_id, rec.pos, rec.pos + 1, indel_index, indel_value)
-
-            base_ad = Counter(indel_list)
-            ad = []  ## 计算不同等位基因数量
-            for k, v in base_ad.items():
-                if k != 0:
-                    ad.append(v)
-            dp = len(indel_list) ## 总的映射深度
-            d = dp - sum(ad)  ## 与参考基因相同的数量
-            if sum(indel_list) != 0:
-                ad = [str(i) for i in ad]
-                ad = ",".join(ad) ## 每种等位基因的深度
-                ad = str(d) + ',' + ad
-                ad_dp = ad + '-' + str(dp)
-            else:
-                ad_dp = str(dp) + '-' + str(dp)
-
-            pileup_list = [base_list, indel_list, ad_dp, re, pos]
-            pileup_list_re.append(pileup_list)
-        return pileup_list_re
-
 
     def fetch_row(self, bam_file, chr_id, start, end, index, indel_value):
         i = 0
-        for rec in bam_file.fetch(chr_id, start - 1 , end - 1):
+        for rec in bam_file.fetch(chr_id, start - 1 , end - 1, multiple_iterators=True):
             if i != index:
                 i += 1
                 continue

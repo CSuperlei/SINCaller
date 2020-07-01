@@ -408,11 +408,11 @@ class DATAPROCESS:
                 elif sum_indel_list < 0:
                     indel_index = np.argmin(indel_list)
                     indel_value = np.min(indel_list)
-                    re = self.fetch_row(bam_file, chr, rec.pos, rec.pos + 1, indel_index, indel_value)
+                    re = b.fetch_row(bam_file, chr, rec.pos, rec.pos + 1, indel_index, indel_value)
                 elif sum_indel_list > 0:
                     indel_value = np.max(indel_list)
                     indel_index = np.argmax(indel_list)
-                    re = self.fetch_row(bam_file, chr, rec.pos, rec.pos + 1, indel_index, indel_value)
+                    re = b.fetch_row(bam_file, chr, rec.pos, rec.pos + 1, indel_index, indel_value)
 
                 base_ad = Counter(indel_list)
                 ad = []  ## 计算不同等位基因数量
