@@ -109,10 +109,7 @@ class BAM:
                 for item in pairs:
                     if start-1 in item and None not in item:
                         ref = reference[item[0]]  ## 找到indel缺失的参考基因
-                        print(ref)
-                        for i in range(-indel_value + 1):
-                            # print(reference[item[0] + i + 1])
-                            # print(reference[item[0] + i + 2])
+                        for i in range(-indel_value):
                             indel_deletion += reference[item[0] + i + 1]
 
                         indel_deletion = ref + indel_deletion
@@ -130,7 +127,7 @@ if __name__ == '__main__':
     # re = b.fetch_row(bam_file, 'chr1', 43785114, 43785115, 1, 1)
     # print(re)
 
-    re = b.pileup_column(bam_file, 'chr1', 31988447, 31988448)
+    re = b.pileup_column(bam_file, 'chr1', 43785114, 43785115)
     print(re)
 
     re = b.pileup_column(bam_file, 'chr1', 44164156, 44164157)
