@@ -15,23 +15,9 @@ class BAM:
     def pileup_column(self, bam_file, chr_id, start, end):
         for rec in bam_file.pileup(chr_id, start - 1, end - 1):  ## 索引从0开始
             if rec.pos == start - 1:
-                # print(rec.get_mapping_qualities())
-                # print(rec.get_query_sequences())
-                # print(rec.get_query_positions())
-                # print(rec.reference_pos)
-                # print(dir(rec))
-                # print(dir(rec.pileups))
                 base_list = rec.get_query_sequences()
                 indel_list = [int(tmp.indel) for tmp in rec.pileups]
-                # print(indel_list)
-                # for tmp in rec.pileups:
-                #     print(dir(tmp))
-                #     print(tmp.indel)
-                #     print(dir(tmp.indel))
-                #
-                #     print(dir(tmp.alignment))
-                #     print(tmp.alignment.reference_name)
-                #     print(tmp.alignment.mapping_quality)
+
                 def son_pilup(bam, chr, s, e):
                     for r in bam.pileup(chr, s - 1, e - 1):
                         if r.pos == s:
@@ -116,7 +102,7 @@ if __name__ == '__main__':
     # re = b.fetch_row(bam_file, 'chr1', 43785114, 43785115, 1, 1)
     # print(re)
 
-    re = b.pileup_column(bam_file, 'chr1', 43785114, 43785115)
+    re = b.pileup_column(bam_file, 'chr1', 96689497, 96689498)
     print(re)
 
     re = b.pileup_column(bam_file, 'chr1', 44164156, 44164157)
