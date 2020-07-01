@@ -246,7 +246,7 @@ class DATAPROCESS:
 
 
     ## 生成未知测试数据
-    def test_pos(self):
+    def test_pos(self):  ## 测试区间
         samples_data = []
 
         b = BAM()
@@ -343,42 +343,8 @@ class DATAPROCESS:
         np.save(self.data_filename, samples_data)
         return samples_data
 
-    def fetch_row(self, bam_file, chr_id, start, end, index, indel_value):
-        i = 0
-        for rec in bam_file.fetch(chr_id, start - 1 , end - 1, multiple_iterators=True):
-            if i != index:
-                i += 1
-                continue
 
-            seq = list(rec.seq)
-            reference = rec.get_reference_sequence()
-            reference = list(reference)
-            pairs = rec.get_aligned_pairs()
-            if indel_value > 0: ## 插入
-                indel_insertion = ""
-                for item in pairs:
-                    if start in item and None not in item:
-                        ref = reference[item[0]]   ##找到indel插入的参考基因
-                        for i in range(indel_value):
-                            indel_insertion += seq[item[0] + i + 1]  ## 找到后边插入的基因是什么
-                        indel_insertion = ref + indel_insertion
-                        re = ref.upper() + '-' + indel_insertion.upper()
-                        return re
-
-            elif indel_value < 0:
-                indel_deletion = ""
-                for item in pairs:
-                    if start in item and None not in item:
-                        ref = reference[item[0]]  ## 找到indel缺失的参考基因
-                        for i in range(-indel_value):
-                            indel_deletion += reference[item[0] + i + 1] ## 找到缺失的参考基因是什么
-
-                        indel_deletion = ref + indel_deletion
-                        re = indel_deletion.upper() + '-' + ref.upper()
-                        return re
-
-
-    def test_pos_all(self):
+    def test_pos_all(self):  ## 测试整个染色体全长
         samples_data = []
 
         b = BAM()
@@ -454,9 +420,6 @@ class DATAPROCESS:
                 ref_base_genotype_test = ref_base_genotype_test.lower()
                 if indel_test_list_sum == 0:
                     genotype_test_list = ref_test_list
-                    ## 计算碱基改变系数
-                    # base_coefficient = [1 if ref_base != i else 0 for i in seq_lower_list]
-                    # base_coefficient = round(sum(base_coefficient) / len(base_coefficient), 3)
 
                     ## 计算indel跨越了多少个位点
                     indel_value = 0
@@ -467,9 +430,6 @@ class DATAPROCESS:
                                           indel_test_list]
                     genotype_test_list = [self.__str_to_int(i) for i in genotype_test_list]
 
-                    ## 计算碱基改变系数
-                    # base_coefficient = [1 if i > 0 else 0 for i in indel_test_list]
-                    # base_coefficient = round(sum(base_coefficient) / len(indel_test_list), 3)
 
                     ## 计算indel跨越了多少个位点
                     indel_value = np.max(indel_test_list)
@@ -495,10 +455,6 @@ class DATAPROCESS:
                     genotype_test_list = [ref_base_genotype_test + '-' if i < 0 else ref_base_genotype_test for i in
                                           indel_test_list]
                     genotype_test_list = [self.__str_to_int(i) for i in genotype_test_list]
-
-                    ## 计算碱基改变系数
-                    # base_coefficient = [1 if i < 0 else 0 for i in indel_test_list]
-                    # base_coefficient = round(sum(base_coefficient) / len(indel_test_list), 3)
 
                     ## 计算indel跨越了多少个位点
                     indel_value = -np.min(indel_test_list)

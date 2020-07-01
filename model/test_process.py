@@ -29,7 +29,7 @@ def testing(samples_test_data, test_model=1, model_params=None, save_result=None
     elif test_model == 2:
         testing_generator = TEST(samples_test_data, test_type=2)
         test_data = testing_generator.data_generator()
-        result = model.predict(test_data, batch_size=64)
+        result = model.predict(test_data)
         # print(result)
         re_base = np.argmax(result[0], axis=1)
         # print('re_base', re_base)
