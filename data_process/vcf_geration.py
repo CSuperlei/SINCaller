@@ -121,7 +121,6 @@ class GVCF:
                 FORMAT = 'GT:AD:DP:GQ:PL'
                 VALUE = GT + ':' + AD + ':' + DP + ':' + str(QUAL) + ':' + PL
                 v.generate_vcf_content(self.vcf_filename, CHROM, POS, ID, REF, ALT, str(QUAL), FILTER, INFO, FORMAT, VALUE)
-                print(i)
                 i += int(indel_value)
             else:
                 i += 1
