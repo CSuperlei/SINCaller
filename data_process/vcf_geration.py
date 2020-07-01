@@ -67,8 +67,8 @@ class GVCF:
         ### title, fastai_name, sample_name, vcf_filename_file
         v.gernate_vcf_title(title, self.fastai_name, sample_name, self.vcf_filename)
 
-        # i = 0
-        for i in range(len(data)):
+        i = 0
+        while i < len(data):
             SAMPLE = data[i][0].split('_')[0]
             CHROM = data[i][0].split('_')[1]
             POS = data[i][0].split('_')[2]
@@ -108,9 +108,8 @@ class GVCF:
                 INFO = '.'
                 FORMAT = 'GT:AD:DP:GQ:PL'
                 VALUE = GT + ':' + AD + ':' + DP + ':' + str(QUAL) + ':' + PL
-
                 v.generate_vcf_content(self.vcf_filename, CHROM, POS, ID, REF, ALT, str(QUAL), FILTER, INFO, FORMAT, VALUE)
-
+                i += 1
             ## Indel 变异
             elif REF == ALT and indel_pair != 0:
                 ID = '.'
@@ -124,4 +123,6 @@ class GVCF:
                 v.generate_vcf_content(self.vcf_filename, CHROM, POS, ID, REF, ALT, str(QUAL), FILTER, INFO, FORMAT, VALUE)
                 print(i)
                 i += int(indel_value)
+            else:
+                i += 1
 
