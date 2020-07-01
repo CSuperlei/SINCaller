@@ -112,7 +112,7 @@ class GVCF:
 
             ## Indel 变异
             elif REF == ALT and indel_pair != 0:
-                i += indel_value
+                i += int(indel_value)
                 ID = '.'
                 REF = REF_ALT.split('-')[0]
                 ALT = REF_ALT.split('-')[1]
