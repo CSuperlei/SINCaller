@@ -181,7 +181,7 @@ optional arguments:
   --test, -tm           test;  mode 1 is batch test, mode 2 is random data
   --dc_origin, -dco     data combine original directory
   --dc_target, -dct     data combine target filename
-  --mode, -m            mode 1 is training; mode 2 is tesing; mode 3 generates data; mode 4 combines data
+  --mode, -m            mode 1 is training; mode 2 is tesing; mode 3 generates data; mode 4 combines data; mode 5 generates vcf
 
 ```
 
@@ -222,9 +222,7 @@ python main.py  -ld ${test data filename} -sr ${saving validation filename} -g $
 * Output the VCF file
 
 ```
-
 python main.py  -ld ${validation filename} -fa ${fasta.ai filename} -ov ${out put vcf filename} -g ${gpu numbers} -lo ${log level} -m 5
-
 
 ```
 
