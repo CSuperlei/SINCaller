@@ -116,6 +116,7 @@ class GVCF:
                 if REF_ALT is None or REF_ALT == '0':
                     i += 1
                     continue
+                print(REF_ALT)
                 REF = REF_ALT.split('-')[0]
                 ALT = REF_ALT.split('-')[1]
                 QUAL = round(-10 * np.log10(1 - (np.exp(indel_pair_pro) + np.exp(genotype_pair_pro)) / sum_e), 3)
