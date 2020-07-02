@@ -77,10 +77,6 @@ class GVCF:
             AD = data[i][0].split('_')[4].split('-')[0]
             DP = data[i][0].split('_')[4].split('-')[1]
             REF_ALT = data[i][0].split('_')[5]
-            if REF_ALT is None:
-                i += 1
-                continue
-            # print(REF_ALT)
             ## 预处理
             ## 判断是否发生了碱基变化
             base_pair = data[i][1][0]
@@ -117,11 +113,10 @@ class GVCF:
             ## Indel 变异
             elif REF == ALT and indel_pair != 0:
                 ID = '.'
-                if REF_ALT is None:
+                if REF_ALT is None or REF_ALT == '0':
                     i += 1
                     continue
                 REF = REF_ALT.split('-')[0]
-                print(REF)
                 ALT = REF_ALT.split('-')[1]
                 QUAL = round(-10 * np.log10(1 - (np.exp(indel_pair_pro) + np.exp(genotype_pair_pro)) / sum_e), 3)
                 FILTER = self.__filter(QUAL)
