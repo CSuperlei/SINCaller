@@ -76,9 +76,9 @@ class GVCF:
             indel_value = data[i][0].split('_')[3]
             AD = data[i][0].split('_')[4].split('-')[0]
             DP = data[i][0].split('_')[4].split('-')[1]
-            if int(DP) < 2:
-                i += 1
-                continue
+            # if int(DP) < 2:
+            #     i += 1
+            #     continue
             REF_ALT = data[i][0].split('_')[5]
             ## 预处理
             ## 判断是否发生了碱基变化
@@ -107,6 +107,9 @@ class GVCF:
                 REF = REF.upper()
                 ALT = ALT.upper()
                 QUAL = round(-10 * np.log10(1 - (np.exp(base_pair_prob) + np.exp(genotype_pair_pro)) / sum_e), 3)
+                if QUAL <= 4.347:
+                    i += 1
+                    continue
                 FILTER = self.__filter(QUAL)
                 INFO = '.'
                 FORMAT = 'GT:AD:DP:GQ:PL'
