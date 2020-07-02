@@ -121,6 +121,7 @@ class GVCF:
                     i += 1
                     continue
                 REF = REF_ALT.split('-')[0]
+                print(REF)
                 ALT = REF_ALT.split('-')[1]
                 QUAL = round(-10 * np.log10(1 - (np.exp(indel_pair_pro) + np.exp(genotype_pair_pro)) / sum_e), 3)
                 FILTER = self.__filter(QUAL)
