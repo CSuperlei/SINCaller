@@ -113,14 +113,11 @@ class GVCF:
             ## Indel 变异
             elif REF == ALT and indel_pair != 0:
                 ID = '.'
-                print(type(REF_ALT))
                 if REF_ALT == 'None' or REF_ALT == '0' or REF_ALT == None:
                     i = i + 1
                     continue
                 REF = REF_ALT.split('-')[0]
-                print(REF)
                 ALT = REF_ALT.split('-')[1]
-                print(ALT)
                 QUAL = round(-10 * np.log10(1 - (np.exp(indel_pair_pro) + np.exp(genotype_pair_pro)) / sum_e), 3)
                 FILTER = self.__filter(QUAL)
                 INFO = '.'
