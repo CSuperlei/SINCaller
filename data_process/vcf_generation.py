@@ -76,6 +76,9 @@ class GVCF:
             indel_value = data[i][0].split('_')[3]
             AD = data[i][0].split('_')[4].split('-')[0]
             DP = data[i][0].split('_')[4].split('-')[1]
+            if int(DP) < 2:
+                i += 1
+                continue
             REF_ALT = data[i][0].split('_')[5]
             ## 预处理
             ## 判断是否发生了碱基变化
