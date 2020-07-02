@@ -114,7 +114,7 @@ class GVCF:
             elif REF == ALT and indel_pair != 0:
                 ID = '.'
                 print(type(REF_ALT))
-                if REF_ALT is 'None' or REF_ALT == '0':
+                if REF_ALT == 'None' or REF_ALT == '0' or REF_ALT == None:
                     i = i + 1
                     continue
                 REF = REF_ALT.split('-')[0]
