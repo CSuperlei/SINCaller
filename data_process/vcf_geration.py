@@ -80,7 +80,7 @@ class GVCF:
             if REF_ALT is None:
                 i += 1
                 continue
-            print(REF_ALT)
+            # print(REF_ALT)
             ## 预处理
             ## 判断是否发生了碱基变化
             base_pair = data[i][1][0]
