@@ -104,7 +104,11 @@ if __name__ == '__main__':
     # re = b.pileup_column(bam_file, 'chr1', 44164156, 44164157)
     # print(re)
 
+    column = b.pileup_column(bam_file, 'chr1', 45571770, 45571771)
+    print(column)
 
     column = b.pileup_column(bam_file, 'chr1', 45571771, 45571772)
     print(column)
-    print(len(column))
+
+    column = b.pileup_column(bam_file, 'chr1', 45571772, 45571773)
+    print(column)
