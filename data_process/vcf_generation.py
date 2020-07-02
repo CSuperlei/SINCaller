@@ -107,7 +107,7 @@ class GVCF:
                 REF = REF.upper()
                 ALT = ALT.upper()
                 QUAL = round(-10 * np.log10(1 - (np.exp(base_pair_prob) + np.exp(genotype_pair_pro)) / sum_e), 3)
-                if QUAL <= 4.729:
+                if QUAL <= 4.771:
                     i += 1
                     continue
                 FILTER = self.__filter(QUAL)
