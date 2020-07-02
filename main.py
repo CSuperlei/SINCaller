@@ -4,7 +4,7 @@ import argparse
 import numpy as np
 from data_process.data_preprocess import DATAPROCESS
 from data_process.data_combine import DATACOMBINE
-from data_process.vcf_geration import GVCF
+from data_process.vcf_generation import GVCF
 from model.train_process import training
 from model.test_process import testing
 
