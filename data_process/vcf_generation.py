@@ -113,7 +113,7 @@ class GVCF:
             ## Indel 变异
             elif REF == ALT and indel_pair != 0:
                 ID = '.'
-                print(REF_ALT)
+                print(type(REF_ALT))
                 if REF_ALT is None or REF_ALT == '0':
                     i = i + 1
                     continue
