@@ -1,8 +1,5 @@
 import numpy as np
-from collections import Counter
 from vcf.vcf_process import VCF
-from bam.bam_process import BAM
-
 
 class GVCF:
     def __init__(self, load_filename, vcf_filename, fastai_name):
@@ -136,4 +133,12 @@ class GVCF:
                 i += int(indel_value)
             else:
                 i += 1
+
+if __name__ == '__main__':
+    load_filename = 'f:\\Research\\Bio_Project\\nbCNV\\predict_result\\SRR053608_predict_data_chr1.npy'
+    vcf_filename = 'f:\\Research\\Bio_Project\\nbCNV\\scSNVIndel_vcf\\SRR053608_predict_chr1_local.vcf'
+    fastai_filename = 'f:\\Data\\bioinformatics\\dna\\human_gene_ref\\hg38.fa\\hg38.fa.fai'
+    gv = GVCF(load_filename, vcf_filename, fastai_filename)
+    gv.generation_vcf()
+
 
