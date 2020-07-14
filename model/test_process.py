@@ -3,7 +3,7 @@ from .train_data_generator import DataGenerator
 from .test_data_generator import TEST
 import numpy as np
 
-def testing(samples_test_data, test_model=1, model_params=None, save_result=None, generator_params=None, hdf5_file=True, hdf5_fliename='/mnt/sdc/cailei/bio_project/scSNVIndel_data/train_log/model_checkpoint/model_30.hdf5'):
+def testing(samples_test_data, test_model=1, model_params=None, save_result=None, generator_params=None, hdf5_file=True, hdf5_fliename='/mnt/sdc/cailei/bio_project/scSNVIndel_data/train_log/model_checkpoint/model_50.hdf5'):
     print('samples test data', len(samples_test_data))
     m = SCSNVMODEL()
     if model_params:
@@ -32,18 +32,18 @@ def testing(samples_test_data, test_model=1, model_params=None, save_result=None
         result = model.predict(test_data)
         # print(result)
         re_base = np.argmax(result[0], axis=1)
-        # print('re_base', re_base)
+        print('re_base', re_base)
         re_base_pro = np.max(result[0], axis=1)
 
         re_indel = np.argmax(result[1], axis=1)
-        # print('re_indel', re_indel)
+        print('re_indel', re_indel)
         re_indel_pro = np.max(result[1], axis=1)
 
         re_genotype = np.argmax(result[2], axis=1)
-        # print('re_genotype', re_genotype)
+        print('re_genotype', re_genotype)
         re_genotype_pro = np.max(result[2], axis=1)
 
-        # print(testing_generator.get_sendin())
+        print(testing_generator.get_sendin())
 
         info = testing_generator.get_sendin()
         re = []
