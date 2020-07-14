@@ -74,7 +74,7 @@ class GVCF:
             AD = data[i][0].split('_')[4].split('-')[0]
             DP = data[i][0].split('_')[4].split('-')[1]
             Base_coff = data[i][0].split('_')[6]
-            if int(DP) < 2 or float(Base_coff) < 0.2:
+            if int(DP) < 2:
                 i += 1
                 continue
             REF_ALT = data[i][0].split('_')[5]

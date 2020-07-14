@@ -71,7 +71,7 @@ class BAM:
                 for item in pairs:
                     if start in item and None not in item:
                         # ref = reference[item[0]]   ##找到indel插入的参考基因
-                        ref = fa.ref_atcg(fasta_file, item[1], item[1] + 1)
+                        ref = fa.ref_atcg(fasta_file, chr_id, item[1], item[1] + 1)
                         for i in range(indel_value):
                             indel_insertion += seq[item[0] + i + 1]  ## 找到后边插入的基因是什么
                         indel_insertion = ref + indel_insertion
@@ -86,7 +86,7 @@ class BAM:
                         ref = fa.ref_atcg(fasta_file, chr_id, item[1], item[1] + 1)
                         for i in range(-indel_value):
                             # indel_deletion += reference[item[0] + i + 1] ## 找到缺失的参考基因是什么
-                            indel_deletion += fa.ref_atcg(fasta_file, chr_id, item[1] + i + 1, item[1] + i + 2);
+                            indel_deletion += fa.ref_atcg(fasta_file, chr_id, item[1] + i + 2, item[1] + i + 3)
 
                         indel_deletion = ref + indel_deletion
                         re = indel_deletion.upper() + '-' + ref.upper()
