@@ -2,6 +2,7 @@ import numpy as np
 from collections import Counter
 import pysam
 from pysam import AlignmentFile
+from fasta.fasta_process import FASTA
 
 
 class BAM:
@@ -12,8 +13,8 @@ class BAM:
 
         return bam_file
 
-    def pileup_column(self, bam_file, chr_id, start, end):
-        for rec in bam_file.pileup(chr_id, start - 1, end - 1):  ## 索引从0开始
+    def pileup_column(self, bam_file, chr_id, start, end, fasta_file):
+        for rec in bam_file.pileup(chr_id, start - 1, end - 1, stepper='all', ignore_overlaps=True):  ## 索引从0开始
             if rec.pos == start - 1:
                 base_list = rec.get_query_sequences()
                 indel_list = [int(tmp.indel) for tmp in rec.pileups]
@@ -24,11 +25,11 @@ class BAM:
                 elif sum_indel_list < 0:
                     indel_index = np.argmin(indel_list)
                     indel_value = np.min(indel_list)
-                    re = self.fetch_row(bam_file, chr_id, rec.pos, rec.pos + 1, indel_index, indel_value)
+                    re = self.fetch_row(bam_file, chr_id, rec.pos, rec.pos + 1, indel_index, indel_value, fasta_file)
                 elif sum_indel_list > 0:
                     indel_value = np.max(indel_list)
                     indel_index = np.argmax(indel_list)
-                    re = self.fetch_row(bam_file, chr_id, rec.pos, rec.pos + 1, indel_index, indel_value)
+                    re = self.fetch_row(bam_file, chr_id, rec.pos, rec.pos + 1, indel_index, indel_value, fasta_file)
 
                 base_ad = Counter(indel_list)
                 ad = []  ## 计算不同等位基因数量
@@ -53,11 +54,12 @@ class BAM:
                 return None
 
 
-    def fetch_row(self, bam_file, chr_id, start, end, index, indel_value):
+    def fetch_row(self, bam_file, chr_id, start, end, index, indel_value, fasta_file):
+        fa = FASTA()
         i = 0
-        for rec in bam_file.fetch(chr_id, start - 1 , end - 1, multiple_iterators=True):
+        for rec in bam_file.fetch(chr_id, start - 1 , end - 1, multiple_iterators=True, until_eof=True):
             if i != index:
-                i += 1
+                i += 1  ## 找发生缺失的那条read
                 continue
 
             seq = list(rec.seq)
@@ -68,7 +70,8 @@ class BAM:
                 indel_insertion = ""
                 for item in pairs:
                     if start in item and None not in item:
-                        ref = reference[item[0]]   ##找到indel插入的参考基因
+                        # ref = reference[item[0]]   ##找到indel插入的参考基因
+                        ref = fa.ref_atcg(fasta_file, item[1], item[1] + 1)
                         for i in range(indel_value):
                             indel_insertion += seq[item[0] + i + 1]  ## 找到后边插入的基因是什么
                         indel_insertion = ref + indel_insertion
@@ -79,9 +82,11 @@ class BAM:
                 indel_deletion = ""
                 for item in pairs:
                     if start in item and None not in item:
-                        ref = reference[item[0]]  ## 找到indel缺失的参考基因
+                        # ref = reference[item[0]]  ## 找到indel缺失的参考基因
+                        ref = fa.ref_atcg(fasta_file, item[1], item[1] + 1)
                         for i in range(-indel_value):
-                            indel_deletion += reference[item[0] + i + 1] ## 找到缺失的参考基因是什么
+                            # indel_deletion += reference[item[0] + i + 1] ## 找到缺失的参考基因是什么
+                            indel_deletion += fa.ref_atcg(fasta_file, item[1] + i + 1, item[1] + i + 2);
 
                         indel_deletion = ref + indel_deletion
                         re = indel_deletion.upper() + '-' + ref.upper()

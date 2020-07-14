@@ -73,7 +73,8 @@ class GVCF:
             indel_value = data[i][0].split('_')[3]
             AD = data[i][0].split('_')[4].split('-')[0]
             DP = data[i][0].split('_')[4].split('-')[1]
-            if int(DP) < 2:
+            Base_coff = data[i][0].split('_')[6]
+            if int(DP) < 2 or float(Base_coff) < 0.2:
                 i += 1
                 continue
             REF_ALT = data[i][0].split('_')[5]
@@ -104,9 +105,9 @@ class GVCF:
                 REF = REF.upper()
                 ALT = ALT.upper()
                 QUAL = round(-10 * np.log10(1 - (np.exp(base_pair_prob) + np.exp(genotype_pair_pro)) / sum_e), 3)
-                if QUAL != 4.77:
-                    i += 1
-                    continue
+                # if QUAL != 4.77:
+                #     i += 1
+                #     continue
                 FILTER = self.__filter(QUAL)
                 INFO = '.'
                 FORMAT = 'GT:AD:DP:GQ:PL'
@@ -121,9 +122,9 @@ class GVCF:
                     continue
                 REF = REF_ALT.split('-')[0]
                 ALT = REF_ALT.split('-')[1]
-                if QUAL <= 4.77:
-                    i += 1
-                    continue
+                # if QUAL <= 4.77:
+                #     i += 1
+                #     continue
                 QUAL = round(-10 * np.log10(1 - (np.exp(indel_pair_pro) + np.exp(genotype_pair_pro)) / sum_e), 3)
                 FILTER = self.__filter(QUAL)
                 INFO = '.'

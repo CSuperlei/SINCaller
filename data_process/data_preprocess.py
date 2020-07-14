@@ -72,7 +72,7 @@ class DATAPROCESS:
                 ref_base = fa.ref_atcg(fasta_file, chr, pos, pos + 1)
                 ref = ref_base.lower()
                 label = rec[2]
-                pileup_list = b.pileup_column(bam_file, chr, pos, pos + 1)
+                pileup_list = b.pileup_column(bam_file, chr, pos, pos + 1, fasta_file)
                 if pileup_list is None or pileup_list[0] is None or pileup_list[1] is None or ref_base is None or alts == '*':
                     continue
 
@@ -119,7 +119,7 @@ class DATAPROCESS:
                     if ref_base_indel_next is None:
                         continue
                     ref_base_indel_next = ref_base_indel_next.lower()
-                    pileup_list_indel_next = b.pileup_column(bam_file, chr, pos + 1, pos + 2)
+                    pileup_list_indel_next = b.pileup_column(bam_file, chr, pos + 1, pos + 2, fasta_file)
                     if pileup_list_indel_next is None or pileup_list_indel_next[0] is None:
                         continue
                     pileup_list_indel_next = pileup_list_indel_next[0]
@@ -178,7 +178,7 @@ class DATAPROCESS:
                 ## 非变异数据
                 pos = int(pos) + 1
                 while pos:
-                    normal_pileup_list = b.pileup_column(bam_file, chr, pos, pos + 1)
+                    normal_pileup_list = b.pileup_column(bam_file, chr, pos, pos + 1, fasta_file)
                     ref_base = fa.ref_atcg(fasta_file, chr, pos, pos + 1)
                     ## 如果不是正常序列就跳出
                     if normal_pileup_list is None or normal_pileup_list[0] is None or ref_base is None or normal_pileup_list[1] is None:
@@ -266,7 +266,7 @@ class DATAPROCESS:
             l_pos = rec[2]
             r_pos = rec[3]
             for pos in range(int(l_pos), int(r_pos) + 1):
-                seq_list = b.pileup_column(bam_file, chr, pos, pos + 1)
+                seq_list = b.pileup_column(bam_file, chr, pos, pos + 1, fasta_file)
                 ref_base = fa.ref_atcg(fasta_file, chr, pos, pos + 1)
 
                 if ref_base is None or seq_list is None or seq_list[0] is None or seq_list[1] is None:
@@ -313,7 +313,7 @@ class DATAPROCESS:
                     if ref_base_indel_next_test is None:
                         continue
                     ref_base_indel_next_test = ref_base_indel_next_test.lower()
-                    pileup_list_indel_next_test = b.pileup_column(bam_file, chr, pos + 1, pos + 2)
+                    pileup_list_indel_next_test = b.pileup_column(bam_file, chr, pos + 1, pos + 2, fasta_file)
                     if pileup_list_indel_next_test is None or pileup_list_indel_next_test[0] is None:
                         continue
                     pileup_list_indel_next_test = pileup_list_indel_next_test[0]
@@ -363,7 +363,7 @@ class DATAPROCESS:
             chr = rec[1]
             l_pos = int(rec[2]) - 1
             r_pos = int(rec[3]) - 1
-            for rec in bam_file.pileup(chr, l_pos, r_pos):
+            for rec in bam_file.pileup(chr, l_pos, r_pos, stepper='all', ignore_overlaps=True):
                 pos = rec.pos + 1  ## 参考基因位点
                 base_list = rec.get_query_sequences()
                 indel_list = [int(tmp.indel) for tmp in rec.pileups]
@@ -374,11 +374,11 @@ class DATAPROCESS:
                 elif sum_indel_list < 0:
                     indel_index = np.argmin(indel_list)
                     indel_value = np.min(indel_list)
-                    re = b.fetch_row(bam_file, chr, rec.pos, rec.pos + 1, indel_index, indel_value)
+                    re = b.fetch_row(bam_file, chr, rec.pos, rec.pos + 1, indel_index, indel_value, fasta_file)
                 elif sum_indel_list > 0:
                     indel_value = np.max(indel_list)
                     indel_index = np.argmax(indel_list)
-                    re = b.fetch_row(bam_file, chr, rec.pos, rec.pos + 1, indel_index, indel_value)
+                    re = b.fetch_row(bam_file, chr, rec.pos, rec.pos + 1, indel_index, indel_value, fasta_file)
 
                 base_ad = Counter(indel_list)
                 ad = []  ## 计算不同等位基因数量
@@ -420,7 +420,9 @@ class DATAPROCESS:
                 ref_base_genotype_test = ref_base_genotype_test.lower()
                 if indel_test_list_sum == 0:
                     genotype_test_list = ref_test_list
-
+                    ## 计算碱基改变系数
+                    base_coefficient = [1 if ref_base != i else 0 for i in seq_lower_list]
+                    base_coefficient = round(sum(base_coefficient) / len(base_coefficient), 3)
                     ## 计算indel跨越了多少个位点
                     indel_value = 0
 
@@ -430,7 +432,9 @@ class DATAPROCESS:
                                           indel_test_list]
                     genotype_test_list = [self.__str_to_int(i) for i in genotype_test_list]
 
-
+                    ## 计算碱基改变系数
+                    base_coefficient = [1 if i > 0 else 0 for i in indel_test_list]
+                    base_coefficient = round(sum(base_coefficient) / len(indel_test_list), 3)
                     ## 计算indel跨越了多少个位点
                     indel_value = np.max(indel_test_list)
 
@@ -440,7 +444,7 @@ class DATAPROCESS:
                     if ref_base_indel_next_test is None:
                         continue
                     ref_base_indel_next_test = ref_base_indel_next_test.lower()
-                    pileup_list_indel_next_test = b.pileup_column(bam_file, chr, pos + 1, pos + 2)
+                    pileup_list_indel_next_test = b.pileup_column(bam_file, chr, pos + 1, pos + 2, fasta_file)
                     if pileup_list_indel_next_test is None or pileup_list_indel_next_test[0] is None:
                         continue
                     pileup_list_indel_next_test = pileup_list_indel_next_test[0]
@@ -456,6 +460,9 @@ class DATAPROCESS:
                                           indel_test_list]
                     genotype_test_list = [self.__str_to_int(i) for i in genotype_test_list]
 
+                    ## 计算碱基改变系数
+                    base_coefficient = [1 if i < 0 else 0 for i in indel_test_list]
+                    base_coefficient = round(sum(base_coefficient) / len(indel_test_list), 3)
                     ## 计算indel跨越了多少个位点
                     indel_value = -np.min(indel_test_list)
 
@@ -466,7 +473,7 @@ class DATAPROCESS:
                 test_seq = ref_test_list_padded + indel_test_list_padded + genotyp_test_list_padded
                 # s_c_p = sample + '_' + chr + '_' + str(pos) + '_' + str(base_coefficient) + '_' + str(seq_list[2]) + '_' + str(seq_list[3])
                 s_c_p = sample + '_' + chr + '_' + str(pos) + '_' + str(indel_value) + '_' + str(
-                    seq_list[2]) + '_' + str(seq_list[3])
+                    seq_list[2]) + '_' + str(seq_list[3]) + '_' + str(base_coefficient)
 
                 print((s_c_p, test_seq))
                 samples_data.append((s_c_p, test_seq))
