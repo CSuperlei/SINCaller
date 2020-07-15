@@ -14,11 +14,10 @@ class BAM:
         return bam_file
 
     def pileup_column(self, bam_file, chr_id, start, end, fasta_file):
-        for rec in bam_file.pileup(chr_id, start - 1, end - 1, stepper='all', ignore_overlaps=True):  ## 索引从0开始
+        for rec in bam_file.pileup(chr_id, start - 1, end - 1, stepper='nofilter', ignore_overlaps=True):  ## 索引从0开始
             if rec.pos == start - 1:
                 base_list = rec.get_query_sequences()
                 indel_list = [int(tmp.indel) for tmp in rec.pileups]
-
                 sum_indel_list = sum(indel_list)
                 if sum_indel_list == 0:  ## 如果是SNP
                     re = '0'
@@ -56,10 +55,10 @@ class BAM:
 
     def fetch_row(self, bam_file, chr_id, start, end, index, indel_value, fasta_file):
         fa = FASTA()
-        i = 0
-        for rec in bam_file.fetch(chr_id, start - 1 , end - 1, multiple_iterators=True, until_eof=True):
-            if i != index:
-                i += 1  ## 找发生缺失的那条read
+        j = 0
+        for rec in bam_file.fetch(chr_id, start - 1 , end - 1, multiple_iterators=True):
+            if j != index:
+                j += 1  ## 找发生缺失的那条read
                 continue
 
             seq = list(rec.seq)
@@ -73,6 +72,14 @@ class BAM:
                         # ref = reference[item[0]]   ##找到indel插入的参考基因
                         ref = fa.ref_atcg(fasta_file, chr_id, item[1] + 1, item[1] + 2)
                         for i in range(indel_value):
+                            print('i', i)
+                            print('j', j)
+                            print('index', index)
+                            print(indel_value)
+                            print(seq, len(seq))
+                            print(item)
+                            if item[0] + i + 1 >= len(seq):
+                                break
                             indel_insertion += seq[item[0] + i + 1]  ## 找到后边插入的基因是什么
                         indel_insertion = ref + indel_insertion
                         re = ref.upper() + '-' + indel_insertion.upper()

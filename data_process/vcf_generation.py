@@ -100,7 +100,7 @@ class GVCF:
             GT = self.__gt(genotype_pair)
 
             ## SNP 变异
-            if REF != ALT:
+            if REF != ALT and float(Base_coff) > 0.2:
                 ID = '.'
                 REF = REF.upper()
                 ALT = ALT.upper()

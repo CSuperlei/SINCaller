@@ -363,7 +363,7 @@ class DATAPROCESS:
             chr = rec[1]
             l_pos = int(rec[2]) - 1
             r_pos = int(rec[3]) - 1
-            for rec in bam_file.pileup(chr, l_pos, r_pos, stepper='all', ignore_overlaps=True):
+            for rec in bam_file.pileup(chr, l_pos, r_pos, stepper='nofilter', ignore_overlaps=True):
                 pos = rec.pos + 1  ## 参考基因位点
                 base_list = rec.get_query_sequences()
                 indel_list = [int(tmp.indel) for tmp in rec.pileups]
@@ -422,8 +422,11 @@ class DATAPROCESS:
                     genotype_test_list = ref_test_list
                     ## 计算碱基改变系数
                     base_coefficient = [1 if ref_base != i else 0 for i in seq_lower_list]
-                    base_coefficient = round(sum(base_coefficient) / len(base_coefficient), 3)
+                    if len(base_coefficient) != 0:
+                        base_coefficient = round(sum(base_coefficient) / len(base_coefficient), 3)
                     ## 计算indel跨越了多少个位点
+                    else:
+                        base_coefficient = 0
                     indel_value = 0
 
                 ## indel 基因型处理

@@ -1,13 +1,13 @@
-# from pysam import VariantFile
+from pysam import VariantFile
 from textwrap import dedent
 
 class VCF:
-    # def readfile(self, filename):
-    #     bcf_in = VariantFile(filename, 'r')
-    #     if None == bcf_in:
-    #         print('vcf file is empty')
-    #
-    #     return bcf_in
+    def readfile(self, filename):
+        bcf_in = VariantFile(filename, 'r')
+        if None == bcf_in:
+            print('vcf file is empty')
+   
+        return bcf_in
 
     def varient_info(self, vcf_file):
         ls = []
