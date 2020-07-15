@@ -430,17 +430,6 @@ class DATAPROCESS:
                     indel_value = 0
 
                 ## indel 基因型处理
-                elif indel_test_list_sum > 0:
-                    genotype_test_list = [ref_base_genotype_test + '+' if i > 0 else ref_base_genotype_test for i in
-                                          indel_test_list]
-                    genotype_test_list = [self.__str_to_int(i) for i in genotype_test_list]
-
-                    ## 计算碱基改变系数
-                    base_coefficient = [1 if i > 0 else 0 for i in indel_test_list]
-                    base_coefficient = round(sum(base_coefficient) / len(indel_test_list), 3)
-                    ## 计算indel跨越了多少个位点
-                    indel_value = np.max(indel_test_list)
-
                 elif indel_test_list_sum < 0:
                     ## 如果是缺失indel要特判一下
                     ref_base_indel_next_test = fa.ref_atcg(fasta_file, chr, pos + 1, pos + 2)  ## 取indel缺失位置位置
@@ -468,6 +457,17 @@ class DATAPROCESS:
                     base_coefficient = round(sum(base_coefficient) / len(indel_test_list), 3)
                     ## 计算indel跨越了多少个位点
                     indel_value = -np.min(indel_test_list)
+
+                elif indel_test_list_sum > 0:
+                    genotype_test_list = [ref_base_genotype_test + '+' if i > 0 else ref_base_genotype_test for i in
+                                          indel_test_list]
+                    genotype_test_list = [self.__str_to_int(i) for i in genotype_test_list]
+
+                    ## 计算碱基改变系数
+                    base_coefficient = [1 if i > 0 else 0 for i in indel_test_list]
+                    base_coefficient = round(sum(base_coefficient) / len(indel_test_list), 3)
+                    ## 计算indel跨越了多少个位点
+                    indel_value = np.max(indel_test_list)
 
                 ref_test_list_padded = self.__padded_fill(ref_test_list, self.padded_maxlen)
                 indel_test_list_padded = self.__padded_fill(indel_test_seq, self.padded_maxlen)

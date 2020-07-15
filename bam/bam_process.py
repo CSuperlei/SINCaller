@@ -62,22 +62,15 @@ class BAM:
                 continue
 
             seq = list(rec.seq)
-            reference = rec.get_reference_sequence()
-            reference = list(reference)
             pairs = rec.get_aligned_pairs()
             if indel_value > 0: ## 插入
                 indel_insertion = ""
                 for item in pairs:
                     if start in item and None not in item:
-                        # ref = reference[item[0]]   ##找到indel插入的参考基因
+                        ##找到indel插入的参考基因
                         ref = fa.ref_atcg(fasta_file, chr_id, item[1] + 1, item[1] + 2)
                         for i in range(indel_value):
-                            print('i', i)
-                            print('j', j)
-                            print('index', index)
-                            print(indel_value)
-                            print(seq, len(seq))
-                            print(item)
+                            ## 特殊匹配导致数组越界，要处理
                             if item[0] + i + 1 >= len(seq):
                                 break
                             indel_insertion += seq[item[0] + i + 1]  ## 找到后边插入的基因是什么
@@ -85,14 +78,14 @@ class BAM:
                         re = ref.upper() + '-' + indel_insertion.upper()
                         return re
 
-            elif indel_value < 0:
+            elif indel_value < 0: ## 缺失
                 indel_deletion = ""
                 for item in pairs:
                     if start in item and None not in item:
-                        # ref = reference[item[0]]  ## 找到indel缺失的参考基因
+                        ## 找到indel缺失的参考基因
                         ref = fa.ref_atcg(fasta_file, chr_id, item[1], item[1] + 1)
                         for i in range(-indel_value):
-                            # indel_deletion += reference[item[0] + i + 1] ## 找到缺失的参考基因是什么
+                            ## 找到缺失的参考基因是什么
                             indel_deletion += fa.ref_atcg(fasta_file, chr_id, item[1] + i + 2, item[1] + i + 3)
 
                         indel_deletion = ref + indel_deletion
