@@ -83,7 +83,7 @@ class BAM:
                 for item in pairs:
                     if start in item and None not in item:
                         ## 找到indel缺失的参考基因
-                        ref = fa.ref_atcg(fasta_file, chr_id, item[1], item[1] + 1)
+                        ref = fa.ref_atcg(fasta_file, chr_id, item[1] + 1, item[1] + 2)
                         for i in range(-indel_value):
                             ## 找到缺失的参考基因是什么
                             indel_deletion += fa.ref_atcg(fasta_file, chr_id, item[1] + i + 2, item[1] + i + 3)
