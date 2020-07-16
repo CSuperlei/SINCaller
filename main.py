@@ -24,6 +24,7 @@ def args_func():
     parser.add_argument('--test', '-tm', help='test mode 1 is batch test; mode 3 is random data')
     parser.add_argument('--dc_origin', '-dco', help='data combine orgin') ## 合并不同标签数据
     parser.add_argument('--dc_target', '-dct', help='data combine target') ## 生成不同标签数据
+    parser.add_argument('--sample_name', '-sn', help='sample name')
     parser.add_argument('--save_result', '-sr', help='save the predict result')  ## 将模型检测结果保存用来进一步生成vcf
     parser.add_argument('--out_vcf', '-ov', help='out vcf')
     parser.add_argument('--mode', '-m', help='mode 1 is training; mode 2 is tesing; mode 3 is generate data; mode 4 is combine data; mode 5 generated vcf', required=True)
@@ -185,6 +186,7 @@ def main():
         fasta_filename = args.fasta
         data_filename = args.data
         region_filename = args.region
+        sample_name = args.sample_name
         data_model = args.data_model
         ## 生成已知label数据
         if data_filename is not None and region_filename is None:
@@ -193,7 +195,7 @@ def main():
             print(samples_data)
         ## 生成未知label数据
         elif data_filename is not None and region_filename is not None:
-            d = DATAPROCESS(data_model, vcf_filename=None, bam_filename=bam_filename, fasta_filename=fasta_filename, data_filename=data_filename, region_filename=region_filename)
+            d = DATAPROCESS(data_model, vcf_filename=None, bam_filename=bam_filename, fasta_filename=fasta_filename, data_filename=data_filename, region_filename=region_filename, sample_name=sample_name)
             samples_data = d.test_pos_all()
             # print(samples_data)
 

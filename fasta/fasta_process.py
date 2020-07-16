@@ -11,7 +11,7 @@ class FASTA:
         return fasta_file
 
     def ref_atcg(self, fasta_file, chr_id, start, end):
-        if len(chr_id) == 1:
+        if str(chr_id).isdigit() or chr_id is 'X' or chr_id is 'Y':
             chr_id = 'chr'+chr_id
         for rec in fasta_file.fetch(chr_id, start - 1, end - 1):
             # print(rec)  ## 返回某个位点参考基因

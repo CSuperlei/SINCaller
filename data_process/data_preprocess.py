@@ -8,13 +8,14 @@ from collections import Counter
 
 
 class DATAPROCESS:
-    def __init__(self, mode=1, vcf_filename=None, bam_filename=None, fasta_filename=None, data_filename=None, region_filename=None, padded_maxlen=1000):
+    def __init__(self, mode=1, vcf_filename=None, bam_filename=None, fasta_filename=None, data_filename=None, region_filename=None, sample_name=None, padded_maxlen=1000):
         self.vcf_filename = vcf_filename
         self.bam_filename = bam_filename
         self.fasta_filename = fasta_filename
         self.data_filename = data_filename
         self.region_filename = region_filename
         self.padded_maxlen = padded_maxlen
+        self.sample_name = sample_name
         self.mode = mode
         self.l = {
                   'aa': 1, 'ac': 2, 'ag': 3, 'at': 4, 'ad': 5,
@@ -255,7 +256,7 @@ class DATAPROCESS:
         fa = FASTA()
         fasta_file = fa.readfile(self.fasta_filename)
 
-        t = TREGION()
+        t = TREGION(self.sample_name)
         region_file = t.readfile(self.region_filename)
         region = t.region_info(region_file)
 
@@ -353,9 +354,10 @@ class DATAPROCESS:
         fa = FASTA()
         fasta_file = fa.readfile(self.fasta_filename)
 
-        t = TREGION()
+        t = TREGION(self.sample_name)
         region_file = t.readfile(self.region_filename)
         region = t.region_info(region_file)
+        print(region)
 
         for rec in region:
             print('generation test data')
@@ -481,6 +483,6 @@ class DATAPROCESS:
                 print((s_c_p, test_seq))
                 samples_data.append((s_c_p, test_seq))
 
-            np.save(self.data_filename, samples_data)
-            return samples_data
+        np.save(self.data_filename, samples_data)
+        return samples_data
 
