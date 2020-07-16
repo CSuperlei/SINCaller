@@ -4,7 +4,7 @@ from tensorflow.keras.utils import to_categorical
 
 
 class TEST:
-    def __init__(self, samples_data, test_type=1, word_maxlen=2340, label_base=20, label_indel=3, label_genotype=3):
+    def __init__(self, samples_data, test_type=1, word_maxlen=3000, label_base=20, label_indel=3, label_genotype=3):
         self.samples_data = samples_data
         self.word_maxlen = word_maxlen
         self.test_type = test_type

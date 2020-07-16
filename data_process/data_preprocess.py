@@ -8,7 +8,7 @@ from collections import Counter
 
 
 class DATAPROCESS:
-    def __init__(self, mode=1, vcf_filename=None, bam_filename=None, fasta_filename=None, data_filename=None, region_filename=None, padded_maxlen=780):
+    def __init__(self, mode=1, vcf_filename=None, bam_filename=None, fasta_filename=None, data_filename=None, region_filename=None, padded_maxlen=1000):
         self.vcf_filename = vcf_filename
         self.bam_filename = bam_filename
         self.fasta_filename = fasta_filename
@@ -39,7 +39,7 @@ class DATAPROCESS:
         elif item > 0:
             return 35
 
-    def __padded_fill(self, data=None, padded_len=780):
+    def __padded_fill(self, data=None, padded_len=1000):
         data_len = len(data)
         fill_zero = padded_len - data_len
         zero_list = [0 for i in range(fill_zero)]
