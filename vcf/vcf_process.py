@@ -47,6 +47,8 @@ class VCF:
                 def output(string):
                     print(string, file=output_file)
 
+                if str(CHROM).isdigit() or CHROM == 'X' or CHROM == 'Y':
+                    CHROM = 'chr'+CHROM
                 print(CHROM, POS, ID, REF, ALT, QUAL, FILTER, INFO, FORMAT, VALUE)
                 output(CHROM + '\t' + POS + '\t' + ID + '\t' + REF + '\t' + ALT + '\t' + QUAL + '\t' + FILTER + '\t' + INFO + '\t' + FORMAT + '\t' + VALUE)
 

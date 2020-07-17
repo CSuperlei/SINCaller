@@ -3,7 +3,7 @@ from .train_data_generator import DataGenerator
 from .test_data_generator import TEST
 import numpy as np
 
-def testing(samples_test_data, test_model=1, model_params=None, save_result=None, generator_params=None, hdf5_file=True, hdf5_fliename='/mnt/sdc/cailei/bio_project/scSNVIndel_data/model_checkpointmodel_21.hdf5'):
+def testing(samples_test_data, test_model=1, model_params=None, save_result=None, generator_params=None, hdf5_file=True, hdf5_fliename='/mnt/sdc/cailei/bio_project/scSNVIndel_data/model_checkpointmodel_49.hdf5'):
     print('samples test data', len(samples_test_data))
     m = SCSNVMODEL()
     if model_params:
