@@ -392,6 +392,7 @@ class DATAPROCESS:
                 ref_test_list = [ref_base + i for i in seq_lower_list]
                 ref_test_list = [self.__str_to_int(i) for i in ref_test_list]
 
+                ## 计算AD值
                 if sum(indel_list) < 0: ## 包括> 0 或 < 0
                     ## 统计indel的AD_DP值
                     base_ad = Counter(indel_list)
@@ -424,13 +425,13 @@ class DATAPROCESS:
                     ad_dp = ad + '-' + str(dp)
                 else:
                     ## 统计SNP的值
-                    base_ad = Counter(seq_lower_list)
+                    base_ad = Counter(ref_test_list)
                     ## 对这个位点的序列进行按照value排序
                     base_ad_sort = sorted(base_ad, key=lambda item : item[1])
                     ## 取最大的前几个
                     ad = []
                     for k, v in reversed(base_ad_sort):
-                        if str(k) != ref_base:
+                        if int(k) not in {1, 6, 11, 16}:
                             ad.append(v)
                             if len(ad) > 2:
                                 break
