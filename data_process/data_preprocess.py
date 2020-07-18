@@ -432,16 +432,18 @@ class DATAPROCESS:
                     ad = []
                     for k, v in reversed(base_ad_sort):
                         if str(k) != ref_base:
-                            ad.append(int(v))
-                            if len(ad) > 2:
+                            if len(ad) >= 2:
                                 break
+                            ad.append(int(v))
 
                     dp = len(seq_lower_list)
-                    d = dp - sum(ad)
-                    ad = [str(i) for i in ad]
-                    ad = ",".join(ad)  ## 每种等位基因的深度
-                    ad = str(d) + ',' + ad
-                    ad_dp = ad + '-' + str(dp)
+                    if ad == []:
+                        ad_dp = str(dp) + ',' + '0' + '-' + str(dp)
+                    else:
+                        d = dp - sum(ad)
+                        ad = [str(i) for i in ad]
+                        ad = ",".join(ad)  ## 每种等位基因的深度
+                        ad_dp = str(d) + ',' + ad + '-' + str(dp)
 
 
                 pileup_list = [base_list, indel_list, ad_dp, re]
