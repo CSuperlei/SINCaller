@@ -425,14 +425,14 @@ class DATAPROCESS:
                     ad_dp = ad + '-' + str(dp)
                 else:
                     ## 统计SNP的值
-                    base_ad = Counter(ref_test_list)
+                    base_ad = Counter(seq_lower_list)
                     ## 对这个位点的序列进行按照value排序
-                    base_ad_sort = sorted(base_ad, key=lambda item : item[1])
+                    base_ad_sort = sorted(base_ad.items(), key=lambda item : item[1])
                     ## 取最大的前几个
                     ad = []
                     for k, v in reversed(base_ad_sort):
-                        if int(k) not in {1, 6, 11, 16}:
-                            ad.append(v)
+                        if str(k) != ref_base:
+                            ad.append(int(v))
                             if len(ad) > 2:
                                 break
 
