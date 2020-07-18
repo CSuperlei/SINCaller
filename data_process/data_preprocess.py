@@ -382,36 +382,81 @@ class DATAPROCESS:
                     indel_index = np.argmax(indel_list)
                     re = b.fetch_row(bam_file, chr, rec.pos, rec.pos + 1, indel_index, indel_value, fasta_file)
 
-                base_ad = Counter(indel_list)
-                ad = []  ## 计算不同等位基因数量
-                for k, v in base_ad.items():
-                    if k != 0:
-                        ad.append(v)
-                dp = len(indel_list)  ## 总的映射深度
-                d = dp - sum(ad)  ## 与参考基因相同的数量
-                if sum(indel_list) != 0:
+                ref_base = fa.ref_atcg(fasta_file, chr, pos, pos + 1)
+                if ref_base is None or base_list is None or indel_list is None:
+                    continue
+
+                seq_base_list = ['d' if item == '' else item for item in base_list]
+                seq_lower_list = [item.lower() for item in seq_base_list]
+                ref_base = ref_base.lower()
+                ref_test_list = [ref_base + i for i in seq_lower_list]
+                ref_test_list = [self.__str_to_int(i) for i in ref_test_list]
+
+                if sum(indel_list) < 0: ## 包括> 0 或 < 0
+                    ## 统计indel的AD_DP值
+                    base_ad = Counter(indel_list)
+                    ad = []  ## 计算不同等位基因数量
+                    le = 0
+                    for k, v in base_ad.items():
+                        if k < 0:
+                            le += int(v)
+                    ad.append(le)
+                    dp = len(indel_list)  ## 总的映射深度
+                    d = dp - sum(ad)  ## 与参考基因相同的数量
+                    ad = [str(i) for i in ad]
+                    ad = ",".join(ad)  ## 每种等位基因的深度
+                    ad = str(d) + ',' + ad
+                    ad_dp = ad + '-' + str(dp)
+                elif sum(indel_list) > 0:
+                    ## 统计indel的AD_DP值
+                    base_ad = Counter(indel_list)
+                    ad = []  ## 计算不同等位基因数量
+                    gt = 0
+                    for k, v in base_ad.items():
+                        if k > 0:
+                            gt += int(v)
+                    ad.append(gt)
+                    dp = len(indel_list)  ## 总的映射深度
+                    d = dp - sum(ad)  ## 与参考基因相同的数量
                     ad = [str(i) for i in ad]
                     ad = ",".join(ad)  ## 每种等位基因的深度
                     ad = str(d) + ',' + ad
                     ad_dp = ad + '-' + str(dp)
                 else:
-                    ad_dp = str(dp) + '-' + str(dp)
+                    ## 统计SNP的值
+                    base_ad = Counter(seq_lower_list)
+                    ## 对这个位点的序列进行按照value排序
+                    base_ad_sort = sorted(base_ad, key=lambda item : item[1])
+                    ## 取最大的前几个
+                    ad = []
+                    for k, v in reversed(base_ad_sort):
+                        if str(k) != ref_base:
+                            ad.append(v)
+                            if len(ad) > 2:
+                                break
+
+                    dp = len(seq_lower_list)
+                    d = dp - sum(ad)
+                    ad = [str(i) for i in ad]
+                    ad = ",".join(ad)  ## 每种等位基因的深度
+                    ad = str(d) + ',' + ad
+                    ad_dp = ad + '-' + str(dp)
+
 
                 pileup_list = [base_list, indel_list, ad_dp, re]
 
                 ####################################################################
                 seq_list = pileup_list
-                ref_base = fa.ref_atcg(fasta_file, chr, pos, pos + 1)
 
-                if ref_base is None or seq_list is None or seq_list[0] is None or seq_list[1] is None:
-                    continue
+
 
                 ## 生成碱基序列
-                seq_base_list = ['d' if item == '' else item for item in seq_list[0]]
-                seq_lower_list = [item.lower() for item in seq_base_list]
-                ref_base = ref_base.lower()
-                ref_test_list = [ref_base + i for i in seq_lower_list]
-                ref_test_list = [self.__str_to_int(i) for i in ref_test_list]
+                # seq_base_list = ['d' if item == '' else item for item in seq_list[0]]
+                # seq_lower_list = [item.lower() for item in seq_base_list]
+                # ref_base = ref_base.lower()
+                # ref_test_list = [ref_base + i for i in seq_lower_list]
+                # ref_test_list = [self.__str_to_int(i) for i in ref_test_list]
+
                 ## 生成indel序列
                 indel_test_list = seq_list[1]
                 indel_test_seq = [self.__indel_to_int(i) for i in indel_test_list]
