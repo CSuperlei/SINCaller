@@ -1,10 +1,10 @@
-# scSNVIndel: *Searching the potential of using Bi-LSTM neural network for single cell SNV and Indel calling.*
+# SINCaller: *An accurate SNVs and indels variant caller using integrated Bi-LSTM from single cell sequencing.*
 <div align="center">
     <img src="./pic/single_cell_data.jpg" width="100%" height="15%">
     <br>
 </div>
 <p align="left">
-    <a href="https://www.aiguqu.com/2020/06/18/scSNVIndel/">
+    <a href="https://www.aiguqu.com/2020/06/18/SINCaller/">
         <img src="https://img.shields.io/badge/blog-scSNVInde-brightgreen" alt="Blog" />
     </a>
     <br>
@@ -15,10 +15,10 @@
 Single cell sequence is popular sequencing technique in recent years.
 With the emerging of single cell sequencing data, accurate calling the single cell SNV and inde 
 is the focus of research. In this sudy, we propose a high precise model of calling single cell SNV and Indel.
-The model is called scSNVIndel, which uses Bi-LSTM as base construction and integrate newly natural
+The model is called SINCaller, which uses Bi-LSTM as base construction and integrate newly natural
 language processing skill. Compared with existing tools including GATK, Monovar, DeepVarient, 
-scSNVIndel achieves the best precision and speed. Through the result of scSNVIndel, we found that
-scSNVIndel can call the complicated SNV and Indel, which is superior to others tools.
+SINCaller achieves the best precision and speed. Through the result of SINCaller, we found that
+SINCaller can call the complicated SNV and Indel, which is superior to others tools.
 
 ## Contents
  * Innovation
@@ -41,11 +41,11 @@ use convolutional neural network to detect the SNV and Indel, but it is not suit
 We put forward a new detection method based on recurrent neural network, which can process string data as well as get rid of the sparse data constraint. 
 
 ## Model Architecture
-The scSNVIndel has one input and three outputs. First, the scSNVIndel generates each position alignment bases from BAM,
-and reference gene from FASTA. Second, the scSNVIndel collect the Indel array using pysam package.
-Finally, the scSNVIndel generates the genotype array through alignment situation.
-The scSNVIndel concatenates the results obtained from the above three parts as the model input.
-The scSNVIndel send this results in to the network to train. The model architecture is in the Figure 1.
+The SINCaller has one input and three outputs. First, the SINCaller generates each position alignment bases from BAM,
+and reference gene from FASTA. Second, the SINCaller collect the Indel array using pysam package.
+Finally, the SINCaller generates the genotype array through alignment situation.
+The SINCaller concatenates the results obtained from the above three parts as the model input.
+The SINCaller send this results in to the network to train. The model architecture is in the Figure 1.
 <div align="center">
     <img src="./model/model_strcut.png">
     <br>
@@ -58,7 +58,7 @@ The genotype reports the mutation is homozygous or heterozygous when finding var
 
 
 ##  Requirement
-We use docker and Anaconda to build the environment, and we use Tensorflow to construct the scSNVIndel.
+We use docker and Anaconda to build the environment, and we use Tensorflow to construct the SINCaller.
 * conda 4.8.3
 * Docker 19.03.8
 * graphviz                  2.40.1
