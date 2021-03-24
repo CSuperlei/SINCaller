@@ -84,17 +84,17 @@ curl https://repo.anaconda.com/archive/Anaconda3-2020.02-Linux-x86_64.sh -o mini
 bash miniconda3.sh -b -p /opt/miniconda3
 conda update -n base -c defaults conda pip
 
-# create and activate the environment named scSNVIndel
-conda create -n scSNVIndel python=3.6
-source activate scSNVIndel
+# create and activate the environment named SINCaller
+conda create -n SINCaller python=3.6
+source activate SINCaller
 
-# install python packages on scSNVIndel environment
+# install python packages on SINCaller environment
 pip install conda-forge numpy==1.18.1 blosc==1.8.3 tensorflow-gpu==2.2.0 pysam==0.15.4 matplotlib==3.1.2
 conda install -c anaconda pigz==2.4
 conda install -c bioconda samtools=1.10 vcflib=1.0.0 bcftools=1.10.2
 
-# clone scSNVIndel
-git clone git@github.com:CSuperlei/scSNVIndel.git
+# clone SINCaller
+git clone git@github.com:CSuperlei/SINCaller.git
 ```
 
 ### Method 2: Dockerfile
@@ -157,14 +157,14 @@ RUN conda create -n lei_env python=3.6 && \
     conda deactivate && \
     apt autoremove -y && apt clean -y && apt purge -y && rm -rf /tmp/* /var/tmp/*
 
-RUN mkdir scSNVIndel && \
-    cd scSNVIndel && \
-    git clone git@github.com:CSuperlei/scSNVIndel.git
+RUN mkdir SINCaller && \
+    cd SINCaller && \
+    git clone git@github.com:CSuperlei/SINCaller.git
 ```
 
 # Usage
 ```
-scSNVIndel software
+SINCaller software
 
 optional arguments:
   -h, --help            show this help message and exit
@@ -202,7 +202,7 @@ python main.py -dco ${data combine original directory} -dct ${output of data com
 
 ```
 
-* Training scSNVIndel
+* Training SINCaller
 ```
 python main.py -ld ${load training filename} -g ${gpu numbers} -lo ${log level} -m 1
 ```
@@ -229,7 +229,7 @@ python main.py  -ld ${validation filename} -fa ${fasta.ai filename} -ov ${out pu
 
 # Display
 We will show the training and validation curve in the following.
-The scSNVIndel has three outputs. The first output represents whether a base shift has occurred.
+The SINCaller has three outputs. The first output represents whether a base shift has occurred.
 The first output training and validation curve is the Figure 2.
 <div align="center">
     <img src="./pic/base_acc.png">
